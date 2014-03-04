@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page
 ---
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
 
@@ -29,13 +29,15 @@ git@bitbucket.org:mundoreader/corejs-build.git
 
 * **coreJS Base**
 En este repositorio se guarda los módulos principales de toda webapp (localización, integración con backend, factorías, configuración, ...)
-```
+
+```bash
 git@bitbucket.org:mundoreader/corejs-base.git
 ```
 
 * **coreJS [projectName] Modules**
 En este repositorio almacena los módulos de la webapp específica en función del `[projectName]`:
-```
+
+```bash
 git@bitbucket.org:mundoreader/[projectName]-corejs-app.git
 git@bitbucket.org:mundoreader/bookland-corejs-app.git
 git@bitbucket.org:mundoreader/mercurio-corejs-app.git
@@ -116,46 +118,56 @@ Esta apartado describe todas las tecnologías usadas para el desarrollo de aplic
 
 * Instalar Xcode + CommandLine Tools
 * Instalar [Homebrew](http://brew.sh/):
-```
+
+```bash
 ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
 ```
+
 * Instalar [GIT](http://git-scm.com/)
-```
+
+```bash
 brew install git
 git config --global user.name "Your Full Name"
 git config --global user.email "Your Email Address"
 ```
 
 * Instalar [node + npm](http://nodejs.org/)
-```
+
+```bash
 brew install node
 ```
 
 * Instalar [PhamtonJS](http://phantomjs.org/download.html)
-```
+
+```bash
 sudo npm install -g mocha-phantomjs@">=3.3.1" phantomjs@">=1.9.7-1"
 ```
 
 * Instalar [compass](http://compass-style.org/install/)
-```
+
+```bash
 gem update --system
 gem install compass
 ```
 
 
 * Instalar [Yeoman](http://yeoman.io/), [Grunt](http://gruntjs.com/) y [Bower](http://bower.io/)
-```
+
+```bash
 npm install -g yo
 ```
+
 ### Ubuntu 13.04 ###
 
 * Installar curl
-```
+
+```bash
 sudo apt-get install curl
 ```
 
 * Instalar rvm + ruby
-```
+
+```bash
 sudo apt-get install libgdbm-dev libncurses5-dev automake libtool bison libffi-dev
 curl -L https://get.rvm.io | bash -s stable
 source ~/.rvm/scripts/rvm
@@ -166,39 +178,54 @@ ruby -v
 ```
 
 Si se quiere evitar instalar la documentación de cada paquete de forma local, ejecutar el siguiente comando:
-```
+
+```bash
 echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 ```
+
 * Instalar nodejs + npm
-```
+
+```bash
 sudo apt-get install python g++ make
 sudo add-apt-repository ppa:chris-lea/node.js
 sudo apt-get update
 sudo apt-get install nodejs
 ```
+
 * Instalar compass
-```
+
+```bash
 gem update --system
 gem install compass
 ```
+
 * Instalar [GIT](http://git-scm.com/)
-```
+
+```bash
 sudo apt-get install git
 ```
+
 * Instalar [PhamtonJS](http://phantomjs.org/download.html)
-```
+
+```bash
 sudo npm install -g mocha-phantomjs@">=3.3.1" phantomjs@">=1.9.7-1"
 ```
+
 * Instalar [Yeoman](http://yeoman.io/), [Grunt](http://gruntjs.com/) y [Bower](http://bower.io/)
-```
+
+```bash
 npm install -g yo
 ```
+
 **NOTA**: Si al arrancar el proyecto sale muchas veces el error `Waiting…Fatal error: watch ENOSPC`, ejecutar el siguiente comando:
-```
+
+```bash
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 ```
+
 **NOTA**: Si Bower tiene problemas para descargar los paquetes, es probable que sea debido a que trate de obtener los paquetes por protocolo GIT en lugar de HTTPS, para cambiarlo basta con ejecutar el siguiente comando:
-```
+
+```bash
 git config --global url."https://".insteadOf git://
 ```
 
@@ -220,12 +247,15 @@ En los proyectos web nos centraremos en los siguientes lenguajes:
 ## Hojas de Estilos ##
 
 **Archivos**
-```
+
+```javascript
  _this-is-a-large-name-component.scss // componentes app
  this-is-a-large-name-app-styles.scss // estilos generales de la app
 ```
+
 **Selectores**
-```
+
+```javascript
 /*
  * BEM 
  * Stands for "Block", "Element", "Modifier"
@@ -237,8 +267,10 @@ En los proyectos web nos centraremos en los siguientes lenguajes:
 .nav--secondary {}       // modificador de bloque
 .nav--secondary__item {} // elemento de bloque con modificador
 ```
+
 Ejemplo:
-```
+
+```javascript
 .nav {}
     .nav__item {}
     .nav__item--selected {}
@@ -257,7 +289,8 @@ Ejemplo:
 ## Imágenes ##
 
 **Archivos**
-```
+
+```javascript
  this-is-a-large-name-folder    // folder img
  this-is-a-large-name-image.png // img
 ```
@@ -267,7 +300,8 @@ Ejemplo:
 La convención de código que seguiremos para el desarrollo de JavaScript será la definida en [IdiomaticJS](https://github.com/rwaldron/idiomatic.js/).
 
 A grandes rasgos:
-```
+
+```javascript
 // fileNameLikeThis.js
 
 var CONSTANTS_LIKE_THIS = 3.14;
@@ -290,11 +324,14 @@ var objectNameLikethis.methodNamesLikeThis = function() { };
 ## Comentarios ##
 
 En línea:
-```
+
+```javascript
 // Comentario
 ```
+
 En bloque:
-```
+
+```javascript
 /**
  * Nombre componente 
  * Use: 
@@ -557,7 +594,8 @@ Además la aplicación se puede configurarse de varias formas, estableciendo los
 Se puede establecer la configuración de la aplicación definiendo los parámetros en una variable global que deberá llamarse **`CFG`**. Esta variable global debe de estar **disponible antes de que se cargue cualquier JavaScript** de la aplicación. Unos ejemplos:
 
 **Producción (sin logToServer)**
-```
+
+```javascript
 var CFG = {
     "version": "0.1",
     "appName": "corejs-app",
@@ -579,7 +617,8 @@ var CFG = {
 ```
 
 **Producción (con logToServer)**
-```
+
+```javascript
 var CFG = {
     "version": "0.1",
     "appName": "corejs-app",
@@ -605,7 +644,8 @@ var CFG = {
 ```
 
 **Desarrollo**
-```
+
+```javascript
 var CFG = {
     "mode": "DEVELOPER",
     "version": "0.1",
@@ -658,7 +698,8 @@ En particular:
 **Obtener el contexto**
 
 Para tener acceso al contexto de la aplicación basta con encapsular nuestro código JavaScript en el siguiente esquema:
-```
+
+```javascript
 'use strict';
 /* global define */
 define([
@@ -675,7 +716,8 @@ El proceso de inicialización de una aplicación web puede llegar a ser muy comp
 Una aplicación Marionette se inicializa cuando se lanza la llamada `app.start()`, y con ello, todos sus manejadores definidos.
 
 Para añadir nuetas tareas al proceso de inicialización basta con incluir el siguiente código donde sea pertinente.
-```
+
+```javascript
   app.addInitializer(function() {
         // Initialization code here
   });
@@ -690,19 +732,23 @@ Para añadir nuetas tareas al proceso de inicialización basta con incluir el si
 El objeto `Application` de Marionette además permite definir las regiones principales de la región.
 En Marionette, una región define cualquier elemento del DOM desde la cual, se mostrarán vistas.
 Para definir regiónes principales de la aplicación basta con hacer lo siguiente:
-```
+
+```javascript
 app.addRegions({
     header: 'header',       // <header>
     main: 'main',           // <main>
     footer: 'footer'        // <footer>
 });
 ```
+
 Con las regiones definidas, en otra parte del código podemos mostrar vistas dentro de estas regiones:
-```
+
+```javascript
 app.header.show(new HeaderView());
 app.main.show(new MainView());
 app.footer.show(new FooterView());
 ```
+
 Lo realmente interesante de las regiones es que se puede llamar al método `show()` repetidas veces, con la certeza de que Marionette llamará al método `close()` en la vista existente de la región para cerrar la vista con seguridad, liberando correctamente los recursos.
 
 Es posible definir regiones anidadas con el componente `Layout` de Marionette, pero eso lo explicaremos con detalle más adelante.
@@ -721,17 +767,22 @@ Para comunicar eventos, peticiones y órdenes entre módulos, Marionette ofrece 
 Este componente de Marionette nos permite lanzar un evento en cualquier punto de la aplicación para que en cualquier otro punto, cualquiera pueda suscribirse y actuar en consecuencia.
 
 Para registrarse a un evento en particular es necesario seguir el siguiente esquema:
-```
+
+```javascript
 app.vent.on("foo", function(){
   console.log("foo event");
 });
 ```
+
 Entonces, desde cualquier otro punto de la aplicación, es posible lanzar el siguiente evento:
-```
+
+```javascript
 app.vent.trigger("foo");
 ```
+
 Para lanzar eventos con parámetros es posible hacer lo siguiente:
-```
+
+```javascript
 app.vent.on("foo", function(args){
   console.log("foo event" + args.bar);
 });
@@ -747,7 +798,7 @@ app.vent.trigger("foo", {bar: true});
 
 Este componente nos permite solicitar una acción y esperar una respuesta de ello. Sólo puede haber uno esperando respuesta y siempre se responde al último que se registró.
 
-```
+```javascript
 app.reqres.setHandler("foo", function(){
   return "foo requested. this is the response";
 });
@@ -755,6 +806,7 @@ app.reqres.setHandler("foo", function(){
 var result = app.reqres.request("foo");
 console.log(result);
 ```
+
 Al igual que con `EventAggregator`, es posible pasar parámetros con la petición.
 
 **Más info**
@@ -765,7 +817,7 @@ Al igual que con `EventAggregator`, es posible pasar parámetros con la petició
 
 Este componente nos permite solicitar una acción sin tener que esperar una respuesta de ello. Sólo puede haber uno esperando respuesta y siempre se responde al último que se registró.
 
-```
+```javascript
 app.commands.setHandler("foo", function(bar){
   console.log(bar);
 });
@@ -783,14 +835,17 @@ Módulo: Logger
 El logger nos ayuda a registrar los mensajes por consola de la aplicación, establecer diferentes niveles de mensajes, y enviar información relevante a un servidor específico para posterior análisis.
 
 Ejemplo de uso:
-```
+
+```javascript
 // config & params are objects
 app.log.info('engine', 'Logger.setConfig', config, true, [3], 3.14);
 app.log.debug('engine:config:loaded', config);
 app.log.debug('api.request', params);
 ```
+
 Se recomienda además seguir la siguiente convención con el fin de pder filtrar el log como explicaremos más adelante:
-```
+
+```javascript
 app.log.debug('moduleName', 'ClassName.methodName' [, ...]);
 app.log.debug('moduleName:event:name' [, ...]);
 app.log.debug('moduleName.method.message' [, ...]);
@@ -806,23 +861,26 @@ Los errores ordenados de mayor a menor nivel son los siguientes:
   * `TRACE`: Muestra trazas de desarrollo y mensajoes de mayor nivel
   * `ALL`: Muestra todos los mensajes
 
-```
+```javascript
 app.log.setLevel(app.log.level.INFO);
 ```
 
 * **Filtrar Log**
 
 A veces es necesario filtrar el log para que muestre únicamente las trazas de log que nos interesan. Para filtrar todos los logs que no sean de una sección en particular podemos hacer:
-```
+
+```javascript
 app.log.filter('engine');
 ```
+
 Con ésto conseguimos que sólo se muestran las trazas que comiencen por la palabra `engine`.
 
 
 * **Log To Server**
 
 El log tiene la capacidad de enviar cierta inforamción a un servidor específico, para ello, primero hay que **configurarlo y habilitarlo**
-```
+
+```javascript
 var config = {
     logToServer: true,          // Para habilitar envío de datos al servidor
     logBuffer: 10,              // Nº de trazas antes de enviar al servidor
@@ -834,7 +892,7 @@ app.log.setConfig(config);
 
 * **Nota**: Ala hora de construir los mensajes de log, hay que tener en cuenta que si el mensaje que se construye es complejo, es una buena práctica detectar el nivel de log establecido para evitar tener que construir mensajes innecesarios, por ejemplo:
 
-```
+```javascript
 var complexLogMessageBuilder = function() {
     // Complex code here
     return logString;
@@ -852,7 +910,8 @@ Este módulo es el responsable de encapsular toda la complejidad relacionada con
 ### Registro ###
 
 Si la aplicación puede registrar nuevos usuarios en la plataforma, es posible realizarse con la siguiente llamada:
-```
+
+```javascript
 var params = {
     username: 'username',
     email: 'email@domain.com',
@@ -873,7 +932,8 @@ app.user.register(params).then(function(data) {
 
 
 Para realizar una autenticación de un usuario en particular, en la vista responsable podemos realizar la siguiente llamada, tras recopilar los datos del usuario de un formulario de login típico:
-```
+
+```javascript
 var params : {
     username: 'username',
     password: 'password',
@@ -913,7 +973,7 @@ Existe un mecanismo para construir de forma intuiritva peticiones a recursos. A 
 * `resource/books:Book/id`: Recurso específico
 * `resource/books:Book/id/author`: Recursos relacionados con otros.
 
-```
+```javascript
 app.api.setResource('resource/books:Book', app.api.method.GET).execute()
 .then(function(data) {
   // Always code
@@ -930,7 +990,8 @@ Es posible realizar búsquedas avanzadas añadiendo todos los filtros que sean n
 
 
 **Manual**
-```
+
+```javascript
 var resource = app.api.setResource('resource/books:Book');
 
 resource
@@ -958,7 +1019,8 @@ resource.execute().then(function(data) {
 ```
 
 **Backbone.fetch**
-```
+
+```javascript
 var collection = app.factory.new('Collection');
 
 var params = {
@@ -994,7 +1056,7 @@ collection.fetch(params).done(function() {
 
 Gestiona los datos de la sesión del usuario, sus credenciales de sesión y el estado global de la aplicación.
 
-```
+```javascript
 // Storages data in user session
 var data = {key: 'value'};
 app.session.set('key', data);
@@ -1027,7 +1089,7 @@ app.session.removeStatus('new-user');
 
 Se encarga de obtener y establecer las cookies del documento actual.
 
-```
+```javascript
 // Writing a cookie
 app.cookies.setItem(name, value[, end[, path[, domain[, secure]]]]);
 
@@ -1049,7 +1111,7 @@ app.cookies.hasItem(name);
 
 Este módulo se encarga de gestionar los diferentes tipos de objetos de la aplicación (Model, Collection, Layout, View)
 
-```
+```javascript
 // Models
 app.factory.add('CompontentNameModel', CompontentNameModel);
 app.factory.new('CompontentNameModel', options);
@@ -1096,6 +1158,7 @@ El objetivo de los módulos es la de contener los recursos necesarios que defina
 Para que un módulo pueda definir una funcionalidad completa se propone la siguiente estructura de módulo.
 
 ## Estructura del proyecto ##
+
 ```
 src/main/webapp
 ├── css                             // Hojas de estilo transversales
@@ -1143,7 +1206,8 @@ En esta sección se detalla toda la información necesria para poder empezar a d
 Los modelos representan los datos que se tienen que mostrar finalmente en la interfaz, y son las estructuras de datos que normalmente se manejan en la aplicación.
 
 Para crear un modelo basta con seguir el siguiente esqueleto en el directorio de `models` del módulo:
-```
+
+```javascript
 'use strict';
 /* global define */
 define([
@@ -1181,15 +1245,18 @@ Las vistas son los responsables de definir el comportamiento que tendrán los te
 Para renderizar una vista es necesario primero definir un template, para ello, nos apoyaremos en [Handlebars](http://handlebarsjs.com/) para implementarlos.
 
 Idealmente, los templates renderizan modelos Backbone, de modo que si tenemos el siguiente modelo:
-```
+
+```javascript
 var MyModel = Backbone.Model.extend({});
 myModel = new MyModel({
     foo: 'Hi',
     bar: 'Álvaro'
 });
 ```
+
 Un template válido para representar estos datos sería:
-```
+
+```html
 <div>
     <h1>{{foo}}</h2>
     <p>{{bar}}</p>
@@ -1209,7 +1276,8 @@ Existen 2 tipos de vistas, `ItemView` y `CollectionView`, ambos incluidos en Mar
 Este componente de Marionette es un tipo específico de `View` que se encarga de renderizar una template específico en base a un modelo.
 
 El template que se tiene que renderizar con la vista se define en la función `template()`. La convención para acceder a un template específico es la siguiente:
-```
+
+```javascript
 // Ruta hasta el template
 scripts/modules/myModule/tempaltes/subTemplates/myTemplate.html
 
@@ -1218,7 +1286,8 @@ app.jst['myModule/subTemplates/myTemplate'];
 ```
 
 Para crear una vista de este tipo basta con seguir el siguiente esqueleto en el directorio de `views` del módulo:
-```
+
+```javascript
 'use strict';
 /* global define */
 define([
@@ -1241,19 +1310,24 @@ define([
 ```
 
 Para dar de alta la vista en la factoría para que pueda ser instanciable. Para ello lo declaramos en el inicializador de módulo (`modules/myModule/start.js`):
-```
+
+```javascript
 app.addInitializer(function() {
   app.views.add('MyView', MyView);
 });
 ```
+
 Por último, para renderizar una vista, puede hacerse de 2 maneras principalmente.
 
 * En una región
-```
+
+```javascript
 app.regionName.show(app.factory.new('MyView'));
 ```
+
 * De forma explícita
-```
+
+```javascript
 var myView = app.factory.new('MyView');
 $('body').html(myView.render().el);
 ```
@@ -1267,7 +1341,8 @@ $('body').html(myView.render().el);
 Este componente se encarga de renderizar una [collección de modelos](http://backbonejs.org/#Collection) en base a un `ItemView` y un `Collection` de Backbone.
 
 La vista que renderiza se especifica en el atributo `itemView` del `CollectionView`
-```
+
+```javascript
 // Ruta hasta el template
 scripts/modules/myModule/tempaltes/subTemplates/myTemplate.html
 
@@ -1276,7 +1351,8 @@ app.jst['myModule/subTemplates/myTemplate'];
 ```
 
 Para crear un `CollectionView` basta con seguir el siguiente esqueleto en el directorio de `views` del módulo:
-```
+
+```javascript
 'use strict';
 /* global define */
 define([
@@ -1297,6 +1373,7 @@ define([
     return MyCollectionView;
 });
 ```
+
 Este tipo de vistas se dan de alta en la factoría y se renderizan exactamente igual que en `ItemView`, salvo que en vez de pasarle un `Backbone.Model` en el parámetro `model`, se le pasa un `Backbone.Collection` en el parámetro `collection`.
 
 Este tipo de componente conviene utilizarlo cuando se desea renderizar un componente repetidas veces, pero que además, queramos implementar funcionalidades que afecten a la colección completa.
@@ -1311,7 +1388,8 @@ Este tipo de componente conviene utilizarlo cuando se desea renderizar un compon
 Un componente `Layout` es una mezcla entre un `ItemView` y un `Region`, de tal forma que se pueden definir regiones del template que renderiza este Layout. Por ejemplo:
 
 Teneiendo como template:
-```
+
+```html
 <!-- myModule/templates/myLayout.html -->
 <section>
     <header></header>
@@ -1319,8 +1397,10 @@ Teneiendo como template:
     <div id="actions"></div>
 </section>
 ```
+
 Podemos definir un Layout como el siguiente:
-```
+
+```javascript
 var MyLayout = Backbone.Marionette.Layout.extend({
     template: function(serializedModel) {
         app.jst['myModule/myLayout'](serializedModel);
@@ -1335,8 +1415,10 @@ var MyLayout = Backbone.Marionette.Layout.extend({
 
 app.layout.add('MyLayout', MyLayout);
 ```
+
 Y rednderizarlo en la aplicación:
-```
+
+```javascript
 var myLayout = app.factory.new('MyLayout');
 
 app.main.show(myLayout);
@@ -1359,7 +1441,8 @@ Para que nuestra aplicación pueda actuar en función de la ruta del usuario, us
 Generalmente, los manejadores de las rutas son los responsables de obtener todos los recursos necesarios e injectarselo a las vistas para que lo rendericen correctamente.
 
 Para definir una ruta con su manejador basta definirlo en el `start.js` del módulo en cuestión:
-```
+
+```javascript
     var myHandler = function(isbn) {
         var myModel = app.factory.new('MyModel');
         app.myRegion.show(app.factory.new('MyView', {
@@ -1390,7 +1473,8 @@ Para definir una ruta con su manejador basta definirlo en el `start.js` del mód
 Uno de los pasos a la hora de desarrollar un módulo con diferentes componentes, es la de definir el lugar donde declarar e integrar todos esos componentes en la aplicación, para ello, definiremos un documento `start.js` para cada módulo implementado.
 
 Un ejemplo de `start.js` podría ser el siguiente:
-```
+
+```javascript
 'use strict';
 /* global define */
 define([
@@ -1440,8 +1524,8 @@ define([
 
 Como se puede observar del ejemplo anterior lo primero que se define son las dependencias del módulo, que finalmente se mapean o exportan a variables que manejaremos dentro del módulo en el mismo orden en el que se declaran.
 Observando con detalle la anterior cabecera:
-```
 
+```javascript
 'use strict';
 /* global define */
 define([
@@ -1468,7 +1552,8 @@ define([
 ### Integrar un nuevo módulo ###
 
 Una vez tengamos nuestro módulo implementado, tendremos que decirle a nuestra aplicación que la carge como dependencia en el archivo `scripts/modules/loader.js` de la siguiente forma:
-```
+
+```javascript
 'use strict';
 /* global define */
 define([
@@ -1490,7 +1575,8 @@ Para integrar una librería de terceros tenemos que evaluar antes varias cosas:
 Si es un paquete **Bower**, hay que dar de alta dicha dependencia con su versión en `bower.json`.
 
 Si es un módulo AMD, no es necesario hacer gran cosa, pero **si no está definido como AMD**, y dicho módulo exporta una variable, es necesario indicarlo en el documento `define.js`, tanto en `webapp/scripts/define.js`, como en `test/define.js` de la siguiente forma:
-```
+
+```javascript
 // define.js
 /* global require, mochaPhantomJS, mocha */
 require.config({
@@ -1508,7 +1594,8 @@ require.config({
 ```
 
 Si es un plugin que extiende a otra librería, cuando sea necesario requerir esta dependencia, es recomendable que vayan al final, pues estas no suelen exportar ninguna variable, por ejemplo `backbone.marionette`.
-```
+
+```javascript
 'use strict';
 /* global define */
 define([
@@ -1536,7 +1623,8 @@ Si queremos estableccer la configuración de un módulo ajeno a nuestro reposito
 
 **Cómo acceder**
 Las configuraciones de todos los módulos se compilan en un único fichero en la ruta `target/dist/res/config/modules.json`. Desde el código se puede acceder de la siguiente forma:
-```
+
+```javascript
 var config = app.modulesConfig.get('moduleName'[, modelName]);
 ```
 * **Nota**: Es posible obtener directamente un tipo específico de `Backbone.Model`, si se establece el nombre del modelo en el parámetro `modelName` (debe de ser el mismo nombre con el que se dió de alta en la factoría).
@@ -1578,6 +1666,7 @@ Se propone el siguiente esquema de proyecto [SASS](http://sass-lang.com/):
                 ├── lg
                 └── lg-retina
 ```
+
 ## Sprites ##
 Con la ayuda de **compass** se generarán automáticamente los *sprites* para los diferentes tamaños de iconos ordenados en carpetas:
 
@@ -1587,6 +1676,7 @@ Con la ayuda de **compass** se generarán automáticamente los *sprites* para lo
 Se definirán carpetas para los diferentes puntos de ruptura ([break points RWD](http://mobile.smashingmagazine.com/2013/03/18/retrofit-a-website-to-be-responsive-with-rwd-retrofit/)), se aplicará lo mismo para las imagenes retina generadas a partir de dichos iconos.
 
 Para los nombres de carpetas de las imágenes se utilizarán tallas, añadiendo retina para aquellas imagenes en dicho formato:
+
 ```
 └── sprites                 
     └── icons
@@ -1617,6 +1707,7 @@ En este apartado describiremos cómo se desarrollan los tests unitarios.
 
 Estructura del proyecto
 -----------------------
+
 ```
 .
 └── test                    // Workspace de test
@@ -1641,7 +1732,8 @@ Desarollo de Tests
 
 Usaremos el framework [mocha](http://visionmedia.github.io/mocha/) para el desarrollo de tests.
 Este framework permite estructurar los test de la siguiente forma:
-```
+
+```javascript
 'use strict';
 /* global define */
 define([
@@ -1706,6 +1798,7 @@ define([
 });
 
 ```
+
 Como se puede ver en el ejemplo anterior, la idea es que las descripciones de los tests, desde el mayor nivel hata el test específico, forme algo coherente, como si se contara una historia, de tal forma que sea entendible por cualquier miembro del equipo.
 
 Además un buen conjunto de tests conprensibles, puede formar parte de la documentación de la aplicación.
@@ -1737,7 +1830,8 @@ En particular se proponen los siguientes atributos:
 * `data-rel-id`: Es un elemento/componente único, con el fin de diferenciarse de los elementos o componentes comunes con un mismo data-rel.
 
 * **Ejemplo**
-```
+
+```html
 <button data-action="toggle"></button>
 <div data-rel="modal" data-target="toggle">...</div>
 ```
@@ -1758,11 +1852,13 @@ Construcción
 Instalación de dependencias
 ---------------------------
 
-```
+```bash
 ./init-env.sh
 ```
+
 * **Nota**: Si Node está instalado con `sudo`, sustituir el comando anterior por este otro:
-```
+
+```bash
 ./init-env.sh su
 ```
 
@@ -1772,7 +1868,8 @@ Desarrollo
 
 Existe una tarea definida en grunt específica que arranca la aplicación en modo desarrollo, esto es, levanta un servidor que apunta a los recursos de la aplicación sin optimizar, para que sea más facil su depuración. Además se auto-actualiza a cada cambio guardado desde el editor.
 Para lanzarlo basta con usar el siguiente comando:
-```
+
+```bash
 grunt server
 ```
 
@@ -1782,13 +1879,16 @@ Test
 Existen varias tareas en grunt que arranacan los test unitarios, todo depende de dónde queramos obtener los resultados.
 
 * Test por línea de comandos:
-```
+
+```bash
 grunt test
 ```
+
 El resultado de los tests aparecerán por consola y generará un informe en formato `xunit` en `dist/tests.xml`.
 
 * Test por navegador [pendiente]
-```
+
+```bash
 grunt server:test
 ```
 Los resultados de los tests se podrán visualizar'en un navegador desde `http://localhost:9001`.
@@ -1797,7 +1897,7 @@ Los resultados de los tests se podrán visualizar'en un navegador desde `http://
 Producción
 ----------
 
-```
+```bash
 grunt
 ```
 Esta tarea construye el proyecto listo para desplegar en el directorio `target/dist`.
