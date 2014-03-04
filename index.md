@@ -381,19 +381,19 @@ Llamamos coreJS Base al conjunto de tecnologías y modulos necesarios que la may
         ├── config.js       // Definición de las dependencias RequireJS
         ├── main.js         // Script que arranca la aplicación
         ├── engine          // Componentes internos de la aplicación
-        │   ├── services.js // Comunicación con Backend
-        │   ├── common.js   // Parámetros de la app
-        │   ├── factory.js  // Factoría de objetos
-        │   ├── locale.js   // Módulo de i18n
-        │   ├── logger.js   // Módulo de log
-        │   ├── polyfills.js// Polyfill varios
-        │   ├── utils.js    // Funciones varias
-        │   ├── user.js     // Autenticación y gestión de usuario
-        │   ├── resource.js // Librería para realizar peticiones a backend
-        │   ├── session.js  // Gestión d elos datos de sesión del usuario
-        │   ├── router.js   // Enrutador de la webapp
-        │   ├── ...
-        │   └── start.js    // Inicializador de módulo
+        │   ├── services.js // Comunicación con Backend
+        │   ├── common.js   // Parámetros de la app
+        │   ├── factory.js  // Factoría de objetos
+        │   ├── locale.js   // Módulo de i18n
+        │   ├── logger.js   // Módulo de log
+        │   ├── polyfills.js// Polyfill varios
+        │   ├── utils.js    // Funciones varias
+        │   ├── user.js     // Autenticación y gestión de usuario
+        │   ├── resource.js // Librería para realizar peticiones a backend
+        │   ├── session.js  // Gestión d elos datos de sesión del usuario
+        │   ├── router.js   // Enrutador de la webapp
+        │   ├── ...
+        │   └── start.js    // Inicializador de módulo
         └── vendor          // Librerías externas ajenas a Bower
 
 ```
@@ -1163,7 +1163,7 @@ Para que un módulo pueda definir una funcionalidad completa se propone la sigui
 src/main/webapp
 ├── css                             // Hojas de estilo transversales
 ├── res
-│   └──config
+│   └──config
 │       ├──config.json              // Configuración de la webapp
 │       └──myModule.json            // Configuración del módulo 'myModule'
 └── scripts
@@ -1175,15 +1175,15 @@ src/main/webapp
             ├── start.js            // Inicialización y carga de dependencias
             ├── css                 // Hojas de estilo
             ├── collections         // Colecciones del módulo
-            │   └── *.js
+            │   └── *.js
             ├── layouts             // Layouts del módulo
-            │   └── *.js
+            │   └── *.js
             ├── models              // Modelos del módulo
-            │   └── *.js
+            │   └── *.js
             ├── templates           // Templates "Handlebars" del módulo
-            │   ├──*.html
-            │   └── moreTemplates
-            │       └── *.html
+            │   ├──*.html
+            │   └── moreTemplates
+            │       └── *.html
             └── views               // Vistas del módulo (ItemView/CollectionView)
                 └── *.js
 src/test
@@ -1640,17 +1640,17 @@ Se propone el siguiente esquema de proyecto [SASS](http://sass-lang.com/):
 ```
 └── src/main/webapp
     ├── css
-    │   ├── global
-    │   │   ├── _fonts.scss         // importación de tipografías externas
-    │   │   ├── _mixins.scss        // librería de utilidades sass
-    │   │   ├── _print.scss         // estilos para hojas impresión
-    │   │   ├── _reset.scss         // reset de estilos para navegadores
-    │   │   ├── _responsive.scss    // gestión RWD (Responsive Web Design)
-    │   │   ├── _sprites.scss       // generación de sprites
-    │   │   ├── _scaffolding.scss   // configuración inicial
-    │   │   ├── _utils.scss         // clases útiles para la maquetación
-    │   │   └── _variables.scss     // definición de variables del proyecto
-    │   └── main.scss               // importación de todos los estilos
+    │   ├── global
+    │   │   ├── _fonts.scss         // importación de tipografías externas
+    │   │   ├── _mixins.scss        // librería de utilidades sass
+    │   │   ├── _print.scss         // estilos para hojas impresión
+    │   │   ├── _reset.scss         // reset de estilos para navegadores
+    │   │   ├── _responsive.scss    // gestión RWD (Responsive Web Design)
+    │   │   ├── _sprites.scss       // generación de sprites
+    │   │   ├── _scaffolding.scss   // configuración inicial
+    │   │   ├── _utils.scss         // clases útiles para la maquetación
+    │   │   └── _variables.scss     // definición de variables del proyecto
+    │   └── main.scss               // importación de todos los estilos
     └── img
         └── common                  // imágenes genéricas
             └── logo.png
@@ -1873,8 +1873,17 @@ Para lanzarlo basta con usar el siguiente comando:
 grunt server
 ```
 
+Producción
+----------
+
+```bash
+grunt
+```
+Esta tarea construye el proyecto listo para desplegar en el directorio `target/dist`.
+
+
 Test
-----
+====
 
 Existen varias tareas en grunt que arranacan los test unitarios, todo depende de dónde queramos obtener los resultados.
 
@@ -1891,25 +1900,20 @@ El resultado de los tests aparecerán por consola y generará un informe en form
 ```bash
 grunt server:test
 ```
+
 Los resultados de los tests se podrán visualizar'en un navegador desde `http://localhost:9001`.
 
 
-Producción
-----------
-
-```bash
-grunt
-```
-Esta tarea construye el proyecto listo para desplegar en el directorio `target/dist`.
-
-
-Propuesta de integración con Jenkins
-------------------------------------
-
-### XUnit ###
+### TAP ###
 
 ### Cobertura de tests ###
 
+Integración Continua
+====================
+
+Toda la información acerca del estado de la integración continua está en el siguiente enlace:
+
+https://bqreaders.ci.cloudbees.com/view/coreJS/
 
 FAQ
 ---
