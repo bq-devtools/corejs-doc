@@ -23,7 +23,8 @@ Este proyecto está alojado en los siguientes repositorios **[GIT](http://git-sc
 
 * **coreJS Build**
 En este repositorio define el proceso de construcción y otras tareas automatizadas a través de **[Grunt](http://gruntjs.com/)**.
-```
+
+```bash
 git@bitbucket.org:mundoreader/corejs-build.git
 ```
 
