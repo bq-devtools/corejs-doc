@@ -1,13 +1,11 @@
-
-
-Repositorios
-============
-
-Este proyecto está alojado en los siguientes repositorios **[GIT](http://git-scm.com/)**:
 ---
 layout: page
 ---
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+
+## Repositorios
+
+Este proyecto está alojado en los siguientes repositorios **[GIT](http://git-scm.com/)**:
+
 
 * **coreJS Build**
 En este repositorio define el proceso de construcción y otras tareas automatizadas a través de **[Grunt](http://gruntjs.com/)**.
