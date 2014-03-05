@@ -11,13 +11,13 @@
     <meta name="MobileOptimized" content="320" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" type="text/css" href="/corejs-doc/assets/css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="/corejs-doc/assets/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="{{ site.root }}assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="{{ site.root }}assets/css/screen.css" />
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
     <!-- This is for syntax highlight -->
-    <link rel="stylesheet" type="text/css" href="/corejs-doc/assets/css/syntax.css">
+    <link rel="stylesheet" type="text/css" href="{{ site.root }}assets/css/syntax.css">
     <!-- Customisation  -->
-    <link rel="stylesheet" type="text/css" href="/corejs-doc/assets/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="{{ site.root }}assets/css/main.css" />
 
 </head>
 <body class="home-template">
@@ -26,17 +26,17 @@
     {{ content }}
 
     <footer class="site-footer">
-        <a class="subscribe icon-feed" href="{{ site.baseurl }}rss.xml"><span class="tooltip">Subscribe!</span></a>
+        <a class="subscribe icon-feed" href="{{ site.root }}rss.xml"><span class="tooltip">Subscribe!</span></a>
         <div class="inner">
-             <section class="copyright">All content copyright <a href="{{ site.baseurl }}">{{ site.name }}</a> &copy; {{date format="YYYY"}} &bull; All rights reserved.</section>
+             <section class="copyright">All content copyright <a href="{{ site.root }}">{{ site.name }}</a> &copy; {{date format="YYYY"}} &bull; All rights reserved.</section>
              <section class="poweredby">Made with Jekyll using <a href="http://github.com/rosario/kasper">Kasper theme</a></section>
         </div>
     </footer>
 
     
-    <script type="text/javascript" src="/corejs-doc/assets/js/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" src="/corejs-doc/assets/js/jquery.fitvids.js"></script>
-    <script type="text/javascript" src="/corejs-doc/assets/js/index.js"></script>
+    <script type="text/javascript" src="{{ site.root }}assets/js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="{{ site.root }}assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="{{ site.root }}assets/js/index.js"></script>
 
     <!-- Google Analytics Tracking code -->
     <script type="text/javascript">
