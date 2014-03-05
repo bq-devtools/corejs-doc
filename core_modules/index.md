@@ -5,480 +5,321 @@ layout: page
 coreJS Modules
 ==============
 
+En esta sección describiremos los módulos del coreJS-Base más relevantes y de uso más frecuente.
 
 
-El objetivo de los módulos es la de contener los recursos necesarios que definan una funcionalidad, comportamiento o componente completo, de tal forma que sea un paquete coherente y cohesionado, pero a la vez, poco acoplado con respecto al resto de módulos, asegurando la escalabilidad y la mantenibilidad de la aplicación.
+Módulo: Logger
+------
 
-Para que un módulo pueda definir una funcionalidad completa se propone la siguiente estructura de módulo.
+El logger nos ayuda a registrar los mensajes por consola de la aplicación, establecer diferentes niveles de mensajes, y enviar información relevante a un servidor específico para posterior análisis.
 
-## Estructura del proyecto ##
-
-```
-src/main/webapp
-├── css                             // Hojas de estilo transversales
-├── res
-│   └──config
-│       ├──config.json              // Configuración de la webapp
-│       └──myModule.json            // Configuración del módulo 'myModule'
-└── scripts
-    ├──define.js                    // definición de dependencias requirejs
-    ├──main.js                      // Script principal de la webapp
-    └──modules                      // directorios de módulos de la webapp
-        ├──loader.js                // Declaración de móduloas a cargar
-        └──myModule                 // Nombre del módulo
-            ├── start.js            // Inicialización y carga de dependencias
-            ├── css                 // Hojas de estilo
-            ├── collections         // Colecciones del módulo
-            │   └── *.js
-            ├── layouts             // Layouts del módulo
-            │   └── *.js
-            ├── models              // Modelos del módulo
-            │   └── *.js
-            ├── templates           // Templates "Handlebars" del módulo
-            │   ├──*.html
-            │   └── moreTemplates
-            │       └── *.html
-            └── views               // Vistas del módulo (ItemView/CollectionView)
-                └── *.js
-src/test
-├── define.js               // Definición de dependencias requirejs transversales
-├── index.html              // Punto de partida de ejecución de tests
-└── spec
-    └──myModule
-        └──*.js             // Test del módulo myModule
-```
-
-
-
-Desarrollo
-----------
-
-En esta sección se detalla toda la información necesria para poder empezar a desarrollar módulos.
-
-### Creación de modelos ###
-
-Los modelos representan los datos que se tienen que mostrar finalmente en la interfaz, y son las estructuras de datos que normalmente se manejan en la aplicación.
-
-Para crear un modelo basta con seguir el siguiente esqueleto en el directorio de `models` del módulo:
+Ejemplo de uso:
 
 ```javascript
-'use strict';
-/* global define */
-define([
-    'corejs/app',
-    'jquery',
-    'underscore',
-    'backbone',
-    'backbone.marionette'
-], function(app, $, _, Backbone) {
-    var MyModel = Backbone.Model.extend({
+// config & params are objects
+app.log.info('engine', 'Logger.setConfig', config, true, [3], 3.14);
+app.log.debug('engine:config:loaded', config);
+app.log.debug('api.request', params);
+```
 
-    });
+Se recomienda además seguir la siguiente convención con el fin de pder filtrar el log como explicaremos más adelante:
 
-    return MyModel;
+```javascript
+app.log.debug('moduleName', 'ClassName.methodName' [, ...]);
+app.log.debug('moduleName:event:name' [, ...]);
+app.log.debug('moduleName.method.message' [, ...]);
+```
+
+* **Niveles de Log**
+Los errores ordenados de mayor a menor nivel son los siguientes:
+  * `SILENT`: Este nivel sirve para anular el log 
+  * `ERROR`: Muestra por consola los errores de la aplicación
+  * `WARN`: Muestra las alertas de la aplicación y mensajes de mayor nivel
+  * `INFO`: Muestra las trazas de información y mensajes de mayor nivel
+  * `DEBUG`: Muestra mensajes de depuración y mensajes de mayor nivel
+  * `TRACE`: Muestra trazas de desarrollo y mensajoes de mayor nivel
+  * `ALL`: Muestra todos los mensajes
+
+```javascript
+app.log.setLevel(app.log.level.INFO);
+```
+
+* **Filtrar Log**
+
+A veces es necesario filtrar el log para que muestre únicamente las trazas de log que nos interesan. Para filtrar todos los logs que no sean de una sección en particular podemos hacer:
+
+```javascript
+app.log.filter('engine');
+```
+
+Con ésto conseguimos que sólo se muestran las trazas que comiencen por la palabra `engine`.
+
+
+* **Log To Server**
+
+El log tiene la capacidad de enviar cierta inforamción a un servidor específico, para ello, primero hay que **configurarlo y habilitarlo**
+
+```javascript
+var config = {
+    logToServer: true,          // Para habilitar envío de datos al servidor
+    logBuffer: 10,              // Nº de trazas antes de enviar al servidor
+    logServerEndpoint: 'url'    // Ruta hasta el servidor que almacena logs
+    logLevel: app.log.level.WARN// Nivel de log a enviar
+}
+app.log.setConfig(config);
+```
+
+* **Nota**: Ala hora de construir los mensajes de log, hay que tener en cuenta que si el mensaje que se construye es complejo, es una buena práctica detectar el nivel de log establecido para evitar tener que construir mensajes innecesarios, por ejemplo:
+
+```javascript
+var complexLogMessageBuilder = function() {
+    // Complex code here
+    return logString;
+}
+
+if (app.log.getLevel() === app.log.level.INFO) {
+    app.log.info(complexLogMessageBuilder());
+}
+```
+
+## Módulo: User ##
+
+Este módulo es el responsable de encapsular toda la complejidad relacionada con los protocolos de autenticación, altas de usuarios y autorización de peticiones.
+
+### Registro ###
+
+Si la aplicación puede registrar nuevos usuarios en la plataforma, es posible realizarse con la siguiente llamada:
+
+```javascript
+var params = {
+    username: 'username',
+    email: 'email@domain.com',
+    password: 'password',
+    firstName: 'firstName',
+    lastName: 'lastName'
+}
+app.user.register(params).then(function(data) {
+  // Always code
+}).done(function(data) {
+  // Success code
+}).fail(function(jqxhr) {
+  // Error code
 });
 ```
-Ya sólo falta dar de alta el modelo en la factoría para que pueda ser instanciable. Para ello lo declaramos en el inicializador de módulo (`modules/myModule/start.js`):
+
+### Autenticación ###
+
+
+Para realizar una autenticación de un usuario en particular, en la vista responsable podemos realizar la siguiente llamada, tras recopilar los datos del usuario de un formulario de login típico:
+
+```javascript
+var params : {
+    username: 'username',
+    password: 'password',
+    remember: 1
+}
+app.api.login(params).then(function(data) {
+  // Always code
+}).done(function(data) {
+  // Success code
+}).fail(function(jqxhr) {
+  // Error code
+});
 ```
-app.addInitializer(function() {
-  app.models.add('MyModel', MyModel);
+
+
+### Autorización ###
+
+Una vez autenticado, el módulo mantiene de forma interna la información necesaria para identificarlo, además se encarga de construir las peticiones automáticamente con la autorización necesaria.
+
+La aplicación deberá tener una clave que lo identifica como cliente autorizado `client_id`, y una clave secreta que le autoriza a realizar peticiones `secret`, ambos parámetros deberán estár definidos en la [configuración](#configuración) de la aplicación, ya sea en tiempo de ejecución o en tiempo de despliegue.
+
+Con dichos parámetros establecidos, la aplicación durante su inicialización, generará automáticamente una autorización de comunicación con SilkRoad ya sea como cliente anónimo, o como un usuario específico si decidió recordar su acceso. Todo ello de forma trasparente al desarrollador.
+
+**Más info**
+
+* [SilkRoad](http://jira.mundoreader.com/confluence/display/SILKROAD/SilkRoad+-+Resources+API)
+
+## Módulo: Resources ##
+
+Este módulo es el responsable de solicitar los recursos del backend necesarios para mostrar la información necesaria, encapsulando toda la complejidad relacionada con los protocolos de autenticación, autorización de peticiones, las búsquedas avanzadas y el mapeo a los modelos de datos.
+
+### Recursos ###
+
+Existe un mecanismo para construir de forma intuiritva peticiones a recursos. A continuación varios ejemplos de recurso:
+
+* `resource/books:Book`: Collección de recursos
+* `resource/books:Book/id`: Recurso específico
+* `resource/books:Book/id/author`: Recursos relacionados con otros.
+
+```javascript
+app.api.setResource('resource/books:Book', app.api.method.GET).execute()
+.then(function(data) {
+  // Always code
+}).done(function(data) {
+  // Success code
+}).fail(function(jqxhr) {
+  // Error code
+});
+```
+
+### Búsquedas ###
+
+Es posible realizar búsquedas avanzadas añadiendo todos los filtros que sean necesarios:
+
+
+**Manual**
+
+```javascript
+var resource = app.api.setResource('resource/books:Book');
+
+resource
+  .sort('field1', api.order.ASC)          // Ordenar por campo
+  .page(0, 5)                             // Selección de página
+  .eq('field1', 50)                       // Igual a
+  .eq('field2', true)                     // Repetición de operadores
+  .gt('field3', 'value')                  // Mayor que
+  .gte('field4', 'value')                 // Mayor o igual que
+  .lt('field5', 'value')                  // Menor que
+  .lte('field6', 'value')                 // Menor o igual que
+  .ne('field7', 'value')                  // No igual a
+  .in('field8', ['value1', 'value2'])     // Cualquiera de ellos aparece
+  .all('field9', ['value1', 'value2'])    // Todos ellos aparecen
+  .like('field10', 'value');              // Parecido a
+
+resource.execute().then(function(data) {
+  // Always code
+}).done(function(data) {
+  // Success code, for example, transform to Backbone.Model
+  models = app.factory.new('ModelCollection', data);
+}).fail(function(jqxhr) {
+  // Error code
+});
+```
+
+**Backbone.fetch**
+
+```javascript
+var collection = app.factory.new('Collection');
+
+var params = {
+    resource: 'resource/books:Book',
+    query: [
+        {like: {field5: 'value'}},
+        {all: {field5: ['pepe', 'juan']}},
+        {in: {field2: ['pepe', 'juan']}},
+        {ne: {field5: 'value'}},
+        {lte: {field5: 'value'}},
+        {lt: {field5: 'value'}},
+        {gte: {field5: 'value'}},
+        {gt: {field5: 'value'}},
+        {eq: {field4: true}},
+        {eq: {field3: true}},
+        {page: {page: 0, size: 5}},
+        {sort: {field1: resources.order.ASC}}
+    ]
+};
+
+collection.fetch(params).done(function() {
+  // Collection loaded
+}).fail(function() {
+  // Error handler
 });
 ```
 
 **Más info**
 
-* [Backbone.Model](http://backbonejs.org/#Model)
+* [SilkRoad](http://jira.mundoreader.com/confluence/display/SILKROAD/SilkRoad+-+Resources+API)
 
+## Módulo: Session ##
 
-### Creación de vistas ###
-
-Las vistas son los responsables de definir el comportamiento que tendrán los templates, también procesan los datos de los modelos y los inyectan en los templates.
-
-#### Templates ####
-
-Para renderizar una vista es necesario primero definir un template, para ello, nos apoyaremos en [Handlebars](http://handlebarsjs.com/) para implementarlos.
-
-Idealmente, los templates renderizan modelos Backbone, de modo que si tenemos el siguiente modelo:
+Gestiona los datos de la sesión del usuario, sus credenciales de sesión y el estado global de la aplicación.
 
 ```javascript
-var MyModel = Backbone.Model.extend({});
-myModel = new MyModel({
-    foo: 'Hi',
-    bar: 'Álvaro'
-});
+// Storages data in user session
+var data = {key: 'value'};
+app.session.set('key', data);
+
+// Retrieve data from user session
+var data = app.session.get('key', data);
+// data = {key: 'value'};
+
+// Destroy session
+app.session.destroy();
+
+/**
+ * Ask for user autorization
+ * return boolean object
+ */
+app.session.gatekeeper(); 
+
+/**
+ * Set an application status
+ * @param {string} status - Name of the status
+ * @param {boolean} active - true if active, false id disabled
+ */
+app.session.setStatus('new-user', true); 
+
+// Remove a specific status
+app.session.removeStatus('new-user');
 ```
 
-Un template válido para representar estos datos sería:
+## Módulo: Cookies ##
 
-```html
-<div>
-    <h1>{{foo}}</h2>
-    <p>{{bar}}</p>
-</div>
-```
-
-Los templates deben ubicarse en el directorio de `templates` de cada módulo, pudiendo anidarse en tantas carpetas como fuera necesario, por ejemplo, en `myModule/templates/myTemplate.html`.
-
-Existen 2 tipos de vistas, `ItemView` y `CollectionView`, ambos incluidos en Marionette.
-
-**Más info**
-
-* [Handlebars](http://handlebarsjs.com/).
-
-#### ItemView ####
-
-Este componente de Marionette es un tipo específico de `View` que se encarga de renderizar una template específico en base a un modelo.
-
-El template que se tiene que renderizar con la vista se define en la función `template()`. La convención para acceder a un template específico es la siguiente:
+Se encarga de obtener y establecer las cookies del documento actual.
 
 ```javascript
-// Ruta hasta el template
-scripts/modules/myModule/tempaltes/subTemplates/myTemplate.html
+// Writing a cookie
+app.cookies.setItem(name, value[, end[, path[, domain[, secure]]]]);
 
-// Clave asociada en la estructura `jst`
-app.jst['myModule/subTemplates/myTemplate'];
-```
+// Getting a cookie
+app.cookies.getItem(name);
 
-Para crear una vista de este tipo basta con seguir el siguiente esqueleto en el directorio de `views` del módulo:
+// Removing a cookie
+app.cookies.removeItem(name[, path],domain);
 
-```javascript
-'use strict';
-/* global define */
-define([
-    'corejs/app',
-    'jquery',
-    'underscore',
-    'backbone',
-    'backbone.marionette'
-], function(app, $, _, Backbone) {
-    var MyView = Backbone.Marionette.ItemView.extend({
-        template: function(serializedModel) {
-            // Load the compiled template generated by
-            // 'modules/myModule/templates/myTemplate.html'
-            return app.jst['myModule/myTemplate'](serializedModel);
-        }
-    });
-
-    return MyView;
-});
-```
-
-Para dar de alta la vista en la factoría para que pueda ser instanciable. Para ello lo declaramos en el inicializador de módulo (`modules/myModule/start.js`):
-
-```javascript
-app.addInitializer(function() {
-  app.views.add('MyView', MyView);
-});
-```
-
-Por último, para renderizar una vista, puede hacerse de 2 maneras principalmente.
-
-* En una región
-
-```javascript
-app.regionName.show(app.factory.new('MyView'));
-```
-
-* De forma explícita
-
-```javascript
-var myView = app.factory.new('MyView');
-$('body').html(myView.render().el);
-```
-
-**Mas info**
-
-* [Marionette.ItemView](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.itemview.md)
-
-#### CollectionView ####
-
-Este componente se encarga de renderizar una [collección de modelos](http://backbonejs.org/#Collection) en base a un `ItemView` y un `Collection` de Backbone.
-
-La vista que renderiza se especifica en el atributo `itemView` del `CollectionView`
-
-```javascript
-// Ruta hasta el template
-scripts/modules/myModule/tempaltes/subTemplates/myTemplate.html
-
-// Clave asociada en la estructura `jst`
-app.jst['myModule/subTemplates/myTemplate'];
-```
-
-Para crear un `CollectionView` basta con seguir el siguiente esqueleto en el directorio de `views` del módulo:
-
-```javascript
-'use strict';
-/* global define */
-define([
-    'corejs/app',
-    'jquery',
-    'underscore',
-    'backbone',
-    'backbone.marionette'
-], function(app, $, _, Backbone) {
-    var MyCollectionView = Backbone.Marionette.CollectionView.extend({
-        // Reference to the ItemView specification
-        getItemView: function(attrs, options) {
-          attrs.options = options;
-          return app.factory.get('MyView', attrs);
-        }
-    });
-
-    return MyCollectionView;
-});
-```
-
-Este tipo de vistas se dan de alta en la factoría y se renderizan exactamente igual que en `ItemView`, salvo que en vez de pasarle un `Backbone.Model` en el parámetro `model`, se le pasa un `Backbone.Collection` en el parámetro `collection`.
-
-Este tipo de componente conviene utilizarlo cuando se desea renderizar un componente repetidas veces, pero que además, queramos implementar funcionalidades que afecten a la colección completa.
-
-**Más info**
-
-* [Backbone.Collection](http://backbonejs.org/#Collection)
-* [Marionette.CollectionView](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.collectionview.md)
-
-### Creación de Layouts ###
-
-Un componente `Layout` es una mezcla entre un `ItemView` y un `Region`, de tal forma que se pueden definir regiones del template que renderiza este Layout. Por ejemplo:
-
-Teneiendo como template:
-
-```html
-<!-- myModule/templates/myLayout.html -->
-<section>
-    <header></header>
-    <div class="content"></div>
-    <div id="actions"></div>
-</section>
-```
-
-Podemos definir un Layout como el siguiente:
-
-```javascript
-var MyLayout = Backbone.Marionette.Layout.extend({
-    template: function(serializedModel) {
-        app.jst['myModule/myLayout'](serializedModel);
-    },
-    
-    regions: {
-        header: 'header',
-        content: '.content',
-        actions: '#actions'
-    }
-});
-
-app.layout.add('MyLayout', MyLayout);
-```
-
-Y rednderizarlo en la aplicación:
-
-```javascript
-var myLayout = app.factory.new('MyLayout');
-
-app.main.show(myLayout);
-
-myLayout.content.show(app.factory.new('MyView'));
-```
-
-Se pueden anidar tantos layouts como sean necesarios.
-
-
-**Más info**
-
-* [Marionette.Region](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.region.md)
-* [Marionette.Layout](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.layout.md)
-
-### Rutas y manejadores (Router) ###
-
-Para que nuestra aplicación pueda actuar en función de la ruta del usuario, usamos el componente `Router` de Backbone.
-
-Generalmente, los manejadores de las rutas son los responsables de obtener todos los recursos necesarios e injectarselo a las vistas para que lo rendericen correctamente.
-
-Para definir una ruta con su manejador basta definirlo en el `start.js` del módulo en cuestión:
-
-```javascript
-    var myHandler = function(isbn) {
-        var myModel = app.factory.new('MyModel');
-        app.myRegion.show(app.factory.new('MyView', {
-            model: myModel
-        }));
-    };
-
-  app.addInitializer(function() {
-
-    // Add models to factory
-    app.factory.add('MyModel', MyModel);
-
-    // Add views to factory
-    app.factory.add('MyView', MyView);
-
-    // Define router paths
-    app.router.route('myroute', 'trigger:this:event', myHandler);
-
-  });
+// Testing a cookie
+app.cookies.hasItem(name);
 ```
 
 **Más info**
 
-* [Backbone.Router](http://backbonejs.org/#Router)
+* [MDN Mozilla](https://developer.mozilla.org/en-US/docs/Web/API/document.cookie?redirectlocale=en-US&redirectslug=DOM%2Fdocument.cookie#A_little_framework.3A_a_complete_cookies_reader.2Fwriter_with_full_unicode_support)
+ 
+## Módulo: Factory ##
 
-### Inicialización de un módulo ###
-
-Uno de los pasos a la hora de desarrollar un módulo con diferentes componentes, es la de definir el lugar donde declarar e integrar todos esos componentes en la aplicación, para ello, definiremos un documento `start.js` para cada módulo implementado.
-
-Un ejemplo de `start.js` podría ser el siguiente:
+Este módulo se encarga de gestionar los diferentes tipos de objetos de la aplicación (Model, Collection, Layout, View)
 
 ```javascript
-'use strict';
-/* global define */
-define([
-    'corejs/app',
-    'jquery',
-    'underscore',
-    'backbone',
-    'backbone.marionette',
-    
-    // app models
-    'modules/myModule/models/myModel',
-    
-    // app collecctions
-    'modules/myModule/collections/myCollection',
+// Models
+app.factory.add('CompontentNameModel', CompontentNameModel);
+app.factory.new('CompontentNameModel', options);
+app.factory.get('CompontentNameModel');
 
-    // app views
-    'modules/myModule/views/myView'
-    'modules/myModule/views/myCollectionView'
-], function(app, $, _, Backbone, Marionette, MyModel, MyCollection, MyView, MyCollectionView) {
-    var myHandler = function() {
-        var myModel = app.factory.new('MyModel');
-        app.myRegion.show(app.factory.new('MyView', {
-            model: myModel
-        }));
-    };
+// Collections
+app.factory.add('CompontentNameCollection', CompontentNameCollection);
+app.factory.new('CompontentNameCollection', options);
+app.factory.get('CompontentNameCollection');
 
-  app.addInitializer(function() {
-    // Add models to factory
-    app.factory.add('MyModel', MyModel);
+// Views
+app.factory.add('CompontentNameView', CompontentNameView);
+app.factory.new('CompontentNameView', options);
+app.factory.get('CompontentNameView');
 
-    // Add views to factory
-    app.factory.add('MyView', MyView);
-
-    // Define router paths (url, event, handlerFunction)
-    app.router.route('myroute', 'router:route:myroute', myHandler);
-  });
-  
-  app.on('initialize:after', function() {
-      // Code after initialization here
-      app.myRegion.show(app.factory.new('MyCollectionView'));
-  });
-  
-});
+// Layouts
+app.factory.add('CompontentNameLayout', CompontentNameLayout);
+app.factory.new('CompontentNameLayout', options);
+app.factory.get('CompontentNameLayout');
 ```
 
-### Gestión de dependencias ###
+**Nota**: Se debe tener en cuenta la convención de nombres para los diferentes componentes (Name + Type).
 
-Como se puede observar del ejemplo anterior lo primero que se define son las dependencias del módulo, que finalmente se mapean o exportan a variables que manejaremos dentro del módulo en el mismo orden en el que se declaran.
-Observando con detalle la anterior cabecera:
+## Módulo: Polyfills ##
 
-```javascript
-'use strict';
-/* global define */
-define([
-    'corejs/app',
-    'jquery',
-    'underscore',
-    'backbone',
-    'backbone.marionette',
-    
-    // app models
-    'modules/myModule/models/myModel',
-    
-    // app collecctions
-    'modules/myModule/collections/myCollection',
+En este módulo se pueden definir polyfills necesarios para que la aplicación funcione con normalidad.
 
-    // app views
-    'modules/myModule/views/myView'
-    'modules/myModule/views/myCollectionView'
-], function(app, $, _, Backbone, Marionette, MyModel, MyCollection, MyView, MyCollectionView) {
-    // Code here
-});
-```
+Por defecto incorpora los siguientes polyfills: `localStorage`, `sessionStorage` y `Date.toISOString`.
 
-### Integrar un nuevo módulo ###
+**Más info**
 
-Una vez tengamos nuestro módulo implementado, tendremos que decirle a nuestra aplicación que la carge como dependencia en el archivo `scripts/modules/loader.js` de la siguiente forma:
-
-```javascript
-'use strict';
-/* global define */
-define([
-    'corejs/app',
-
-    // Modules here!!!
-    'modules/myModule/start' // <== Module declaration
-], function() { });
-```
-
-## Integrar una librería de terceros ##
-
-Para integrar una librería de terceros tenemos que evaluar antes varias cosas:
-
-* Si ese paquete está disponible como paquete [Bower](http://bower.io/search/)
-* Si el paquete es compatible con [AMD](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#detailamd)
-* Si es un plugin que extiende a otra librería.
-
-Si es un paquete **Bower**, hay que dar de alta dicha dependencia con su versión en `bower.json`.
-
-Si es un módulo AMD, no es necesario hacer gran cosa, pero **si no está definido como AMD**, y dicho módulo exporta una variable, es necesario indicarlo en el documento `define.js`, tanto en `webapp/scripts/define.js`, como en `test/define.js` de la siguiente forma:
-
-```javascript
-// define.js
-/* global require, mochaPhantomJS, mocha */
-require.config({
-    deps: [...],
-    paths: {...},
-    shim: {
-        // underscore is not an AMD module that
-        // needs to be exported to '_' namespace
-        underscore: {
-            exports: '_'
-        },
-        ...
-    }
-});
-```
-
-Si es un plugin que extiende a otra librería, cuando sea necesario requerir esta dependencia, es recomendable que vayan al final, pues estas no suelen exportar ninguna variable, por ejemplo `backbone.marionette`.
-
-```javascript
-'use strict';
-/* global define */
-define([
-    'corejs/app',
-    'jquery',
-    'underscore',
-    'backbone',
-
-    'backbone.marionette',  // No namespace export
-    'jquery-validation'     // No namespace export
-], function(app, $, _, Backbone) {...});
-```
-
-## Configuración ##
-
-Los módulos pueden tener un documento donde defina su configuración, comportamiento e incluso su contenido, a través del mecanismo de configuración de módulos.
-
-### Módulos de aplicación ##
-Llamamos módulos de aplicación a aquellos módulos específicos de la webapp. Estos se pueden configurar a través de los archivos `src/main/webapp/scripts/modules/[moduleName]/res/config.json`, donde cada módulo puede tener definida su configuracion por defecto.
-
-
-### Módulo externos ###
-Si queremos estableccer la configuración de un módulo ajeno a nuestro repositorio, por ejemplo, un módulo del core, es posible sobreescribir su configuración redefiniendo los archivos `src/main/webapp/res/config/[externalModuleName].json`. Esta configuración deberá definirse **con los mismos campos que la configuración original**.
-
-
-**Cómo acceder**
-Las configuraciones de todos los módulos se compilan en un único fichero en la ruta `target/dist/res/config/modules.json`. Desde el código se puede acceder de la siguiente forma:
-
-```javascript
-var config = app.modulesConfig.get('moduleName'[, modelName]);
-```
-* **Nota**: Es posible obtener directamente un tipo específico de `Backbone.Model`, si se establece el nombre del modelo en el parámetro `modelName` (debe de ser el mismo nombre con el que se dió de alta en la factoría).
+* [Polyfills](https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills)

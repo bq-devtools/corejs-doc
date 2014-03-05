@@ -14,6 +14,7 @@ Este proyecto tiene como objetivo el de ofrecer un framework para el desarrollo 
 * [Arquitectura de Aplicación](arquitectura_de_aplicacion)
 * [Core Base](core_base)
 * [Core Modules](core_modules)
+* [Desarrollo de Módulos](desarrollo_de_modulos)
 * [Hojas de Estilo](hojas_de_estilo)
 * [I18n](i18n) [Pendiente]
 * [Tests](tests)
