@@ -176,7 +176,7 @@ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo s
 * En Mac:
 
 ```bash
-sudo sysctl -w kern.maxfiles=524288
+ulimit -s 32768
 ```
 
 **NOTA**: Si Bower tiene problemas para descargar los paquetes, es probable que sea debido a que trate de obtener los paquetes por protocolo GIT en lugar de HTTPS, para cambiarlo basta con ejecutar el siguiente comando:
