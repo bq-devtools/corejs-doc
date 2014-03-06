@@ -167,8 +167,16 @@ npm install -g yo
 
 **NOTA**: Si al arrancar el proyecto sale muchas veces el error `Waiting…Fatal error: watch ENOSPC`, ejecutar el siguiente comando:
 
+* En linux: 
+
 ```bash
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+```
+
+* En Mac:
+
+```bash
+sudo sysctl -w kern.maxfiles=524288
 ```
 
 **NOTA**: Si Bower tiene problemas para descargar los paquetes, es probable que sea debido a que trate de obtener los paquetes por protocolo GIT en lugar de HTTPS, para cambiarlo basta con ejecutar el siguiente comando:
