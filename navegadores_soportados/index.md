@@ -1,6 +1,0 @@
----
-layout: page
----
-
-Navegadores Soportados
-======================
