@@ -9,4 +9,4 @@ paginate: 15
 # Details for the RSS feed generator
 url:            'http://bq-devtools.github.io/corejs-doc/index.html'
 author:         'bq'
-root: '/corejs-doc/'
+root: '/'
