@@ -377,9 +377,9 @@ Para definir regiónes principales de la aplicación basta con hacer lo siguient
 
 ```javascript
 app.addRegions({
-    header: 'header',       // <header>
-    main: 'main',           // <main>
-    footer: 'footer'        // <footer>
+    header: '[data-region="header"]',   // <header>
+    main: '[data-region="main"]',       // <main>
+    footer: '[data-region="footer"]'    // <footer>
 });
 ```
 

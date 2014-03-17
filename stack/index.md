@@ -53,7 +53,7 @@ Esta apartado describe todas las tecnologías usadas para el desarrollo de aplic
         * **[Emmet](https://github.com/sergeche/emmet-sublime)**
         * **[SASS](https://sublime.wbond.net/packages/Sass)**
         * **[SASSBeautify](https://github.com/badsyntax/SassBeautify)**
-        * **[DockBlockr](https://github.com/spadgos/sublime-jsdocs)**
+        * **[DocBlockr](https://github.com/spadgos/sublime-jsdocs)**
         * ...
     * Snippets
         * [pendiente]

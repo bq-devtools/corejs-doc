@@ -246,9 +246,9 @@ Teneiendo como template:
 ```html
 <!-- myModule/templates/myLayout.html -->
 <section>
-    <header></header>
-    <div class="content"></div>
-    <div id="actions"></div>
+    <header data-region="header"></header>
+    <div data-region="content"></div>
+    <div data-region="actions"></div>
 </section>
 ```
 
@@ -261,9 +261,9 @@ var MyLayout = Backbone.Marionette.Layout.extend({
     },
     
     regions: {
-        header: 'header',
-        content: '.content',
-        actions: '#actions'
+        header: '[data-region="header"]',
+        content: '[data-region="content"]',
+        actions: '[data-region="actions"]'
     }
 });
 
