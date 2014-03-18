@@ -14,6 +14,13 @@ Este proyecto tiene como objetivo el de ofrecer un framework para el desarrollo 
 * [Arquitectura de Aplicación](app_architecture)
 * [Core Base](core_base)
 * [Core Modules](core_modules)
+  * [app.log](core_modules/module_logger)
+  * [app.factory](core_modules/module_factory)
+  * [app.cookies](core_modules/module_cookies)
+  * [app.user](core_modules/module_user)
+  * [app.session](core_modules/module_session)
+  * [app.resources](core_modules/module_resources)
+  * [app.polyfill](core_modules/module_polyfill)
 * [Desarrollo de Módulos](modules_development)
 * [Hojas de Estilo](stylesheets)
 * [I18n](i18n) [Pendiente]

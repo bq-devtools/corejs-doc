@@ -123,14 +123,14 @@ logServerEndpoint
 * Obligatorio: no
 * Depende de: `logToServer`
 
-resourcesEndPoint
+resourcesEndpoint
 : Establece la ruta base hasta los recursos del backend.
 
 * Tipo: String
 * Por defecto: ---
 * Obligatorio: si
 
-oauthEndPoint
+oauthEndpoint
 : Establece la ruta base hasta el servidor de OAuth para la autenticación.
 
 * Tipo: String
@@ -158,7 +158,7 @@ oauthService
 * Por defecto: ---
 * Obligatorio: si
 
-iamEndPoint
+iamEndpoint
 : Establece la ruta base hasta el servidor de IAM.
 
 * Tipo: String
@@ -241,12 +241,12 @@ Se puede establecer la configuración de la aplicación definiendo los parámetr
 var CFG = {
     "version": "0.1",
     "appName": "corejs-app",
-    "resourcesEndPoint": "http://resources.int.bqws.io/v1.0/",
-    "oauthEndPoint": "http://oauth.int.bqws.io/v1.0/",
+    "resourcesEndpoint": "http://resources.int.bqws.io/v1.0/",
+    "oauthEndpoint": "http://oauth.int.bqws.io/v1.0/",
     "oauthClientId": "temp-client",
     "oauthSecret": "temp-secret",
     "oauthService": "silkroad",
-    "iamEndPoint": "http://iam.int.bqws.io/v1.0/",
+    "iamEndpoint": "http://iam.int.bqws.io/v1.0/",
     "iamClientId": "providedClientId",
     "iamSecret": "providedSecret",
     "claimAud": "http://iam.bqws.io",
@@ -268,12 +268,12 @@ var CFG = {
     "logBuffer": 20,
     "logToServer": true,
     "logServerEndpoint": "server/log/endpoint/",
-    "resourcesEndPoint": "http://resources.int.bqws.io/v1.0/",
-    "oauthEndPoint": "http://oauth.int.bqws.io/v1.0/",
+    "resourcesEndpoint": "http://resources.int.bqws.io/v1.0/",
+    "oauthEndpoint": "http://oauth.int.bqws.io/v1.0/",
     "oauthClientId": "temp-client",
     "oauthSecret": "temp-secret",
     "oauthService": "silkroad",
-    "iamEndPoint": "http://iam.int.bqws.io/v1.0/",
+    "iamEndpoint": "http://iam.int.bqws.io/v1.0/",
     "iamClientId": "providedClientId",
     "iamSecret": "providedSecret",
     "claimAud": "http://iam.bqws.io",
@@ -292,12 +292,12 @@ var CFG = {
     "mode": "DEVELOPER",
     "version": "0.1",
     "lang": "es-ES",
-    "resourcesEndPoint": "http://dev.resources.int.bqws.io/v1.0/",
-    "oauthEndPoint": "http://dev.oauth.int.bqws.io/v1.0/",
+    "resourcesEndpoint": "http://dev.resources.int.bqws.io/v1.0/",
+    "oauthEndpoint": "http://dev.oauth.int.bqws.io/v1.0/",
     "oauthClientId": "temp-client",
     "oauthSecret": "temp-secret",
     "oauthService": "silkroad",
-    "iamEndPoint": "http://dev.iam.int.bqws.io/v1.0/",
+    "iamEndpoint": "http://dev.iam.int.bqws.io/v1.0/",
     "iamClientId": "providedClientId",
     "iamSecret": "providedSecret",
     "claimAud": "http://iam.bqws.io",
