@@ -25,7 +25,7 @@ app.user.register(params).then(function(data) {
   // Always code
 }).done(function(data) {
   // Success code
-}).fail(function(jqxhr) {
+}).fail(function(silkRoadError) {
   // Error code
 });
 ```
