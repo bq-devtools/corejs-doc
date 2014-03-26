@@ -14,7 +14,7 @@ En Silkroad se pueden obtener 3 tipos de recursos:
 ```javascript
 app.resources.resource('books:Book', 'id').get().then(function(data) {
 
-}).fail(function(jqXHR) {
+}).fail(function(silkRoadError) {
 
 });
 ```
@@ -29,7 +29,7 @@ book.fetch({
     id: '9788467040203'
 }).then(function(data) {
 
-}).fail(function(jqXHR) {
+}).fail(function(silkRoadError) {
 
 });
 ```
@@ -57,7 +57,7 @@ var params = {
 
 app.resources.collection('books:Book').get(params).then(function(data) {
 
-}).fail(function(jqXHR) {
+}).fail(function(silkRoadError) {
 
 });
 ```
@@ -88,7 +88,7 @@ var books = new Backbone.Collection([], {
 
 books.fetch(params).then(function(data) {
 
-}).fail(function(jqXHR) {
+}).fail(function(silkRoadError) {
 
 });
 ```
@@ -119,7 +119,7 @@ var params = {
 
 app.resources.relation('books:Book', 'id', 'author').get(params).then(function(data) {
 
-}).fail(function(jqXHR) {
+}).fail(function(silkRoadError) {
 
 });
 ```
@@ -152,7 +152,7 @@ var books = new Backbone.Collection([], {
 
 books.fetch(params).then(function(data) {
 
-}).fail(function(jqXHR) {
+}).fail(function(silkRoadError) {
 
 });
 ```

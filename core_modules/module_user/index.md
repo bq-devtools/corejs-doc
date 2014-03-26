@@ -23,7 +23,7 @@ var params = {
 
 app.user.register(params).then(function(data) {
   // Success code
-}).fail(function(jqxhr) {
+}).fail(function(silkRoadError) {
   // Error code
 });
 ```
