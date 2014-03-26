@@ -21,6 +21,13 @@ En este repositorio se guarda los módulos principales de toda webapp (localizac
 git@bitbucket.org:mundoreader/corejs-base.git
 ```
 
+* **coreJS Modules**
+En este repositorio almacena los módulos de coreJS que pueden reutilizar|extender otros proyectos.
+
+```bash
+git@bitbucket.org:mundoreader/corejs-modules.git
+```
+
 * **coreJS [projectName] Modules**
 En este repositorio almacena los módulos de la webapp específica en función del `[projectName]`:
 

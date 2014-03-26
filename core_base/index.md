@@ -130,6 +130,20 @@ resourcesEndpoint
 * Por defecto: ---
 * Obligatorio: si
 
+evciEndPoint
+: Establece la ruta base hasta el registro de eventos del backend.
+
+* Tipo: String
+* Por defecto: ---
+* Obligatorio: si
+
+ecEndpoint
+: Establece la ruta base hasta la gestión del E-Comerce del backend.
+
+* Tipo: String
+* Por defecto: ---
+* Obligatorio: si
+
 oauthEndpoint
 : Establece la ruta base hasta el servidor de OAuth para la autenticación.
 
@@ -165,14 +179,14 @@ iamEndpoint
 * Por defecto: ---
 * Obligatorio: si
 
-iamClientId
+clientId
 : ClientId proporcionado por el proveedor del servicio de IAM.
 
 * Tipo: String
 * Por defecto: ---
 * Obligatorio: si
 
-iamSecret
+clientSecret
 : SecretId proporcionado por el proveedor del servicio de IAM correspondiente.
 
 * Tipo: String
@@ -221,12 +235,19 @@ claimExp
 * Por defecto: 3500 (segundos)
 * Obligatorio: no
 
-tokenRefreshtime
-: Tiempo para volver a solicitar una nueva autenticación.
+grantType
+: Valor de la variable `grant-type` para la generación del [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html) para registrar usuarios nuevos.
 
-* Tipo: Integer
-* Por defecto: 3000000
-* Obligatorio: no
+* Tipo: String
+* Por defecto: ---
+* Obligatorio: si
+
+jwtAlgorithm
+: Valor de la variable `alg` para la generación del [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html) para registrar usuarios nuevos.
+
+* Tipo: String
+* Por defecto: ---
+* Obligatorio: si
 
 Además la aplicación se puede configurarse de varias formas, estableciendo los parámetros en el código a través de una variable global de configuración `CFG`, o en tiempo de ejecución a través del archivo `app/res/config/config.json`.
 
@@ -241,20 +262,27 @@ Se puede establecer la configuración de la aplicación definiendo los parámetr
 var CFG = {
     "version": "0.1",
     "appName": "corejs-app",
+
     "resourcesEndpoint": "http://resources.int.bqws.io/v1.0/",
+
     "oauthEndpoint": "http://oauth.int.bqws.io/v1.0/",
     "oauthClientId": "temp-client",
     "oauthSecret": "temp-secret",
     "oauthService": "silkroad",
+
     "iamEndpoint": "http://iam.int.bqws.io/v1.0/",
-    "iamClientId": "providedClientId",
-    "iamSecret": "providedSecret",
+    "clientId": "providedClientId",
+    "clientSecret": "providedSecret",
+
     "claimAud": "http://iam.bqws.io",
     "claimGrantType": "urn:ietf:params:oauth:grant-type:jwt-bearer",
     "claimScopes": "resources:bookland:read_catalog iam:user:create iam:user:delete iam:user:read",
     "claimScopesUser": "resources:bookland:read_catalog iam:user:create",
     "claimsScopesRegister": ["resources:bookland:read_catalog", "iam:user:read"],
-    "claimExp": "3500"
+    "claimExp": "3500",
+
+    "jwtAlgorithm": "HS256",
+    "grantType": "urn:ietf:params:oauth:grant-type:jwt-bearer"
 };
 ```
 
@@ -264,24 +292,32 @@ var CFG = {
 var CFG = {
     "version": "0.1",
     "appName": "corejs-app",
+
     "logLevel": 0,
     "logBuffer": 20,
     "logToServer": true,
     "logServerEndpoint": "server/log/endpoint/",
+
     "resourcesEndpoint": "http://resources.int.bqws.io/v1.0/",
+
     "oauthEndpoint": "http://oauth.int.bqws.io/v1.0/",
     "oauthClientId": "temp-client",
     "oauthSecret": "temp-secret",
     "oauthService": "silkroad",
+
     "iamEndpoint": "http://iam.int.bqws.io/v1.0/",
-    "iamClientId": "providedClientId",
-    "iamSecret": "providedSecret",
+    "clientId": "providedClientId",
+    "clientSecret": "providedSecret",
+
     "claimAud": "http://iam.bqws.io",
     "claimGrantType": "urn:ietf:params:oauth:grant-type:jwt-bearer",
     "claimScopes": "resources:bookland:read_catalog iam:user:create iam:user:delete iam:user:read",
     "claimScopesUser": "resources:bookland:read_catalog iam:user:create",
     "claimsScopesRegister": ["resources:bookland:read_catalog", "iam:user:read"],
-    "claimExp": "3500"
+    "claimExp": "3500",
+
+    "jwtAlgorithm": "HS256",
+    "grantType": "urn:ietf:params:oauth:grant-type:jwt-bearer"
 };
 ```
 
@@ -292,20 +328,27 @@ var CFG = {
     "mode": "DEVELOPER",
     "version": "0.1",
     "lang": "es-ES",
+
     "resourcesEndpoint": "http://dev.resources.int.bqws.io/v1.0/",
+
     "oauthEndpoint": "http://dev.oauth.int.bqws.io/v1.0/",
     "oauthClientId": "temp-client",
     "oauthSecret": "temp-secret",
     "oauthService": "silkroad",
+
     "iamEndpoint": "http://dev.iam.int.bqws.io/v1.0/",
-    "iamClientId": "providedClientId",
-    "iamSecret": "providedSecret",
+    "clientId": "providedClientId",
+    "clientSecret": "providedSecret",
+    
     "claimAud": "http://iam.bqws.io",
     "claimGrantType": "urn:ietf:params:oauth:grant-type:jwt-bearer",
     "claimScopes": "resources:bookland:read_catalog iam:user:create iam:user:delete iam:user:read",
     "claimScopesUser": "resources:bookland:read_catalog iam:user:create",
     "claimsScopesRegister": ["resources:bookland:read_catalog", "iam:user:read"],
-    "claimExp": "3500"
+    "claimExp": "3500",
+
+    "jwtAlgorithm": "HS256",
+    "grantType": "urn:ietf:params:oauth:grant-type:jwt-bearer"
 };
 ```
 

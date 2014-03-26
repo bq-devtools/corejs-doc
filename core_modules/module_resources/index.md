@@ -12,7 +12,7 @@ En Silkroad se pueden obtener 3 tipos de recursos:
 ## Recurso específico
 
 ```javascript
-app.resources.resource('books:Book', 'id').get().done(function(data) {
+app.resources.resource('books:Book', 'id').get().then(function(data) {
 
 }).fail(function(jqXHR) {
 
@@ -27,7 +27,7 @@ var book = app.factory.new('BookModel');
 book.fetch({
     resourceType: 'books:Book',
     id: '9788467040203'
-}).done(function(data) {
+}).then(function(data) {
 
 }).fail(function(jqXHR) {
 
@@ -55,7 +55,7 @@ var params = {
     sort: {field1: resources.sort.ASC}
 };
 
-app.resources.collection('books:Book').get(params).done(function(data) {
+app.resources.collection('books:Book').get(params).then(function(data) {
 
 }).fail(function(jqXHR) {
 
@@ -86,7 +86,7 @@ var books = new Backbone.Collection([], {
     sort: {field1: resources.sort.ASC}
 };
 
-books.fetch(params).done(function(data) {
+books.fetch(params).then(function(data) {
 
 }).fail(function(jqXHR) {
 
@@ -117,7 +117,7 @@ var params = {
     sort: {field1: resources.sort.ASC}
 };
 
-app.resources.relation('books:Book', 'id', 'author').get(params).done(function(data) {
+app.resources.relation('books:Book', 'id', 'author').get(params).then(function(data) {
 
 }).fail(function(jqXHR) {
 
@@ -150,7 +150,7 @@ var books = new Backbone.Collection([], {
     sort: {field1: resources.sort.ASC}
 };
 
-books.fetch(params).done(function(data) {
+books.fetch(params).then(function(data) {
 
 }).fail(function(jqXHR) {
 

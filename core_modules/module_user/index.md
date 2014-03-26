@@ -22,8 +22,6 @@ var params = {
 };
 
 app.user.register(params).then(function(data) {
-  // Always code
-}).done(function(data) {
   // Success code
 }).fail(function(jqxhr) {
   // Error code
@@ -52,8 +50,6 @@ var params : {
     remember: 1
 };
 app.api.login(params).then(function(data) {
-  // Always code
-}).done(function(data) {
   // Success code
 }).fail(function(jqxhr) {
   // Error code
@@ -75,8 +71,6 @@ var params : {
     remember: 1
 };
 app.api.login(params).then(function(data) {
-  // Always code
-}).done(function(data) {
   // Success code
 }).fail(function(jqxhr) {
   // Error code
@@ -99,8 +93,6 @@ var params : {
     remember: 1
 };
 app.api.login(params).then(function(data) {
-  // Always code
-}).done(function(data) {
   // Success code
 }).fail(function(jqxhr) {
   // Error code
