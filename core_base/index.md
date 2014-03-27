@@ -285,7 +285,7 @@ var CFG = {
     "claimGrantType": "urn:ietf:params:oauth:grant-type:jwt-bearer",
     "claimScopes": "resources:bookland:read_catalog iam:user:create iam:user:delete iam:user:read",
     "claimScopesUser": "resources:bookland:read_catalog iam:user:me",
-    "claimScopesRegister": ["resources:bookland:read_catalog", "
+    "claimScopesRegister": ["resources:bookland:read_catalog", "iam:user:read", "iam:user:me"],
     "claimExp": "3500",
 
     "jwtAlgorithm": "HS256",
@@ -320,7 +320,7 @@ var CFG = {
     "claimGrantType": "urn:ietf:params:oauth:grant-type:jwt-bearer",
     "claimScopes": "resources:bookland:read_catalog iam:user:create iam:user:delete iam:user:read",
     "claimScopesUser": "resources:bookland:read_catalog iam:user:me",
-    "claimScopesRegister": ["resources:bookland:read_catalog", "
+    "claimScopesRegister": ["resources:bookland:read_catalog", "iam:user:read", "iam:user:me"],
     "claimExp": "3500",
 
     "jwtAlgorithm": "HS256",
@@ -351,7 +351,7 @@ var CFG = {
     "claimGrantType": "urn:ietf:params:oauth:grant-type:jwt-bearer",
     "claimScopes": "resources:bookland:read_catalog iam:user:create iam:user:delete iam:user:read",
     "claimScopesUser": "resources:bookland:read_catalog iam:user:me",
-    "claimScopesRegister": ["resources:bookland:read_catalog", "
+    "claimScopesRegister": ["resources:bookland:read_catalog", "iam:user:read", "iam:user:me"],
     "claimExp": "3500",
 
     "jwtAlgorithm": "HS256",
