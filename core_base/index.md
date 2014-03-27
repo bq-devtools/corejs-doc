@@ -249,6 +249,13 @@ jwtAlgorithm
 * Por defecto: ---
 * Obligatorio: si
 
+autoTokenRefresh
+: Activa el autorefresco de token cuando una petición que requiere autenticación falla por `401`.
+
+* Tipo: Boolean
+* Por defecto: false
+* Obligatorio: no
+
 Además la aplicación se puede configurarse de varias formas, estableciendo los parámetros en el código a través de una variable global de configuración `CFG`, o en tiempo de ejecución a través del archivo `app/res/config/config.json`.
 
 
@@ -277,8 +284,8 @@ var CFG = {
     "claimAud": "http://iam.bqws.io",
     "claimGrantType": "urn:ietf:params:oauth:grant-type:jwt-bearer",
     "claimScopes": "resources:bookland:read_catalog iam:user:create iam:user:delete iam:user:read",
-    "claimScopesUser": "resources:bookland:read_catalog iam:user:create",
-    "claimsScopesRegister": ["resources:bookland:read_catalog", "iam:user:read"],
+    "claimScopesUser": "resources:bookland:read_catalog iam:user:me",
+    "claimScopesRegister": ["resources:bookland:read_catalog", "
     "claimExp": "3500",
 
     "jwtAlgorithm": "HS256",
@@ -312,8 +319,8 @@ var CFG = {
     "claimAud": "http://iam.bqws.io",
     "claimGrantType": "urn:ietf:params:oauth:grant-type:jwt-bearer",
     "claimScopes": "resources:bookland:read_catalog iam:user:create iam:user:delete iam:user:read",
-    "claimScopesUser": "resources:bookland:read_catalog iam:user:create",
-    "claimsScopesRegister": ["resources:bookland:read_catalog", "iam:user:read"],
+    "claimScopesUser": "resources:bookland:read_catalog iam:user:me",
+    "claimScopesRegister": ["resources:bookland:read_catalog", "
     "claimExp": "3500",
 
     "jwtAlgorithm": "HS256",
@@ -343,8 +350,8 @@ var CFG = {
     "claimAud": "http://iam.bqws.io",
     "claimGrantType": "urn:ietf:params:oauth:grant-type:jwt-bearer",
     "claimScopes": "resources:bookland:read_catalog iam:user:create iam:user:delete iam:user:read",
-    "claimScopesUser": "resources:bookland:read_catalog iam:user:create",
-    "claimsScopesRegister": ["resources:bookland:read_catalog", "iam:user:read"],
+    "claimScopesUser": "resources:bookland:read_catalog iam:user:me",
+    "claimScopesRegister": ["resources:bookland:read_catalog", "
     "claimExp": "3500",
 
     "jwtAlgorithm": "HS256",
