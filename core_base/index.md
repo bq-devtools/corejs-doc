@@ -289,7 +289,9 @@ var CFG = {
     "claimExp": "3500",
 
     "jwtAlgorithm": "HS256",
-    "grantType": "urn:ietf:params:oauth:grant-type:jwt-bearer"
+    "grantType": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+
+    "autoTokenRefresh": true
 };
 ```
 
@@ -324,7 +326,9 @@ var CFG = {
     "claimExp": "3500",
 
     "jwtAlgorithm": "HS256",
-    "grantType": "urn:ietf:params:oauth:grant-type:jwt-bearer"
+    "grantType": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+
+    "autoTokenRefresh": true
 };
 ```
 
@@ -355,7 +359,9 @@ var CFG = {
     "claimExp": "3500",
 
     "jwtAlgorithm": "HS256",
-    "grantType": "urn:ietf:params:oauth:grant-type:jwt-bearer"
+    "grantType": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+
+    "autoTokenRefresh": true
 };
 ```
 
