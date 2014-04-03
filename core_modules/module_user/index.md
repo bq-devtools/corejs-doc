@@ -9,6 +9,9 @@ Este módulo es el responsable de encapsular toda la complejidad relacionada con
 
 ## Registro ##
 
+
+### Silkroad
+
 Si la aplicación puede registrar nuevos usuarios en la plataforma, es posible realizarse con la siguiente llamada:
 
 ```javascript
@@ -18,7 +21,7 @@ var params = {
     password: 'password',
     firstName: 'firstName',
     lastName: 'lastName',
-    oauthService: 'silkroad'    // silkroad|facebook|google
+    oauthService: 'silkroad'
 };
 
 app.user.register(params).then(function(data) {
@@ -28,13 +31,43 @@ app.user.register(params).then(function(data) {
 });
 ```
 
-### Parámetros de configuración
+**Parámetros de configuración**
 
 * `iamEndpoint`: Endpoint hasta la API de IAM de Silkroad.
 * `oauthEndpoint`: Endpoint hasta la API de Oauth de Silkroad.
 * `grantType`: El valor de `grantType` para generar el JWT.
 * `jwtAlgorithm`: Algoritmo usado para el JWT.
 * `clientSecret`: Clave de cliente proporcionada por Silkroad para comunicarse con él.
+
+### Google+ | Facebook
+
+Para registrar a través de Google+|Facebook, existen 2 métodos:
+
+* **1 Click Register**: Este método obtiene los datos de perfil necesario de Google+|Facebook para registrarlo automáticamente en IAM.
+
+```javascript
+var params : {
+    oauthService: 'google'    // facebook|google
+};
+app.api.register(params).then(function(data) {
+  // Success code
+}).fail(function(error) {
+  // Error code
+});
+```
+
+* **2 Step register**: Este método devuelve los datos de perfil necesario de Google+|Facebook para registrar en un paso posterior en IAM.
+
+```javascript
+var params : {
+    oauthService: 'google'    // facebook|google
+};
+app.api.me(params).then(function(oauthUser) {
+  // Refresh form with oauthUser data
+}).fail(function(error) {
+  // Error code
+});
+```
 
 ## Autenticación ##
 
@@ -46,17 +79,17 @@ Para realizar una autenticación de un usuario en particular, en la vista respon
 var params : {
     username: 'username',
     password: 'password',
-    oauthService: 'silkroad',    // silkroad|facebook|google
+    oauthService: 'silkroad',
     remember: 1
 };
 app.api.login(params).then(function(data) {
   // Success code
-}).fail(function(jqxhr) {
+}).fail(function(error) {
   // Error code
 });
 ```
 
-### Parámetros de configuración
+**Parámetros de configuración**
 
 * `iamEndpoint`: Endpoint hasta la API de IAM de Silkroad.
 * `oauthEndpoint`: Endpoint hasta la API de Oauth de Silkroad.
@@ -64,44 +97,28 @@ app.api.login(params).then(function(data) {
 * `jwtAlgorithm`: Algoritmo usado para el JWT.
 * `clientSecret`: Clave de cliente proporcionada por Silkroad para comunicarse con él.
 
-### Facebook
+### Google+ | Facebook
 ```javascript
 var params : {
-    oauthService: 'facebook',
+    oauthService: 'google',    // facebook|google
     remember: 1
 };
 app.api.login(params).then(function(data) {
   // Success code
-}).fail(function(jqxhr) {
+}).fail(function(error) {
   // Error code
 });
 ```
 
-### Parámetros de configuración
+**Parámetros de configuración**
 
+* `googleClientId`: Id cliente de la aplicación creada en Google para webapps.
 * `facebookClientId`: Id cliente de la aplicación creada en Facebook.
+
 
 **Mas Info**
 
 * [Facebook app creation](https://developers.facebook.com/apps)
-
-
-### Google+
-```javascript
-var params : {
-    oauthService: 'google',
-    remember: 1
-};
-app.api.login(params).then(function(data) {
-  // Success code
-}).fail(function(jqxhr) {
-  // Error code
-});
-```
-
-### Parámetros de configuración
-
-* `googleClientId`: Id cliente de la aplicación creada en Google para webapps.
 
 ### Autorización ###
 
