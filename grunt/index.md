@@ -55,7 +55,7 @@ grunt test
 
 El resultado de los tests aparecerán por consola y generará un informe en formato `xunit` en `dist/tests.xml`.
 
-* Test por navegador [pendiente]
+* Test por navegador
 
 ```bash
 grunt server:test
@@ -67,3 +67,22 @@ Los resultados de los tests se podrán visualizar'en un navegador desde `http://
 ### TAP ###
 
 ### Cobertura de tests ###
+
+JSDoc
+-----
+
+JSDoc es una herramienta para generar documentación de forma automática en base a los bloues de comentarios que aparecen en el código.
+
+La documentación se genera en el directorio `doc` con cualquiera de los siguientes comandos:
+
+* Levantando un navegador
+
+```bash
+grunt server:jsdoc
+```
+
+* Sólo generar documentación
+
+```bash
+grunt jsdoc
+```
