@@ -29,5 +29,6 @@ Este proyecto tiene como objetivo el de ofrecer un framework para el desarrollo 
 * [Grunt: Tareas automatizadas](grunt)
 * [Integración Continua](ci)
 * [FAQ](faq)
+* [API Reference](jsdoc)
 
 
