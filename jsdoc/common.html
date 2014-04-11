@@ -1030,83 +1030,228 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="evci.js.html">Source: engine/silkroad/evci.js</h1>
+        <h1 class="page-title" data-filename="common.html">Namespace: common</h1>
         
 
 
+
+<section>
     
-    <section>
-        <article>
-            <pre class="prettyprint source"><code>'use strict';
-/* global define */
+<header>
+    <h2>
+    common
+    </h2>
+    
+</header>  
 
-define([
-    'corejs/app',
-    'corejs/engine/session',
-    'corejs/engine/silkroad/services'
-], function(app, session, services) {
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+            <div class="description"><p>Common functions for all modules</p></div>
+        
+        
+        
+<dl class="details">
+    
+        
+    
+    
+    
 
-    /** 
-     * A module to make evci requests.
-     * @exports evci
-     * @namespace
-     */
-    var evci = {};
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
 
-    /**
-     * Creates a new EventBuilder
-     * @param  {String} type The type of the event
-     * @return {evci.EventBuilder}      
-     */
-    evci.event = function(type) {
-        if (!type) {
-            throw 'Send event require event type';
-        }
-        return new EventBuilder(type);
-    };
+        
+        
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="serializeParams">
+            
+            <span class="type-signature static">static</span>common.serializeParams<span class="signature">(params)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{string}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="common.js.html">engine/silkroad/common.js</a>, <a href="common.js.html#line34">line 34</a>
+        </div>
+        
+    </div>
 
-    /**
-     * Builder to create event requests
-     * @class
-     * @memberOf evci
-     * @param {String} type
-     */
-    function EventBuilder(type) {
-        this.eventType = type;
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Translate this full exampe query to a SilkRoad Compliant QueryString</p>
+    </div>
+    
 
-    }
+    
+    
+    
+    
+    
+        
 
-    /**
-     * Publishes a new event
-     * @method
-     * @memberOf evci.EventBuilder
-     * @param  {Object} eventData   The data of the event
-     * @return {Promise}            Q promise that resolves to [acepted] or rejects with a {@link SilkRoadError}     
-     */
-    EventBuilder.prototype.publish = function(eventData) {
-        if (!eventData) {
-            throw 'Send event require data';
-        }
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
 
-        var params = {
-            url: getURL(this.eventType),
-            method: services.method.POST,
-            data: eventData,
-            withAuth: true
-        };
 
-        return services.request(params);
-    };
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
 
-    var getURL = function(eventType) {
-        return app.common.get('evciEndpoint') + 'event/' + eventType;
-    };
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
 
-    return evci;
-});
-</code></pre>
-        </article>
-    </section>
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code><p> var params = {
+    query: [
+        { '$eq': {field: 'value'} },
+        { '$eq': {field2: 'value2'} },
+        { '$gt': {field: 'value'} },
+        { '$gte': {field: 'value'} },
+        { '$lt': {field: 'value'} },
+        { '$lte': {field: 'value'} },
+        { '$ne': {field: 'value'} },
+        { '$eq': {field: 'value'} },
+        { '$like': {field: 'value'} },
+        { '$in': {field: ['value1', 'value2']} },
+        { '$all': {field: ['value1', 'value2']} }
+    ],
+    page: { page: 0, size: 10 },
+    sort: {field: 'asc'}
+};        </p></code></pre>
+    
+
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
 
 
 
@@ -1115,7 +1260,7 @@ define([
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Fri Apr 11 2014 16:02:02 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Fri Apr 11 2014 16:02:05 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

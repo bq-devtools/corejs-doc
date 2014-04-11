@@ -1030,83 +1030,317 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="evci.js.html">Source: engine/silkroad/evci.js</h1>
+        <h1 class="page-title" data-filename="ec.PurchaseHistoryBuilder.html">Class: PurchaseHistoryBuilder</h1>
         
 
 
+
+<section>
     
-    <section>
-        <article>
-            <pre class="prettyprint source"><code>'use strict';
-/* global define */
+<header>
+    <h2>
+        <span class="ancestors"><a href="ec.html">ec</a>.</span>
+    
+    PurchaseHistoryBuilder
+    </h2>
+    
+</header>  
 
-define([
-    'corejs/app',
-    'corejs/engine/session',
-    'corejs/engine/silkroad/services'
-], function(app, session, services) {
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="PurchaseHistoryBuilder">
+            
+            new ec.PurchaseHistoryBuilder<span class="signature">()</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="ec.js.html">engine/silkroad/ec.js</a>, <a href="ec.js.html#line236">line 236</a>
+        </div>
+        
+    </div>
 
-    /** 
-     * A module to make evci requests.
-     * @exports evci
-     * @namespace
-     */
-    var evci = {};
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Builder for requests with purchase collections</p>
+    </div>
+    
 
-    /**
-     * Creates a new EventBuilder
-     * @param  {String} type The type of the event
-     * @return {evci.EventBuilder}      
-     */
-    evci.event = function(type) {
-        if (!type) {
-            throw 'Send event require event type';
-        }
-        return new EventBuilder(type);
-    };
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
 
-    /**
-     * Builder to create event requests
-     * @class
-     * @memberOf evci
-     * @param {String} type
-     */
-    function EventBuilder(type) {
-        this.eventType = type;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
 
-    }
+    
+    
 
-    /**
-     * Publishes a new event
-     * @method
-     * @memberOf evci.EventBuilder
-     * @param  {Object} eventData   The data of the event
-     * @return {Promise}            Q promise that resolves to [acepted] or rejects with a {@link SilkRoadError}     
-     */
-    EventBuilder.prototype.publish = function(eventData) {
-        if (!eventData) {
-            throw 'Send event require data';
-        }
+    
 
-        var params = {
-            url: getURL(this.eventType),
-            method: services.method.POST,
-            data: eventData,
-            withAuth: true
-        };
+    
+    
+    
+    
+    
+    
+    
+</dd>
 
-        return services.request(params);
-    };
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="get">
+            
+            <span class="type-signature static">static</span>ec.PurchaseHistoryBuilder.PurchaseHistoryBuilder#get<span class="signature">(params)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Promise}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="ec.js.html">engine/silkroad/ec.js</a>, <a href="ec.js.html#line249">line 249</a>
+        </div>
+        
+    </div>
 
-    var getURL = function(eventType) {
-        return app.common.get('evciEndpoint') + 'event/' + eventType;
-    };
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Gets the purchase history of the logged user</p>
+    </div>
+    
 
-    return evci;
-});
-</code></pre>
-        </article>
-    </section>
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Page params for the request</p>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>pagesize</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Size of the page to request</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>page</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Number of the page to request</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+promise that resolves to an {Array} of Purchases or rejects with a <a href="SilkRoadError.html"><code>SilkRoadError</code></a>
+<br />
+
+    
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
 
 
 
@@ -1115,7 +1349,7 @@ define([
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Fri Apr 11 2014 16:02:02 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Fri Apr 11 2014 16:02:06 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

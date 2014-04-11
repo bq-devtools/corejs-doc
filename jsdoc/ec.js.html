@@ -1030,7 +1030,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="evci.js.html">Source: engine/silkroad/evci.js</h1>
+        <h1 class="page-title" data-filename="ec.js.html">Source: engine/silkroad/ec.js</h1>
         
 
 
@@ -1039,72 +1039,416 @@
         <article>
             <pre class="prettyprint source"><code>'use strict';
 /* global define */
-
 define([
     'corejs/app',
-    'corejs/engine/session',
-    'corejs/engine/silkroad/services'
-], function(app, session, services) {
+    'corejs/engine/silkroad/services',
+    'q'
+], function(app, services, q) {
 
     /** 
-     * A module to make evci requests.
-     * @exports evci
+     * A module to make e-commerce requests.
+     * @exports ec
      * @namespace
      */
-    var evci = {};
+    var ec = {};
 
     /**
-     * Creates a new EventBuilder
-     * @param  {String} type The type of the event
-     * @return {evci.EventBuilder}      
+     * Creates a new Product Builder
+     * @param  {String} id The id of the product
+     * @return {ec.ProductBuilder}
      */
-    evci.event = function(type) {
-        if (!type) {
-            throw 'Send event require event type';
-        }
-        return new EventBuilder(type);
+    ec.product = function(id) {
+        return new ProductBuilder(id);
     };
 
     /**
-     * Builder to create event requests
+     * Builder to create product requests
      * @class
-     * @memberOf evci
-     * @param {String} type
+     * @memberof ec
+     * @param {String} id Id of the product
      */
-    function EventBuilder(type) {
-        this.eventType = type;
-
+    function ProductBuilder(id) {
+        this.uri = 'product/';
+        if (id) {
+            this.id = id;
+        }
     }
 
     /**
-     * Publishes a new event
+     * Creates a new product
      * @method
-     * @memberOf evci.EventBuilder
-     * @param  {Object} eventData   The data of the event
-     * @return {Promise}            Q promise that resolves to [acepted] or rejects with a {@link SilkRoadError}     
+     * @memberOf ec.ProductBuilder
+     * @param  {Object} data                Contains the data of the new product 
+     * @param  {String} data.price          Information about price
+     * @param {String} data.price.currency  Currency code fro the price
+     * @param {Number} data.price.amount    The amount of the price
+     * @param {String} href                 Link to ???
+     * @param {String} type                 Type of the Product
+     * @return {Promise}                    Q Promise that resolves in the new product id or rejects with a {@link SilkRoadError}
      */
-    EventBuilder.prototype.publish = function(eventData) {
-        if (!eventData) {
-            throw 'Send event require data';
+    ProductBuilder.prototype.create = function(data) {
+        return request({
+            url: buildUri(this.uri),
+            method: services.method.POST,
+            data: data
+        }, true).
+        then(function(res) {
+            return services.extractLocationId(res);
+        });
+    };
+
+    /**
+     * Gets a product
+     * @method
+     * @memberOf ec.ProductBuilder
+     * @return {Promise} Q promise that resolves to a Product {Object} or rejects with a {@link SilkRoadError}
+     */
+    ProductBuilder.prototype.get = function() {
+        return request({
+            url: buildUri(this.uri, this.id),
+            method: services.method.GET
+        });
+    };
+
+    /**
+     * Updates a product
+     * @method
+     * @memberOf ec.ProductBuilder
+     * @param  {Object} data    Product data to update
+     * @return {Promise}        Q promise that resolves to undefined (void) or rejects with a {@link SilkRoadError}
+
+     */
+    ProductBuilder.prototype.update = function(data) {
+        return request({
+            url: buildUri(this.uri, this.id),
+            method: services.method.PUT,
+            data: data
+        });
+    };
+
+    /**
+     * Deletes a product
+     * @method
+     * @memberOf ec.ProductBuilder
+     * @return {Promise}        Q promise that resolves to undefined (void) or rejects with a {@link SilkRoadError}
+
+     */
+    ProductBuilder.prototype.delete = function() {
+        return request({
+            url: buildUri(this.uri, this.id),
+            method: services.method.DELETE
+        });
+    };
+
+    /**
+     * Creates an new Order Builder for silkroad requests   
+     * @method    
+     * @param  {String} id The id of the order
+     * @return {ec.OrderBuilder}    
+     */
+    ec.order = function(id) {
+        return new OrderBuilder(id);
+    };
+
+    /**
+     * Builder to create order requests
+     * @class
+     * @memberof ec
+     * @param {String} id Id of the order
+     */
+    function OrderBuilder(id) {
+        this.uri = 'order/';
+        if (id) {
+            this.id = id;
+        }
+    }
+
+    /**
+     * Gets an order
+     * @method
+     * @memberOf ec.OrderBuilder
+     * @return {Promise}        Q promise that resolves to a Order {Object} or rejects with a {@link SilkRoadError}
+     */
+    OrderBuilder.prototype.get = function() {
+        return request({
+            url: buildUri(this.uri, this.id),
+            method: services.method.GET
+        });
+    };
+
+    /**
+     * Updates the order
+     * @method
+     * @memberOf ec.OrderBuilder
+     * @param  {Object} data        Data of the order to update
+     * @param {Array} data.items    Array of products to purchase
+     * @return {Promise}            Q promise that resolves to undefined (void) or rejects with a {@link SilkRoadError}
+     */
+    OrderBuilder.prototype.update = function(data) {
+        return request({
+            url: buildUri(this.uri, this.id),
+            method: services.method.PUT,
+            data: data
+        });
+    };
+
+    /**
+     * Deletes the Order
+     * @method
+     * @memberOf ec.OrderBuilder
+     * @return {Promise}        Q promise that resolves to undefined (void) or rejects with a {@link SilkRoadError}
+     */
+    OrderBuilder.prototype.delete = function() {
+        return request({
+            url: buildUri(this.uri, this.id),
+            method: services.method.DELETE
+        });
+    };
+
+    /**
+     * Prepares the order, required to checkout
+     * @method
+     * @memberOf ec.OrderBuilder
+     * @return {Promise}        Q promise that resolves to undefined (void) or rejects with a {@link SilkRoadError}
+     */
+    OrderBuilder.prototype.prepare = function() {
+        return request({
+            url: buildUri(this.uri, this.id, '/prepare'),
+            method: services.method.POST
+        });
+    };
+
+    /**
+     * Checks out the Order
+     * @method
+     * @memberOf ec.OrderBuilder
+     * @param  {Object} data            Pruchase information to do the checkout
+     * @param {Array} paymentMethodIds  Array of String with the payment methods ids to checkout the order
+     * @param {Array} discountsIds      Array of String with the discounts ids to checkout the order
+     * @return {Promise}                Promise that resolves in the new purchase id or rejects with a {@link SilkRoadError}
+     */
+    OrderBuilder.prototype.checkout = function(data) {
+        if (!data.discountIds || !data.paymentMethodIds) {
+            throw new Error('paymentMethodIds and discountIds lists needed');
+        }
+        if (!data.paymentMethodIds.length) {
+            throw new Error('One payment method is needed at least');
+        }
+        return request({
+            method: services.method.POST,
+            url: buildUri(this.uri, this.id, '/checkout'),
+            data: data
+        }, true).
+        then(function(res) {
+            return services.extractLocationId(res);
+        });
+    };
+
+    /**
+     * Creates a builder to perform purchase requests
+     * @param  {String} [id]                                Id of the purchase, for requests with a single purchase
+     * @return {ec.PurchaseIdBuilder | ec.PurchaseHistoryBuilder} Builder for the requests       
+     */
+    ec.purchase = function(id) {
+        if (id) {
+            return new PurchaseIdBuilder(id);
+        } else {
+            return new PurchaseHistoryBuilder();
+        }
+    };
+
+    /**
+     * Builder for requests with a single purchase
+     * @class
+     * @memberof ec
+     * @param {String} id Id of the purchase
+     */
+    function PurchaseIdBuilder(id) {
+        this.uri = buildUri('purchase/',id);
+    }
+
+    /**
+     * Builder for requests with purchase collections
+     * @class
+     * @memberof ec
+     */
+    function PurchaseHistoryBuilder() {
+        this.uri = buildUri('purchase/');
+    }
+
+    /**
+     * Gets the purchase history of the logged user
+     * @method
+     * @memberOf ec.PurchaseHistoryBuilder
+     * @param  {Object} params              Page params for the request
+     * @param {Number} params.pagesize     Size of the page to request
+     * @param {Number} params.page         Number of the page to request
+     * @return {Promise}                    Q promise that resolves to an {Array} of Purchases or rejects with a {@link SilkRoadError}
+     */
+    PurchaseHistoryBuilder.prototype.get = function(params) {
+        return request({
+            url: this.uri,
+            method: services.method.GET,
+            query: serializeParamsEc(params)
+        });
+    };
+
+    /**
+     * Gets the purchase
+     * @method
+     * @memberOf ec.PurchaseIdBuilder
+     * @return {Promise}                    Q promise that resolves to to a Purchase {Object} or rejects with a {@link SilkRoadError}
+     */
+    PurchaseIdBuilder.prototype.get = function() {
+        return request({
+            url : this.uri,
+            method: services.method.GET,
+        });
+    };
+
+    /**
+     * Gets a purchase, and, if its status is IN_PROGRESS, does a polling against the server until the purchase has a different status or the retrySeconds are out
+     * @method
+     * @memberOf ec.PurchaseIdBuilder
+     * @param  {Number} retrySeconds    Timeout of the polling in seconds
+     * @return {Promise}                 Q Promise that resolves to a Purchase {Object} or rejects with a {Error}
+     */
+    PurchaseIdBuilder.prototype.getWhenCompleted = function(retrySeconds) {
+        var dfd = q.defer();
+        var interval = 3;
+        var poll = 0;
+        $.proxy(getCompletedPurchase, this, dfd, retrySeconds, interval * poll++);
+        if(dfd.promise.inspect().state === 'pending'){
+            var polling = setInterval($.proxy(getCompletedPurchase, this, dfd, retrySeconds, interval * poll++), interval * 1000);
+            dfd.promise.fin(function(){
+                clearInterval(polling);
+            });
+        }
+        return dfd.promise;
+    };
+
+    var getCompletedPurchase = function(dfd, retrySeconds, elapsedTime) {
+        this.get().then(function(purchase) {
+            if (purchase.state.state === 'IN_PROGRESS' && retrySeconds &lt; elapsedTime) {
+                dfd.reject('ec.purchase.get.timeout');
+            } else if (purchase.state.state !== 'IN_PROGRESS') {
+                dfd.resolve(purchase);
+            }
+        }, function (error) {
+            dfd.reject(error);
+        });
+    };
+
+    
+    /**
+     * Creates a Payment Method builder for payment method requests
+     * @param  {String} [id]    Id of the payment method, for single payment method requests     
+     * @return {ec.PaymentMethodIdBuilder | ec.PaymentMethodBuilder}
+     */
+    ec.paymentMethod = function(id) {
+        return (id) ? new PaymentMethodIdBuilder(id) : new PaymentMethodBuilder();
+    };
+
+    /**
+     * Builder for requests with a single payment method
+     * @class
+     * @memberof ec
+     * @param {String} id Id of the payment method
+     */
+    function PaymentMethodIdBuilder(id) {
+        this.uri = buildUri('paymentmethod/', id);
+    }
+
+    /**
+     * Builder for requests with payment method collections
+     * @class
+     * @memberof ec
+     */
+    function PaymentMethodBuilder() {
+        this.uri = buildUri('paymentmethod/');
+    }
+
+    /**
+     * Get a payment method or a collection of payment methods
+     * @method
+     * @memberOf ec.PaymentMethodIdBuilder
+     * @return {Promise}                 Q promise that resolves to to a Payment method {Object}, or an {Array} of payment methods or rejects with a {@link SilkRoadError}
+     */
+    PaymentMethodIdBuilder.prototype.get = PaymentMethodBuilder.prototype.get = function() {
+        return request({
+            url: this.uri,
+            method: services.method.GET
+        });
+    };
+
+    /**
+     * Deletes a payment method
+     * @method
+     * @memberOf ec.PaymentMethodIdBuilder
+     * @return {Promise}            Q promise that resolves to undefined (void) or rejects with a {@link SilkRoadError}
+     */
+    PaymentMethodIdBuilder.prototype.delete = function() {
+        return request({
+            url: this.uri,
+            method: services.method.DELETE
+        });
+    };
+
+    /**
+     * Creates a payment method for the logged user
+     * @method
+     * @memberOf ec.PaymentMethodBuilder
+     * @param  {Object} data
+     * @param {String} [name]   The name of the new payment method
+     * @param {String} data     The card data encrypted
+     * @see   Client Side Encryption {@link https://github.com/adyenpayments/client-side-encryption}
+     * @return {Promise}        Q promise that resolves to the new payment method id or rejects with a {@link SilkRoadError}
+     */
+    PaymentMethodBuilder.prototype.create = function(data) {
+        return request({
+            url: this.uri,
+            method: services.method.POST,
+            data: data
+        }, true).
+        then(function(res) {
+            return services.extractLocationId(res);
+        });
+    };
+
+    var buildUri = function(uri, id, extra) {
+        var fullUri = '';
+        fullUri = app.common.get('ecEndpoint') + uri;
+        if (id) {
+            fullUri += id;
+        }
+        if (extra) {
+            fullUri += extra;
+        }
+        return fullUri;
+    };
+
+    var request = function(params, isXHR) {
+        params.withAuth = true;
+        return services.request(params, isXHR);
+    };
+
+    var serializeParamsEc = function(params) {
+        var result = '';
+
+        if (params.pagesize) {
+            result = 'api:pagesize=' + JSON.stringify(params.pagesize);
         }
 
-        var params = {
-            url: getURL(this.eventType),
-            method: services.method.POST,
-            data: eventData,
-            withAuth: true
-        };
+        if (params.page) {
+            result += result ? '&' : '';
+            result += 'api:page=' + JSON.stringify(params.page);
+        }
 
-        return services.request(params);
+        return result;
     };
 
-    var getURL = function(eventType) {
-        return app.common.get('evciEndpoint') + 'event/' + eventType;
-    };
-
-    return evci;
-});
-</code></pre>
+    return ec;
+});</code></pre>
         </article>
     </section>
 

@@ -1030,83 +1030,541 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="evci.js.html">Source: engine/silkroad/evci.js</h1>
+        <h1 class="page-title" data-filename="app.utils.isMobile.html">Namespace: isMobile</h1>
         
 
 
+
+<section>
     
-    <section>
-        <article>
-            <pre class="prettyprint source"><code>'use strict';
-/* global define */
+<header>
+    <h2>
+        <span class="ancestors"><a href="app.html">app</a><a href="app.utils.html">.utils</a>.</span>
+    
+    isMobile
+    </h2>
+    
+</header>  
 
-define([
-    'corejs/app',
-    'corejs/engine/session',
-    'corejs/engine/silkroad/services'
-], function(app, session, services) {
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+            <div class="description"><p>Mobile detection utils</p></div>
+        
+        
+        
+<dl class="details">
+    
+        
+    
+    
+    
 
-    /** 
-     * A module to make evci requests.
-     * @exports evci
-     * @namespace
-     */
-    var evci = {};
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
 
-    /**
-     * Creates a new EventBuilder
-     * @param  {String} type The type of the event
-     * @return {evci.EventBuilder}      
-     */
-    evci.event = function(type) {
-        if (!type) {
-            throw 'Send event require event type';
-        }
-        return new EventBuilder(type);
-    };
+        
+        
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="Android">
+            
+            <span class="type-signature static">static</span>app.utils.isMobile.Android<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Boolean}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="utils.js.html">engine/utils.js</a>, <a href="utils.js.html#line24">line 24</a>
+        </div>
+        
+    </div>
 
-    /**
-     * Builder to create event requests
-     * @class
-     * @memberOf evci
-     * @param {String} type
-     */
-    function EventBuilder(type) {
-        this.eventType = type;
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Detects Android devices</p>
+    </div>
+    
 
-    }
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
 
-    /**
-     * Publishes a new event
-     * @method
-     * @memberOf evci.EventBuilder
-     * @param  {Object} eventData   The data of the event
-     * @return {Promise}            Q promise that resolves to [acepted] or rejects with a {@link SilkRoadError}     
-     */
-    EventBuilder.prototype.publish = function(eventData) {
-        if (!eventData) {
-            throw 'Send event require data';
-        }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
 
-        var params = {
-            url: getURL(this.eventType),
-            method: services.method.POST,
-            data: eventData,
-            withAuth: true
-        };
+    
+    
 
-        return services.request(params);
-    };
+    
 
-    var getURL = function(eventType) {
-        return app.common.get('evciEndpoint') + 'event/' + eventType;
-    };
+    
+    
+    
+    
+    
+    
+    
 
-    return evci;
-});
-</code></pre>
-        </article>
-    </section>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="any">
+            
+            <span class="type-signature static">static</span>app.utils.isMobile.any<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Boolean}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="utils.js.html">engine/utils.js</a>, <a href="utils.js.html#line59">line 59</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Detects any devices</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="BlackBerry">
+            
+            <span class="type-signature static">static</span>app.utils.isMobile.BlackBerry<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Boolean}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="utils.js.html">engine/utils.js</a>, <a href="utils.js.html#line31">line 31</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Detects BlackBerry devices</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="iOS">
+            
+            <span class="type-signature static">static</span>app.utils.isMobile.iOS<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Boolean}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="utils.js.html">engine/utils.js</a>, <a href="utils.js.html#line38">line 38</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Detects iOS devices</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="Opera">
+            
+            <span class="type-signature static">static</span>app.utils.isMobile.Opera<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Boolean}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="utils.js.html">engine/utils.js</a>, <a href="utils.js.html#line45">line 45</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Detects Opera devices</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="Windows">
+            
+            <span class="type-signature static">static</span>app.utils.isMobile.Windows<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Boolean}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="utils.js.html">engine/utils.js</a>, <a href="utils.js.html#line52">line 52</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Detects Windows devices</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
 
 
 
@@ -1115,7 +1573,7 @@ define([
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Fri Apr 11 2014 16:02:02 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Fri Apr 11 2014 16:02:05 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

@@ -1030,7 +1030,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="evci.js.html">Source: engine/silkroad/evci.js</h1>
+        <h1 class="page-title" data-filename="validate.js.html">Source: engine/validate.js</h1>
         
 
 
@@ -1039,72 +1039,95 @@
         <article>
             <pre class="prettyprint source"><code>'use strict';
 /* global define */
-
 define([
     'corejs/app',
-    'corejs/engine/session',
-    'corejs/engine/silkroad/services'
-], function(app, session, services) {
+    'underscore'
+], function(app, _) {
 
-    /** 
-     * A module to make evci requests.
-     * @exports evci
+	/** 
+     * A module to make values validation.
+     * @exports validate
      * @namespace
+     * @memberof app
      */
-    var evci = {};
+	var validate = {};
 
-    /**
-     * Creates a new EventBuilder
-     * @param  {String} type The type of the event
-     * @return {evci.EventBuilder}      
-     */
-    evci.event = function(type) {
-        if (!type) {
-            throw 'Send event require event type';
-        }
-        return new EventBuilder(type);
-    };
+	/**
+	 * Checks if some value is not undefined
+	 * @param  {Mixed}  value
+	 * @param  {String}  [message]
+	 * @throws {String} If return value is false and message are defined
+	 * @return {Boolean}
+	 */
+	validate.isDefined = function(value, message) {
+		var isUndefined = _.isUndefined(value);
+		if (isUndefined && message) {
+			throw message;
+		}
+		return !isUndefined;
+	};
 
-    /**
-     * Builder to create event requests
-     * @class
-     * @memberOf evci
-     * @param {String} type
-     */
-    function EventBuilder(type) {
-        this.eventType = type;
+	/**
+	 * Checks whenever value are null or not
+	 * @param  {Mixed}  value  
+	 * @param  {String}  [message]
+	 * @throws {String} If return value is false and message are defined
+	 * @return {Boolean}        
+	 */
+	validate.isNotNull = function(value, message) {
+		var isNull = _.isNull(value);
+		if (isNull && message) {
+			throw message;
+		}
+		return !isNull;
+	};
 
-    }
+	/**
+	 * Checks whenever a value is not null and not undefined
+	 * @param  {Mixed}  value  
+	 * @param  {String}  [message]
+	 * @throws {String} If return value is false and message are defined
+	 * @return {Boolean}        
+	 */
+	validate.isValue = function(value, message) {
+		return this.isDefined(value, message) && this.isNotNull(value, message);
+	};
 
-    /**
-     * Publishes a new event
-     * @method
-     * @memberOf evci.EventBuilder
-     * @param  {Object} eventData   The data of the event
-     * @return {Promise}            Q promise that resolves to [acepted] or rejects with a {@link SilkRoadError}     
-     */
-    EventBuilder.prototype.publish = function(eventData) {
-        if (!eventData) {
-            throw 'Send event require data';
-        }
+	/**
+	 * Checks whenever a value is greater than other
+	 * @param  {Mixed}  value      
+	 * @param  {Mixed}  greaterThan
+	 * @param  {String}  [message]
+	 * @throws {String} If return value is false and message are defined
+	 * @return {Boolean}            
+	 */
+	validate.isGreaterThan = function(value, greaterThan, message){
+		var gt = this.isValue(value) && value > greaterThan;
+		if(!gt && message) {
+			throw message;
+		}
+		return gt;
+	};
 
-        var params = {
-            url: getURL(this.eventType),
-            method: services.method.POST,
-            data: eventData,
-            withAuth: true
-        };
+	/**
+	 * Checks whenever a value is greater or equal than other
+	 * @param  {Mixed}  value               
+	 * @param  {Mixed} isGreaterThanOrEqual
+	 * @param  {String}  [message]
+	 * @throws {String} If return value is false and message are defined
+	 * @return {Boolean}                     
+	 */
+	validate.isGreaterThanOrEqual = function(value, isGreaterThanOrEqual, message){
+		var gte = this.isValue(value) && value >= isGreaterThanOrEqual;
+		if(!gte && message) {
+			throw message;
+		}
+		return gte;
+	};
 
-        return services.request(params);
-    };
+	return validate;
 
-    var getURL = function(eventType) {
-        return app.common.get('evciEndpoint') + 'event/' + eventType;
-    };
-
-    return evci;
-});
-</code></pre>
+});</code></pre>
         </article>
     </section>
 

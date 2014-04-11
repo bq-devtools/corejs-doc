@@ -1030,7 +1030,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="evci.js.html">Source: engine/silkroad/evci.js</h1>
+        <h1 class="page-title" data-filename="resources.js_.html">Source: engine/silkroad/resources.js</h1>
         
 
 
@@ -1039,70 +1039,273 @@
         <article>
             <pre class="prettyprint source"><code>'use strict';
 /* global define */
-
 define([
     'corejs/app',
-    'corejs/engine/session',
-    'corejs/engine/silkroad/services'
-], function(app, session, services) {
-
-    /** 
-     * A module to make evci requests.
-     * @exports evci
-     * @namespace
-     */
-    var evci = {};
+    'corejs/engine/silkroad/services',
+    'corejs/engine/silkroad/common'
+], function(app, services, common) {
 
     /**
-     * Creates a new EventBuilder
-     * @param  {String} type The type of the event
-     * @return {evci.EventBuilder}      
+     * Module with silkroad resources API requests.
+     * @exports resources     
+     * @namespace
      */
-    evci.event = function(type) {
-        if (!type) {
-            throw 'Send event require event type';
+    var resources = {
+        /**
+         * constant with diferents sort posibilities
+         * @namespace
+         */
+        sort: {
+            /**
+             * Ascending sort
+             * @type {String}
+             * @constant
+             * @default
+             */
+            ASC :'asc',
+            /**
+             * Descending sort
+             * @type {String}
+             * @constant
+             * @default
+             */
+            DESC: 'desc'
         }
-        return new EventBuilder(type);
     };
 
     /**
-     * Builder to create event requests
-     * @class
-     * @memberOf evci
-     * @param {String} type
+     * Starts a new collection request
+     * @param  {String} type        The collection type
+     * @return {resources.CollectionBuilder}  A builder to build the request
      */
-    function EventBuilder(type) {
-        this.eventType = type;
+    resources.collection = function(type) {
+        return new CollectionBuilder(type);
+    };
 
+    /**
+     * Builder for collection requests
+     * @class
+     * @memberOf resources
+     * @param {String} type The collection type
+     */
+    function CollectionBuilder(type) {
+        this.type = type;
     }
 
     /**
-     * Publishes a new event
-     * @method
-     * @memberOf evci.EventBuilder
-     * @param  {Object} eventData   The data of the event
-     * @return {Promise}            Q promise that resolves to [acepted] or rejects with a {@link SilkRoadError}     
+     * Gets a collection of elements, filtered, paginated or sorted
+     * @method 
+     * @memberOf resources.CollectionBuilder
+     * @param  {Object} params      Params of the silkroad request
+     * @param  {String} dataType    Type of the request data
+     * @return {Promise}            Q promise that resolves to an {Array} of resources or rejects with a {@link SilkRoadError}
+     * @see {@link common.serializeParams} to see a example of the params
      */
-    EventBuilder.prototype.publish = function(eventData) {
-        if (!eventData) {
-            throw 'Send event require data';
-        }
+    CollectionBuilder.prototype.get = function(params, dataType) {
+        return request({
+            url: buildUri(this.type),
+            method: services.method.GET,
+            query: params ? common.serializeParams(params) : null,
+            Accept: dataType
+        });
+    };
 
-        var params = {
-            url: getURL(this.eventType),
+    /**
+     * Adds a new element to a collection
+     * @method 
+     * @memberOf resources.CollectionBuilder
+     * @param {Object} data        The element to be added
+     * @param {String} contentType Mime type of the added data
+     * @return {Promise}           Q promise that resolves to the new resource id or rejects with a {@link SilkRoadError}
+     */
+    CollectionBuilder.prototype.add = function(data, contentType) {
+        return services.requestXHR({
+            url: buildUri(this.type),
             method: services.method.POST,
-            data: eventData,
+            contentType: contentType,
+            data: data,
             withAuth: true
-        };
+        }).then(function(res) {
+            return services.extractLocationId(res);
+        });
+    };
 
+
+    /**
+     * Does a resource request
+     * @param  {String} type        The resource type
+     * @param  {String} id          The resource id
+     * @return {resources.ResourceBuilder}    A builder for the request
+     */
+    resources.resource = function(type, id) {
+        return new ResourceBuilder(type, id);
+    };
+
+    /**
+     * Builder for resource requests
+     * @class
+     * @memberOf resources
+     * @param  {String} type The resource type
+     * @param  {String} id   The resource id
+     */
+    function ResourceBuilder(type, id) {
+        this.type = type;
+        this.id = id;
+    }
+
+    /**
+     * Gets a resource
+     * @method 
+     * @memberOf resources.ResourceBuilder
+     * @param  {String} dataType Mime type of the expected resource
+     * @return {Promise}         Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
+     */
+    ResourceBuilder.prototype.get = function(dataType) {
+        return request({
+            url: buildUri(this.type, this.id),
+            method: services.method.GET,
+            Accept: dataType
+        });
+    };
+
+    /**
+     * Updates a resource
+     * @method 
+     * @memberOf resources.ResourceBuilder
+     * @param  {Object} data        Data to be updated
+     * @param  {String} contentType Mime tipe of the sent data
+     * @return {Promise}            Q promise that resolves to undefined (void) or rejects with a {@link SilkRoadError}
+     */
+    ResourceBuilder.prototype.update = function(data, contentType) {
+        return request({
+            url: buildUri(this.type, this.id),
+            method: services.method.PUT,
+            data: data,
+            contentType: contentType
+        });
+    };
+
+    /**
+     * Deletes a resource
+     * @method 
+     * @memberOf resources.ResourceBuilder
+     * @return {Promise}          Q promise that resolves to undefined (void) or rejects with a {@link SilkRoadError}
+     */
+    ResourceBuilder.prototype.delete = function() {
+        return request({
+            url: buildUri(this.type, this.id),
+            method: services.method.DELETE
+        });
+    };
+
+    /**
+     * Does a silkroad relation request
+     * @param  {String} type        The source resource type
+     * @param  {String} id          The source resource id
+     * @param  {String} rel         The destination resource type
+     * @return {resources.RelationBuilder}    A builder for the request
+     */
+    resources.relation = function(type, id, rel) {
+        return new RelationBuilder(type, id, rel);
+    };
+
+    /**
+     * Builder for the relation requests
+     * @class
+     * @memberOf resources
+     * @param  {String} type The source resource type
+     * @param  {String} id   The source resource id
+     * @param  {String} rel  The destination resource type
+     */
+    function RelationBuilder(type, id, rel) {
+        this.type = type;
+        this.id = id;
+        this.rel = rel;
+    }
+
+    /**
+     * Gets the resources of a relation
+     * @method
+     * @memberOf resources.RelationBuilder
+     * @param  {Object} params      Params of the silkroad request
+     * @param  {String} dataType    Mime type of the expected resource
+     * @return {Promise}            Q promise that resolves to a relation {Object} or rejects with a {@link SilkRoadError}
+     * @see {@link common.serializeParams} to see a example of the params
+     */
+    RelationBuilder.prototype.get = function(params, dataType) {
+        return request({
+            url: buildUri(this.type, this.id, this.rel),
+            method: services.method.GET,
+            query: params ? common.serializeParams(params) : null,
+            Accept: dataType
+        });
+    };
+
+    /**
+     * Adds a new relation between resources
+     * @method
+     * @memberOf resources.RelationBuilder
+     * @param {String} uri          Relationed resource
+     * @param {Object} relationData Additional data to be added to the relation (in json)
+     * @return {Promise}            Q promise that resolves to undefined (void) or rejects with a {@link SilkRoadError}
+     * @example uri = 'music:Track/555'
+     */
+    RelationBuilder.prototype.add = function(uri, relationData) {
+        return request({
+            url: buildUri(this.type, this.id, this.rel, uri),
+            contentType: 'application/json',
+            data: relationData,
+            method: services.method.PUT
+        });
+    };
+
+    /**
+     * Deletes a relation between resources
+     * @method
+     * @memberOf resources.RelationBuilder
+     * @param {String} uri          Relationed resource
+     * @return {Promise}            Q promise that resolves to undefined (void) or rejects with a {@link SilkRoadError}
+     * @example uri = 'music:Track/555'
+     */
+    RelationBuilder.prototype.delete = function(uri) {
+        return request({
+            url: buildUri(this.type, this.id, this.rel, uri),
+            method: services.method.DELETE
+        });
+    };
+
+    CollectionBuilder.prototype.getURL = ResourceBuilder.prototype.getURL = RelationBuilder.prototype.getURL = function(params) {
+        return buildUri(this.type, this.id, this.rel) + (params ? '?' + common.serializeParams(params) : '');
+    };
+
+    /**
+     * Helper function to build the request uri 
+     * @param  {String} type   Type of the resource
+     * @param  {String} id     Id of the resource
+     * @param  {String} rel    Type of the relationed resource
+     * @param  {String} relUri Information of the relationed resource
+     * @return {String}        Uri to perform the request
+     */
+    var buildUri = function(type, id, rel, relUri) {
+        var uri = app.common.get('resourcesEndpoint') + 'resource/' + type;
+        if (id) {
+            uri += '/' + id;
+            if (rel) {
+                uri += '/' + rel;
+                if (relUri) {
+                    uri += ';r=' + relUri;
+                }
+            }
+        }
+        return uri;
+    };
+
+    var request = function(params) {
+        params.withAuth = true;
         return services.request(params);
     };
 
-    var getURL = function(eventType) {
-        return app.common.get('evciEndpoint') + 'event/' + eventType;
-    };
-
-    return evci;
+    return resources;
 });
 </code></pre>
         </article>
@@ -1115,7 +1318,7 @@ define([
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Fri Apr 11 2014 16:02:02 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Fri Apr 11 2014 16:02:03 GMT+0200 (CEST)
         </footer>
     </div>
 </div>
