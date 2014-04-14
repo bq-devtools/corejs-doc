@@ -19,7 +19,7 @@ src/main/webapp
 ├── res
 │   └──config
 │       ├──config.json              // Configuración de la webapp
-│       └──myModule.json            // Configuración del módulo 'myModule'
+│       └──externalModule.json      // Configuración del módulo externo 'externalModule'
 └── scripts
     ├──define.js                    // definición de dependencias requirejs
     ├──main.js                      // Script principal de la webapp
@@ -27,7 +27,30 @@ src/main/webapp
         ├──loader.js                // Declaración de móduloas a cargar
         └──myModule                 // Nombre del módulo
             ├── start.js            // Inicialización y carga de dependencias
-            ├── css                 // Hojas de estilo
+            ├── css                 // Hojas de estilo del módulo
+            │   └── *.scss
+            ├── res
+            │   ├──img
+            │   │   └──*.{jpeg, jpg, png, ...)  // Configuración de la webapp
+            │   ├── icons
+            │   │   ├── xs
+            │   │   │   └──*.png
+            │   │   ├── xs-retina
+            │   │   │   └──*.png
+            │   │   ├── sm
+            │   │   │   └──*.png
+            │   │   ├── sm-retina
+            │   │   │   └──*.png
+            │   │   ├── md
+            │   │   │   └──*.png
+            │   │   ├── md-retina
+            │   │   │   └──*.png
+            │   │   ├── lg
+            │   │   │   └──*.png
+            │   │   └── lg-retina
+            │   │   │   └──*.png
+            │   └──config
+            │       ├──config.json  // Configuración del módulo
             ├── collections         // Colecciones del módulo
             │   └── *.js
             ├── layouts             // Layouts del módulo
