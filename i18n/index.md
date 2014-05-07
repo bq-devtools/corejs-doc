@@ -176,3 +176,7 @@ Por ejemplo, si se quisiera poner:
 	* El texto asociado a `[html]` aparecerá dentro del tag asocuado.
 	* El texto asociado a `[data-attribute]` aparecerá en el atributo `data-attribute`.
 
+**Más Info**
+
+* ['i18next'](http://i18next.com/pages/doc_jquery.html)
+
