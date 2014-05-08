@@ -109,10 +109,16 @@ logBuffer
 * Depende de: `logToServer`
 
 logToServer
-: Establece si se desea enviar logs al servidor
+: Establece el nivel de log que se desea **enviar al servidor**
+`0` - trace
+`1` - debug
+`2` - info
+`3` - warn
+`4` - error
+`5` - silent
 
-* Tipo: Boolean
-* Por defecto: `false`
+* Tipo: Integer
+* Por defecto: `2`
 * Obligatorio: no
 
 logServerEndpoint
@@ -267,8 +273,10 @@ Se puede establecer la configuración de la aplicación definiendo los parámetr
 
 ```javascript
 var CFG = {
-    "version": "0.1",
+    "version": "0.1.0",
     "appName": "corejs-app",
+
+    "evciEndpoint": "http://evci-int.bqws.io/v1.0/",
 
     "resourcesEndpoint": "http://resources.int.bqws.io/v1.0/",
 
@@ -276,6 +284,7 @@ var CFG = {
     "oauthClientId": "temp-client",
     "oauthSecret": "temp-secret",
     "oauthService": "silkroad",
+    "oauthGrantType": "authorization_code",
 
     "iamEndpoint": "http://iam.int.bqws.io/v1.0/",
     "clientId": "providedClientId",
@@ -283,9 +292,9 @@ var CFG = {
 
     "claimAud": "http://iam.bqws.io",
     "claimGrantType": "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    "claimScopes": "resources:bookland:read_catalog iam:user:create iam:user:delete iam:user:read",
-    "claimScopesUser": "resources:bookland:read_catalog iam:user:me",
-    "claimScopesRegister": ["resources:bookland:read_catalog", "iam:user:read", "iam:user:me"],
+    "claimScopes": "resources:bookland:read_catalog iam:user:create iam:user:delete iam:user:read evci:event:publish",
+    "claimScopesUser": "resources:bookland:read_catalog iam:user:delete iam:user:read iam:user:me evci:event:publish",
+    "claimScopesRegister": ["resources:bookland:read_catalog", "iam:user:read", "iam:user:me", "iam:user:delete", "evci:event:publish"],
     "claimExp": "3500",
 
     "jwtAlgorithm": "HS256",
@@ -293,19 +302,22 @@ var CFG = {
 
     "autoTokenRefresh": true
 };
+
+
 ```
 
 **Producción (con logToServer)**
 
 ```javascript
 var CFG = {
-    "version": "0.1",
+    "version": "0.1.0",
     "appName": "corejs-app",
 
     "logLevel": 0,
     "logBuffer": 20,
-    "logToServer": true,
-    "logServerEndpoint": "server/log/endpoint/",
+    "logToServer": 2,
+
+    "evciEndpoint": "http://evci-int.bqws.io/v1.0/",
 
     "resourcesEndpoint": "http://resources.int.bqws.io/v1.0/",
 
@@ -313,6 +325,7 @@ var CFG = {
     "oauthClientId": "temp-client",
     "oauthSecret": "temp-secret",
     "oauthService": "silkroad",
+    "oauthGrantType": "authorization_code",
 
     "iamEndpoint": "http://iam.int.bqws.io/v1.0/",
     "clientId": "providedClientId",
@@ -320,9 +333,9 @@ var CFG = {
 
     "claimAud": "http://iam.bqws.io",
     "claimGrantType": "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    "claimScopes": "resources:bookland:read_catalog iam:user:create iam:user:delete iam:user:read",
-    "claimScopesUser": "resources:bookland:read_catalog iam:user:me",
-    "claimScopesRegister": ["resources:bookland:read_catalog", "iam:user:read", "iam:user:me"],
+    "claimScopes": "resources:bookland:read_catalog iam:user:create iam:user:delete iam:user:read evci:event:publish",
+    "claimScopesUser": "resources:bookland:read_catalog iam:user:delete iam:user:read iam:user:me evci:event:publish",
+    "claimScopesRegister": ["resources:bookland:read_catalog", "iam:user:read", "iam:user:me", "iam:user:delete", "evci:event:publish"],
     "claimExp": "3500",
 
     "jwtAlgorithm": "HS256",
@@ -337,8 +350,10 @@ var CFG = {
 ```javascript
 var CFG = {
     "mode": "DEVELOPER",
-    "version": "0.1",
+    "version": "0.1.0",
     "lang": "es-ES",
+
+    "evciEndpoint": "http://evci-int.bqws.io/v1.0/",
 
     "resourcesEndpoint": "http://dev.resources.int.bqws.io/v1.0/",
 
@@ -346,6 +361,7 @@ var CFG = {
     "oauthClientId": "temp-client",
     "oauthSecret": "temp-secret",
     "oauthService": "silkroad",
+    "oauthGrantType": "authorization_code",
 
     "iamEndpoint": "http://dev.iam.int.bqws.io/v1.0/",
     "clientId": "providedClientId",
@@ -353,9 +369,9 @@ var CFG = {
     
     "claimAud": "http://iam.bqws.io",
     "claimGrantType": "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    "claimScopes": "resources:bookland:read_catalog iam:user:create iam:user:delete iam:user:read",
-    "claimScopesUser": "resources:bookland:read_catalog iam:user:me",
-    "claimScopesRegister": ["resources:bookland:read_catalog", "iam:user:read", "iam:user:me"],
+    "claimScopes": "resources:bookland:read_catalog iam:user:create iam:user:delete iam:user:read evci:event:publish",
+    "claimScopesUser": "resources:bookland:read_catalog iam:user:delete iam:user:read iam:user:me evci:event:publish",
+    "claimScopesRegister": ["resources:bookland:read_catalog", "iam:user:read", "iam:user:me", "iam:user:delete", "evci:event:publish"],
     "claimExp": "3500",
 
     "jwtAlgorithm": "HS256",

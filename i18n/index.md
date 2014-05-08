@@ -28,9 +28,9 @@ Normalmente con tener los recursos separados por idioma es suficiente, pero a ve
 
 **Más Info**
 
-* ['ISO countries codes'](http://es.wikipedia.org/wiki/ISO_3166-1)
-* ['ISO languages codes'](http://www.loc.gov/standards/iso639-2/php/code_list.php)
-* ['IANA languages codes'](http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry)
+* [ISO countries codes](http://en.wikipedia.org/wiki/ISO_3166-1)
+* [ISO languages codes](http://www.loc.gov/standards/iso639-2/php/code_list.php)
+* [IANA languages codes](http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry)
 
 
 ### Idioma por defecto
@@ -178,5 +178,5 @@ Por ejemplo, si se quisiera poner:
 
 **Más Info**
 
-* ['i18next'](http://i18next.com/pages/doc_jquery.html)
+* [i18Next](http://i18next.com/pages/doc_jquery.html)
 
