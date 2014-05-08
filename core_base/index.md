@@ -55,10 +55,10 @@ mode
 * Acceso: `app.common.mode`
 
 version
-: Establece la versión pública de la aplicación. Nos permite enviar la versión con la que se están generando las trazas para el logToServer.
+: Establece la versión pública de la aplicación. Nos permite enviar la versión con la que se están generando las trazas para el logToServer. Debería seguir las convenciones establecidas en [semver.org](http://semver.org/)
 
 * Tipo: String
-* Por defecto: `0.0`
+* Por defecto: `0.0.1`
 * Obligatorio: si
 * Acceso: `app.common.version`
 
@@ -66,7 +66,7 @@ appName
 : Establece el nombre interno de la aplicación web. Nos permite identificar qué aplicación realiza qué operaciones.
 
 * Tipo: String
-* Por defecto: `WEBAPP`
+* Por defecto: `corejs-app`
 * Obligatorio: no
 * Acceso: `app.common.appName`
 
