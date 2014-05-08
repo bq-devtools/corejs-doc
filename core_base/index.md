@@ -46,221 +46,36 @@ La aplicación tiene un documento de parámetros y constantes por defecto en el 
 
 A conitnuación se explican cada uno de los parámetros. 
 
-mode
-: Establece el entorno general de la aplicación, ofrece la oportunidad a los desarrolladores de cambiar el comportamiento de la aplicación dependiendo del entorno (formularios pre-cumplimentados, mocks, stubs, etc).
-
-* Tipo: String
-* Por defecto: undefined (producción)
-* Obligatorio: no
-* Acceso: `app.common.mode`
-
-version
-: Establece la versión pública de la aplicación. Nos permite enviar la versión con la que se están generando las trazas para el logToServer. Debería seguir las convenciones establecidas en [semver.org](http://semver.org/)
-
-* Tipo: String
-* Por defecto: `0.0.1`
-* Obligatorio: si
-* Acceso: `app.common.version`
-
-appName
-: Establece el nombre interno de la aplicación web. Nos permite identificar qué aplicación realiza qué operaciones.
-
-* Tipo: String
-* Por defecto: `corejs-app`
-* Obligatorio: no
-* Acceso: `app.common.appName`
-
-clientType
-: Establece el tipo de cliente. Normalmente se usa para backends que ofrecen servicios a diferentes tipos de cliente y cada uno puede tener necesidades específicas.
-
-* Tipo: String
-* Por defecto: `WEB`
-* Obligatorio: no
-* Acceso: `app.common.clientType`
-
-lang
-: Establece el idioma por defecto
-
-* Tipo: String
-* Por defecto: `es-ES`
-* Obligatorio: no
-* Acceso: `app.common.lang`
-
-logLevel
-: Establece el nivel de log que se desea registrar
-`0` - trace
-`1` - debug
-`2` - info
-`3` - warn
-`4` - error
-`5` - silent
-
-* Tipo: Integer
-* Por defecto: `0`
-* Obligatorio: no
-* Acceso: `app.log.getLevel()`
-
-logBuffer
-: Establece la cantidad de logs a almacenar hasta que se envía al servidor
-
-* Tipo: Integer
-* Por defecto: `10`
-* Obligatorio: no
-* Depende de: `logToServer`
-
-logToServer
-: Establece el nivel de log que se desea **enviar al servidor**
-`0` - trace
-`1` - debug
-`2` - info
-`3` - warn
-`4` - error
-`5` - silent
-
-* Tipo: Integer
-* Por defecto: `2`
-* Obligatorio: no
-
-logServerEndpoint
-: Establece la ruta del servidor a donde enviar los logs
-
-* Tipo: String
-* Por defecto: `endpoint/`
-* Obligatorio: no
-* Depende de: `logToServer`
-
-resourcesEndpoint
-: Establece la ruta base hasta los recursos del backend.
-
-* Tipo: String
-* Por defecto: ---
-* Obligatorio: si
-
-evciEndPoint
-: Establece la ruta base hasta el registro de eventos del backend.
-
-* Tipo: String
-* Por defecto: ---
-* Obligatorio: si
-
-ecEndpoint
-: Establece la ruta base hasta la gestión del E-Comerce del backend.
-
-* Tipo: String
-* Por defecto: ---
-* Obligatorio: si
-
-oauthEndpoint
-: Establece la ruta base hasta el servidor de OAuth para la autenticación.
-
-* Tipo: String
-* Por defecto: ---
-* Obligatorio: si
-
-oauthClientId
-: ClientId proporcionado por el proveedor del servicio de OAuth correspondiente.
-
-* Tipo: String
-* Por defecto: ---
-* Obligatorio: si
-
-oauthSecret
-: SecretId proporcionado por el proveedor del servicio de OAuth correspondiente.
-
-* Tipo: String
-* Por defecto: ---
-* Obligatorio: si
-
-oauthService
-: Nombre del servicio de OAuth.
-
-* Tipo: String
-* Por defecto: ---
-* Obligatorio: si
-
-iamEndpoint
-: Establece la ruta base hasta el servidor de IAM.
-
-* Tipo: String
-* Por defecto: ---
-* Obligatorio: si
-
-clientId
-: ClientId proporcionado por el proveedor del servicio de IAM.
-
-* Tipo: String
-* Por defecto: ---
-* Obligatorio: si
-
-clientSecret
-: SecretId proporcionado por el proveedor del servicio de IAM correspondiente.
-
-* Tipo: String
-* Por defecto: ---
-* Obligatorio: si
-
-claimAud
-: Valor de la variable `aud` para la generación del [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html).
-
-* Tipo: String
-* Por defecto: ---
-* Obligatorio: si
-
-claimGrantType
-: Valor de la variable `grant-type` para la generación del [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html).
-
-* Tipo: String
-* Por defecto: ---
-* Obligatorio: si
-
-claimScopes
-: Valor de la variable `scopes` para la generación del [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html) para una sesión anónima.
-
-* Tipo: String
-* Por defecto: ---
-* Obligatorio: si
-
-claimScopesUser
-: Valor de la variable `scopes` para la generación del [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html) para usuarios autenticados.
-
-* Tipo: String
-* Por defecto: ---
-* Obligatorio: si
-
-claimScopesRegister
-: Valor de la variable `scopes` para la generación del [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html) para registrar usuarios nuevos **En formato Array!**.
-
-* Tipo: String
-* Por defecto: ---
-* Obligatorio: si
-
-claimExp
-: Valor de la variable `exp` para la generación del [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html).
-
-* Tipo: Integer
-* Por defecto: 3500 (segundos)
-* Obligatorio: no
-
-grantType
-: Valor de la variable `grant-type` para la generación del [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html) para registrar usuarios nuevos.
-
-* Tipo: String
-* Por defecto: ---
-* Obligatorio: si
-
-jwtAlgorithm
-: Valor de la variable `alg` para la generación del [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html) para registrar usuarios nuevos.
-
-* Tipo: String
-* Por defecto: ---
-* Obligatorio: si
-
-autoTokenRefresh
-: Activa el autorefresco de token cuando una petición que requiere autenticación falla por `401`.
-
-* Tipo: Boolean
-* Por defecto: false
-* Obligatorio: no
+| Clave | Descripción | Tipo | Obligatorio |
+|-------|-------------|------|-------------|
+| `mode` | Establece el entorno general de la aplicación, ofrece la oportunidad a los desarrolladoresde cambiar el comportamiento de la aplicación dependiendo del entorno (formularios pre-cumplimentados, mocks, stubs, etc). | `String` | no |
+| `version` | Establece la versión pública de la aplicación. Nos permite enviar la versión con la que se están generando las trazas para el logToServer. Debería seguir las convenciones establecidas en [semver.org](http://semver.org/). | `String` (`0.0.1`) | **sí** |
+| `appName` | Establece el nombre interno de la aplicación web. Nos permite identificar qué aplicación realiza qué operaciones. | `String` (`corejs-app`) | no |
+| `clientType` | Establece el tipo de cliente. Normalmente se usa para backends que ofrecen servicios a diferentes tipos de cliente y cada uno puede tener necesidades específicas. | `String` (`WEB`) | no |
+| `lang` | Establece el idioma por defecto | `String` (`es-ES`) | no |
+| `logLevel` | Establece el nivel de log que se desea registrar: `0`: trace, `1`: debug, `2`: info, `3`: warn, `4`: error, `5`: silent | `Integer` (`0`) | no |
+| `logBuffer` | Establece la cantidad de logs a almacenar hasta que se envía al servidor | `Integer` (`10`) | no |
+| `logToServer` | Establece el nivel de log que se desea **enviar al servidor**: `0`: trace, `1`: debug, `2`: info, `3`: warn, `4`: error, `5`: silent | `Integer` (`2`) | no |
+| `logServerEndpoint` | Establece la ruta del servidor a donde enviar los logs | `String` (`endpoint/`) | no |
+| `resourcesEndpoint` | Establece la ruta base hasta los recursos del backend. | `String` | **sí** |
+| `evciEndPoint` | Establece la ruta base hasta el registro de eventos del backend. | `String` | **sí** |
+| `ecEndpoint` | Establece la ruta base hasta la gestión del E-Comerce del backend. | `String` | **sí** |
+| `oauthEndpoint` | Establece la ruta base hasta el servidor de OAuth para la autenticación. | `String` | **sí** |
+| `oauthClientId` | ClientId proporcionado por el proveedor del servicio de OAuth correspondiente. | `String` | **sí** |
+| `oauthSecret` | SecretId proporcionado por el proveedor del servicio de OAuth correspondiente. | `String` | **sí** |
+| `oauthService` | Nombre del servicio de OAuth. | `String` | **sí** |
+| `iamEndpoint` | Establece la ruta base hasta el servidor de IAM. | `String` | **sí** |
+| `clientId` | ClientId proporcionado por el proveedor del servicio de IAM. | `String` | **sí** |
+| `clientSecret` | SecretId proporcionado por el proveedor del servicio de IAM correspondiente. | `String` | **sí** |
+| `claimAud` | Valor de la variable `aud` para la generación del [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html). | `String` | **sí** |
+| `claimGrantType` | Valor de la variable `grant-type` para la generación del [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html). | `String` | **sí** |
+| `claimScopes` | Valor de la variable `scopes` para la generación del [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html) para una se**sión** anónima. | `String` | **sí** |
+| `claimScopesUser` | Valor de la variable `scopes` para la generación del [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html) para usuarios autenticados. | `String` | **sí** |
+| `claimScopesRegister` | Valor de la variable `scopes` para la generación del [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html) para registrar usuarios nuevos **En formato Array!**. | `String` | **sí** |
+| `claimExp` | Valor de la variable `exp` para la generación del [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html). | `Integer` (3500 (segundos)) | no |
+| `grantType` | Valor de la variable `grant-type` para la generación del [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html) para registrar usuarios nuevos. | `String` | **sí** |
+| `jwtAlgorithm` | Valor de la variable `alg` para la generación del [JWT](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html) para registrar usuarios nuevos. | `String` | **sí** |
+| `autoTokenRefresh` | Activa el autorefresco de token cuando una petición que requiere autenticación falla por `401`. | `Boolean` (false) | no |
 
 Además la aplicación se puede configurarse de varias formas, estableciendo los parámetros en el código a través de una variable global de configuración `CFG`, o en tiempo de ejecución a través del archivo `app/res/config/config.json`.
 

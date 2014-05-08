@@ -33,3 +33,6 @@ img.profile {
   	border-radius: 50px;
 }
 
+table td:nth-of-type(2) {
+	width: 45%;
+}
