@@ -556,25 +556,40 @@ Este componente de Marionette nos permite lanzar un evento en cualquier punto de
 Para registrarse a un evento en particular es necesario seguir el siguiente esquema:
 
 ```javascript
-app.vent.on("foo", function(){
-  console.log("foo event");
+// Inside views, layouts, models
+this.listenTo(app.vent, 'event:name', function() {
+  console.log('Event triggered');
 });
+
+
+// In other cases
+app.vent.on('event:name', function() {
+  console.log('Event triggered');
+});
+
 ```
 
 Entonces, desde cualquier otro punto de la aplicación, es posible lanzar el siguiente evento:
 
 ```javascript
-app.vent.trigger("foo");
+app.vent.trigger('event:name');
 ```
 
 Para lanzar eventos con parámetros es posible hacer lo siguiente:
 
 ```javascript
-app.vent.on("foo", function(args){
+// Inside views, layouts, models
+this.listenTo(app.vent, 'event:name', function(args) {
   console.log("foo event" + args.bar);
 });
 
-app.vent.trigger("foo", {bar: true});
+
+// In other cases
+app.vent.on('event:name', function(args) {
+  console.log("event:name" + args.bar);
+});
+
+app.vent.trigger('event:name', {bar: true});
 ```
 
 **Más info**
