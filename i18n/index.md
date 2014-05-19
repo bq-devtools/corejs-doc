@@ -8,8 +8,10 @@ I18n
 
 La aplicación tiene los recursos localizados en el directorio:
 
-```
+```bash
 ~/main/src/webapp/res/locales/[country]/locales.json
+~/main/src/webapp/res/locales/[country]/moment.js
+~/main/src/webapp/res/locales/[country]/numeral.js
 ```
 
 Donde `[country]` puede ser cualquiera de los siguientes ejemplos con el formato `languageCode-countryCode`:
@@ -61,6 +63,14 @@ app.locale.changed = function() {
 
 ### Formato para Textos
 
+* **locales.json**
+
+Los recursos donde se definen las claves para los textos siguen un formato `JSON` y deben de estar en el siguiente directorio:
+
+```
+~/main/src/webapp/res/locales/[country]/locales.json
+```
+
 Para la localización de textos se propone la siguiente convención de pares clave-valor:
 
 * Las claves irán en minúsculas, con las palabras separadas con el carácter `-`.
@@ -100,6 +110,10 @@ Para la localización de textos se propone la siguiente convención de pares cla
 		"info-message": "Tienes un mensaje",
 		"info-message_plural": "Tienes __numMensajes__ mensajes"
 	}
+	```
+	```javascript
+	$.t("info-message", { numMensajes:   0 }); // -> zero
+	$.t("info-message", { numMensajes:   1 }); // -> singular
 	```
 
 	La selección del texto apropiado se decide en tiempo de ejecución en función de la cantidad.
@@ -141,8 +155,8 @@ Por ejemplo, si se quisiera poner:
 	    "key2": "Escaped __name__"
 	}
 	 
-	i18n.t("key2", { name: '<tag>' }); // -> Escaped &lt;tag&gt;
-	i18n.t("key1", { name: '<tag>' }); // -> Not escaped <tag>
+	$.t("key2", { name: '<tag>' }); // -> Escaped &lt;tag&gt;
+	$.t("key1", { name: '<tag>' }); // -> Not escaped <tag></tag>
 	```
 
 **Más Info**
@@ -180,3 +194,134 @@ Por ejemplo, si se quisiera poner:
 
 * [i18Next](http://i18next.com/pages/doc_jquery.html)
 
+
+### Formato para Números
+
+Para formatear y operar con números, ya sean enteros, con decimales o con unidades métricas usaremos [Numeral.js](http://numeraljs.com/).
+
+* **numeral.js**
+
+Los recursos donde se definen las reglas para los formatos de números:
+
+```bash
+~/main/src/webapp/res/locales/[country]/numeral.js
+```
+
+Y debe seguir el siguiente formato de ejemplo para su correcta compilación:
+
+```javascript
+(function() {
+    'use strict';
+    var language = {
+        delimiters: {
+            thousands: ',',
+            decimal: '.'
+        },
+        abbreviations: {
+            thousand: 'k',
+            million: 'm',
+            billion: 'b',
+            trillion: 't'
+        },
+        ordinal: function(number) {
+            var b = number % 10;
+            return (~~(number % 100 / 10) === 1) ? 'th' :
+                (b === 1) ? 'st' :
+                (b === 2) ? 'nd' :
+                (b === 3) ? 'rd' : 'th';
+        },
+        currency: {
+            symbol: '£'
+        }
+    };
+    // same name as forlder lang-country code
+    numeral.language('en-GB', language);
+}());
+```
+
+Existen numerosos idiomas ya implementados dentro del componente numeral que se descarga bower.
+
+
+**Más Info**
+
+* [Numeral.js](http://numeraljs.com/)
+
+
+### Formato para Fechas
+
+Para formatear y operar con fechas y unidades de tiempo usaremos [Moment.js](http://momentjs.com/docs/#/displaying/).
+
+
+* **moment.js**
+
+Los recursos donde se definen las reglas para los formatos de números:
+
+```bash
+~/main/src/webapp/res/locales/[country]/moment.js
+```
+
+Y debe seguir el siguiente formato de ejemplo para su correcta compilación:
+
+```javascript
+(function() {
+
+    'use strict';
+    moment.lang('en-GB', {
+        months: 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_'),
+        monthsShort: 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_'),
+        weekdays: 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_'),
+        weekdaysShort: 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_'),
+        weekdaysMin: 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_'),
+        longDateFormat: {
+            LT: 'HH:mm',
+            L: 'DD/MM/YYYY',
+            LL: 'D MMMM YYYY',
+            LLL: 'D MMMM YYYY LT',
+            LLLL: 'dddd, D MMMM YYYY LT'
+        },
+        calendar: {
+            sameDay: '[Today at] LT',
+            nextDay: '[Tomorrow at] LT',
+            nextWeek: 'dddd [at] LT',
+            lastDay: '[Yesterday at] LT',
+            lastWeek: '[Last] dddd [at] LT',
+            sameElse: 'L'
+        },
+        relativeTime: {
+            future: 'in %s',
+            past: '%s ago',
+            s: 'a few seconds',
+            m: 'a minute',
+            mm: '%d minutes',
+            h: 'an hour',
+            hh: '%d hours',
+            d: 'a day',
+            dd: '%d days',
+            M: 'a month',
+            MM: '%d months',
+            y: 'a year',
+            yy: '%d years'
+        },
+        ordinal: function(number) {
+            var b = number % 10,
+                output = (~~(number % 100 / 10) === 1) ? 'th' :
+                    (b === 1) ? 'st' :
+                    (b === 2) ? 'nd' :
+                    (b === 3) ? 'rd' : 'th';
+            return number + output;
+        },
+        week: {
+            dow: 1, // Monday is the first day of the week.
+            doy: 4 // The week that contains Jan 4th is the first week of the year.
+        }
+    });
+
+}());
+```
+
+Existen numerosos idiomas ya implementados dentro del componente moment que se descarga bower.
+
+
+**Más Info**
+
+* [Moment.js](http://momentjs.com/docs/#/displaying/)
