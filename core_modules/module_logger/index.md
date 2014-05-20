@@ -26,13 +26,13 @@ app.log.debug('moduleName.method.message' [, ...]);
 
 * **Niveles de Log**
 Los errores ordenados de mayor a menor nivel son los siguientes:
-  * `SILENT`: Este nivel sirve para anular el log 
-  * `ERROR`: Muestra por consola los errores de la aplicación
-  * `WARN`: Muestra las alertas de la aplicación y mensajes de mayor nivel
-  * `INFO`: Muestra las trazas de información y mensajes de mayor nivel
-  * `DEBUG`: Muestra mensajes de depuración y mensajes de mayor nivel
-  * `TRACE`: Muestra trazas de desarrollo y mensajoes de mayor nivel
-  * `ALL`: Muestra todos los mensajes
+  * `SILENT`(`5`): Este nivel sirve para anular el log 
+  * `ERROR`(`4`): Muestra por consola los errores de la aplicación
+  * `WARN`(`3`): Muestra las alertas de la aplicación y mensajes de mayor nivel
+  * `INFO`(`2`): Muestra las trazas de información y mensajes de mayor nivel
+  * `DEBUG`(`1`): Muestra mensajes de depuración y mensajes de mayor nivel
+  * `TRACE`(`0`): Muestra trazas de desarrollo y mensajoes de mayor nivel
+  * `ALL`(`0`): Muestra todos los mensajes
 
 ```javascript
 app.log.setLevel(app.log.level.INFO);
@@ -55,15 +55,21 @@ El log tiene la capacidad de enviar cierta inforamción a un servidor específic
 
 ```javascript
 var config = {
-    logToServer: true,          // Para habilitar envío de datos al servidor
-    logBuffer: 10,              // Nº de trazas antes de enviar al servidor
-    logServerEndpoint: 'url'    // Ruta hasta el servidor que almacena logs
-    logLevel: app.log.level.WARN// Nivel de log a enviar
+    logToServer: app.log.level.INFO,  // Nivel de log mínimo a enviar al servidor
+    logBuffer: 10,                    // Nº de trazas antes de enviar al servidor
+    logServerEndpoint: 'url'          // Ruta hasta el servidor que almacena logs
+    logLevel: app.log.level.WARN      // Nivel de log mínimo a mostrar en cliente
 }
 app.log.setConfig(config);
 ```
 
-* **Nota**: Ala hora de construir los mensajes de log, hay que tener en cuenta que si el mensaje que se construye es complejo, es una buena práctica detectar el nivel de log establecido para evitar tener que construir mensajes innecesarios, por ejemplo:
+* **Integración con Silkroad**
+
+Si se utiliza el módulo evci de Silkroad, es necesario establecer en la configuración de la aplicación `res/config/config.json` la clave `evciEndpoint`.
+
+* **Recomendaciones**: 
+
+Ala hora de construir los mensajes de log, hay que tener en cuenta que si el mensaje que se construye es complejo, es una buena práctica detectar el nivel de log establecido para evitar tener que construir mensajes innecesarios, por ejemplo:
 
 ```javascript
 var complexLogMessageBuilder = function() {
