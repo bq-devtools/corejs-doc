@@ -33,6 +33,8 @@ Normalmente con tener los recursos separados por idioma es suficiente, pero a ve
 * [ISO countries codes](http://en.wikipedia.org/wiki/ISO_3166-1)
 * [ISO languages codes](http://www.loc.gov/standards/iso639-2/php/code_list.php)
 * [IANA languages codes](http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry)
+* [Google+ JS SDK supported langs](https://developers.google.com/+/web/api/supported-languages)
+* [Facebook JS SDK supported langs](https://www.facebook.com/translations/FacebookLocales.xml) [2](https://developers.facebook.com/docs/internationalization/#plugins)
 
 
 ### Idioma por defecto

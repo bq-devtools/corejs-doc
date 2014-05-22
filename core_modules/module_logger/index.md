@@ -65,7 +65,9 @@ app.log.setConfig(config);
 
 * **Integración con Silkroad**
 
-Si se utiliza el módulo evci de Silkroad, es necesario establecer en la configuración de la aplicación `res/config/config.json` la clave `evciEndpoint`.
+Si se integra con Silkroad, éste automáticamente sobreescribe el comportamiento para subir logs para que haga uso del módulo de `EVCI`, para ello, es necesario establecer en la configuración de la aplicación `res/config/config.json` la clave `evciEndpoint`.
+
+Opcionalmente, se puede definir un namespace donde estará disponible el log en `EVCI` estableciendo la variable de configuración `loggerNamespace` en `res/config/config.json`, en su defecto, `EVCI` usara el valor del campo `app.common.get('appName')`.
 
 * **Recomendaciones**: 
 
