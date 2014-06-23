@@ -125,7 +125,7 @@ Para ello hay que seguir los siguientes pasos:
 
 4. Arrancar la máquina virtual
 
-5. Activar Windows, ejecutando el comando `slmgr /ato``**como adminsitrador**.
+5. Activar Windows, ejecutando el comando `slmgr /ato` **como adminsitrador**.
 ![Activate](/assets/images/win-activate.png)
    * **Nota**: Es importante recordar que estas licencias Windows son válidas hasta un período de 90 días.
 
