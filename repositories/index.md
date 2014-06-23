@@ -6,6 +6,12 @@ layout: page
 
 Este proyecto está alojado en los siguientes repositorios **[GIT](http://git-scm.com/)**:
 
+* **[coreJS Doc](https://github.com/bq-devtools/corejs-doc)**
+El repositorio de esta misma documentación
+
+```bash
+git@github.com:bq-devtools/corejs-doc.git
+```
 
 * **coreJS Build**
 En este repositorio define el proceso de construcción y otras tareas automatizadas a través de **[Grunt](http://gruntjs.com/)**.

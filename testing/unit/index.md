@@ -4,11 +4,11 @@ layout: page
 
 
 
-Tests
-=====
+Testing
+=======
 
 Los test nos ayudan a asegurar la estabilidad de la aplicación.
-En este apartado describiremos cómo se desarrollan los tests unitarios.
+En este apartado describiremos cómo se desarrollan los tests unitarios e incluso los de integración
 
 Estructura del proyecto
 -----------------------
@@ -114,29 +114,10 @@ Además un buen conjunto de tests conprensibles, puede formar parte de la docume
 
 ### Comprobaciones ###
 
-Para realizar las comprobaciones pertinentes usaremos [chai](http://chaijs.com/), haciendo uso del verbo `expect` para tener un estilo orientado a TDD o BDD.
+Para realizar las comprobaciones pertinentes usaremos [chai](http://chaijs.com/) y [chai-as-promised](https://github.com/domenic/chai-as-promised/), haciendo uso del verbo `expect` para tener un estilo orientado a TDD o BDD.
 
 **Más info**
 
 * [chai](http://chaijs.com/api/bdd/)
+* [chai-as-promised](https://github.com/domenic/chai-as-promised/)
 
-Propuesta de Integración con QA
--------------------------------
-
-Esta propuesta trata de ofrecer una serie de convenciones por las cuales QA pueda conocer y acceder a los elementos interactuables de la aplicación, todo esto sin que afecte a la evolución de la capa de presentación.
-
-Para ello dejaremos las clases de HTML para los desarrollos de las hojas de estilos y definiremos una serie de etiquetas `data-*` de HTML5 para que QA conozca que partes de la interfaz le afectan en su trabajo.
-
-En particular se proponen los siguientes atributos:
-
-* `data-action`: El elemento reacciona a una acción específica, por ejemplo `toggle`, `hide`, `save`, ...
-* `data-target`: Es un elemento afectado en una acción en concreto, con el mismo nombre del action que lo provocó.
-* `data-rel`: Es un elemento/componente con significado propio, ayuda a establecer un contexto. Por ejemplo `modal`, `dropdown`.
-* `data-rel-id`: Es un elemento/componente único, con el fin de diferenciarse de los elementos o componentes comunes con un mismo data-rel.
-
-* **Ejemplo**
-
-```html
-<button data-action="toggle"></button>
-<div data-rel="modal" data-target="toggle">...</div>
-```
