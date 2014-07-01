@@ -29,8 +29,8 @@ Los test de Selenium se desarrollan en el siguiente proyecto:
 
 ```
 src/test/selenium
-├── testSuite.js 	// Declaración de todos los test a pasar
-└── spec			// Directorio donde se implementan los tests
+├── testSuite.js    // Declaración de todos los test a pasar
+└── spec            // Directorio donde se implementan los tests
     └── *.js
 ```
 
@@ -41,7 +41,8 @@ src/test/selenium
 'use strict';
 
 var assert = require('assert'),
-    common = require('grunt-corejs-build/lib/selenium/common.js');
+    common = require('grunt-corejs-build/lib/selenium/common.js'),
+    WAIT_TIMEOUT = 5000;
 
 describe('Google Search', function() {
 
@@ -68,7 +69,7 @@ describe('Google Search', function() {
             return driver.getTitle().then(function(title) {
                 return title.indexOf('webdriver') !== -1;
             });
-        }, common.WAIT_TIMEOUT).then(function() {
+        }, WAIT_TIMEOUT).then(function() {
             driver.findElement({name: 'q'}).getAttribute('value').then(function(value) {
                 assert.equal(value, 'webdriver');
                 done();
@@ -84,12 +85,25 @@ Es posible configurar los tests a través del archivo opcional `.selenium`
 
 ```bash
 {
-	# Browsers to run: chrome|firefox|safari|opera|ie
-	"browsers": ["ie", "chrome"],				
-	# Reporter file format, same as mocha reporters
-	"reporter": "xunit",							
-	# IP of machine with Selenium-Server at 4444 port, by default, localhost
-	"remote": "172.16.30.89"					
+    # Browsers to run: chrome|firefox|safari|opera|internet explorer
+    "browsers": {
+        "W7-chrome-34": {
+            "browserName": "chrome",
+            "platform": "Windows 7",
+            "version": "34"
+        },
+        "W7-firefox-19": {
+            "browserName": "firefox",
+            "platform": "Windows 7",
+            "version": "19"
+        }
+    },
+    # Reporter file format, same as mocha reporters
+    "reporter": "xunit",
+    # IP of the machine with Selenium-Server at 4444 port, by default, localhost
+    "remote": "172.16.30.89",
+    # Port of the machine with Selenium-Server, by default, 4444
+    "port": 4444
 }
 ```
 
@@ -102,13 +116,13 @@ grunt test:selenium
 El informe generado está disponible en los siguientes recursos:
 
 ```
-selenium-[browser].tap 	// Para el reporter TAP
-selenium-[browser].xml 	// Para el reporter XUNIT
-selenium-[browser].txt 	// Para el resto de reporters
+selenium-[browser].tap  // Para el reporter TAP
+selenium-[browser].xml  // Para el reporter XUNIT
+selenium-[browser].txt  // Para el resto de reporters
 ```
 
 
-### Ejecutar sobre una máquina virtual
+### Integración con VirtualBox
 
 
 La ejecución de los tests de Selenium en una máquina virtual nos permite probar nuestra aplicación en diferentes navegadores de diferentes sistemas operativos, sobre todo para el caso de Internet Explorer, que sólo está disponible en Windows.
@@ -126,34 +140,67 @@ Para ello hay que seguir los siguientes pasos:
 4. Arrancar la máquina virtual
 
 5. Activar Windows, ejecutando el comando `slmgr /ato` **como adminsitrador**.
-![Activate](/assets/images/win-activate.png)
-   * **Nota**: Es importante recordar que estas licencias Windows son válidas hasta un período de 90 días.
+    ![Activate](/assets/images/win-activate.png)
+    > * **Nota**: Es importante recordar que estas licencias Windows son válidas **hasta un período de 90 días**.
 
 6. Iniciar Git Bash
 
 7. Arrancar el Selenium Server y anotar la IP.
-	
-	```bash
-	cd code/corejs-app-boilerplate/corejs-app-boilerplate
-	grunt server:selenium --keepalive
-	```
+    
+    ```bash
+    cd code/corejs-app-boilerplate/corejs-app-boilerplate
+    grunt server:selenium --keepalive
+    ```
 
-	![SeleniumServer](/assets/images/selenium-server.png)
+    ![SeleniumServer](/assets/images/selenium-server.png)
 
-   * **Nota**: Esta IP sirve para establecerla como remote en el archivo `.selenium` en la maquina anfitriona, para que pueda arrancar los test en la VM.
+   > **Nota**: Esta IP sirve para establecerla como remote en el archivo `.selenium` en la maquina anfitriona, para que pueda arrancar los test en la VM.
+
+-----
+
+> **Notas**
+
+> * La máquina virtual tiene que tener el firewall desactivado.
+> * La máquina virtual debe tener una configuración de red de `Conexión Puente` o `Bridge`.
+> * Esta imagen a sido creada a partir de las imágenes proporcionadas por [modern.ie](http://loc.modern.ie/es-es/virtualization-tools), desde donde es posible descargar otras versiones de Windows/InternetExplorer para pruebas.
 
 
-**Notas**
+### Integración con SauceLabs
 
-* La máquina virtual tiene que tener el firewall desactivado.
-* La máquina virtual debe tener una configuración de red de `Conexión Puente` o `Bridge`.
-* Esta imagen a sido creada a partir de las imágenes proporcionadas por [modern.ie](http://loc.modern.ie/es-es/virtualization-tools), desde donde es posible descargar otras versiones de Windows/InternetExplorer para pruebas.
+SauceLabs es un servicio que permite ejecutar tests de Selnium de forma automática con numerosas combinaciones de SO-Navegador-Versión.
 
+Para hacer uso del servicio tendremos que tener una cuenta activa, y establecer los datos de acceso en el archivo de configuración `.selenium`:
 
-**Más info**
+```bash
+{
+    "browsers": {
+        "W7-chrome-34": {
+            "browserName": "chrome",
+            "platform": "Windows 7",
+            "version": "34"
+        },
+        "W7-firefox-19": {
+            "browserName": "firefox",
+            "platform": "Windows 7",
+            "version": "19"
+        }
+    },
+    "remote": "ondemand.saucelabs.com",
+    "port": 80,
+    "reporter": "xunit",
+    "user": "SAUCELABS_USERNAME",
+    "key": "SAUCELABS_KEY"
+}
+```
 
-* [testem](https://github.com/airportyh/testem)
-* [WebDriverJS](https://code.google.com/p/selenium/wiki/WebDriverJs)
-* [seleniumJS API](http://selenium.googlecode.com/git/docs/api/javascript/index.html)
-* [modern.ie](http://loc.modern.ie/es-es/virtualization-tools)
-* [InternetExplorerDriver](https://code.google.com/p/selenium/wiki/InternetExplorerDriver)
+> **Más info**
+
+> * [testem](https://github.com/airportyh/testem)
+> * [WebDriverJS](https://code.google.com/p/selenium/wiki/WebDriverJs)
+> * [seleniumJS API](http://selenium.googlecode.com/git/docs/api/javascript/index.html)
+> * [modern.ie](http://loc.modern.ie/es-es/virtualization-tools)
+> * [InternetExplorerDriver](https://code.google.com/p/selenium/wiki/InternetExplorerDriver)
+> * [SauceLabs available platforms](https://saucelabs.com/platforms)
+> * [Saucelabs Getting Started](https://saucelabs.com/docs/onboarding)
+> * [Sauce Connect](https://docs.saucelabs.com/reference/sauce-connect/)
+
