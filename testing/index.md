@@ -278,13 +278,21 @@ Para ello hay que seguir los siguientes pasos:
 
 1. Descargar e instalar [VirtualBox](https://www.virtualbox.org/).
 
-2. Descargar la imagen de Windows [Pendiente]
+2. Descargar la imagen de Windows **[Pendiente]**
+
+3. Descomprimir archivos, en linux:
+    
+    ```bash
+    sudo apt-get install unrar
+    unrar x W7_IE11.part01.rar
+    ```
 
 3. Agregar la máquina virtual descargada desde VirtualBox->Máquina->Agregar
 
 4. Arrancar la máquina virtual
 
 5. Activar Windows, ejecutando el comando `slmgr /ato` **como adminsitrador**.
+
     ![Activate](/assets/images/win-activate.png)
     > * **Nota**: Es importante recordar que estas licencias Windows son válidas **hasta un período de 90 días**.
 
