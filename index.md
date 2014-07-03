@@ -52,7 +52,7 @@ layout: index
 		</div>
 		<div class="col-sm-6 claims-text">
 			<h3>Tareas automatizadas</h3>
-			<p>Gracias a las tareas automatizadas de construcción, optimización, testing y otros que incorpora, es posible realizar tareas complejas con simples comandos que pueden adaptarse y automatizarse fácilmmente para cualquier workflow.</p>
+			<p>Gracias a las tareas automatizadas de construcción, optimización, testing y otros que incorpora, es posible realizar tareas complejas con simples comandos que pueden adaptarse y automatizarse fácilmente a cualquier workflow.</p>
 		</div>
 	</div>
 </section>
