@@ -206,7 +206,6 @@ blockquote {
 
 blockquote p {
     margin: 0.8em 0;
-    font-style: italic;
 }
 
 blockquote small {
@@ -411,9 +410,9 @@ margin on the iframe, cause it breaks stuff. */
 .post {
     position: relative;
     width:80%;
-    max-width: 700px;
-    margin: 4rem auto;
-    padding-bottom: 4rem;
+    background-color: #fff;
+    padding: 5px 40px 4rem 40px;
+    margin: 0 auto 4rem auto;
     border-bottom: #EBF2F6 1px solid;
     word-break: break-word;
     hyphens: auto;
@@ -687,6 +686,10 @@ margin on the iframe, cause it breaks stuff. */
 
 .site-footer a:hover {
     color: #50585D;
+}
+
+.site-footer-sidebar {
+    margin-left: 300px;
 }
 
 .poweredby .icon-ghost {

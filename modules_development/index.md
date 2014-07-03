@@ -1,10 +1,8 @@
 ---
-layout: page
+layout: doc
 ---
 
-Desarrollo de Módulos
-=====================
-
+# Desarrollo de Módulos
 
 
 El objetivo de los módulos es la de contener los recursos necesarios que definan una funcionalidad, comportamiento o componente completo, de tal forma que sea un paquete coherente y cohesionado, pero a la vez, poco acoplado con respecto al resto de módulos, asegurando la escalabilidad y la mantenibilidad de la aplicación.
@@ -108,9 +106,9 @@ app.addInitializer(function() {
 });
 ```
 
-**Más info**
+> **Más info**
 
-* [Backbone.Model](http://backbonejs.org/#Model)
+> * [Backbone.Model](http://backbonejs.org/#Model)
 
 
 ### Creación de vistas ###
@@ -144,9 +142,9 @@ Los templates deben ubicarse en el directorio de `templates` de cada módulo, pu
 
 Existen 2 tipos de vistas, `ItemView` y `CollectionView`, ambos incluidos en Marionette.
 
-**Más info**
+> **Más info**
 
-* [Handlebars](http://handlebarsjs.com/).
+> * [Handlebars](http://handlebarsjs.com/).
 
 #### ItemView ####
 
@@ -198,20 +196,20 @@ Por último, para renderizar una vista, puede hacerse de 2 maneras principalment
 
 * En una región
 
-```javascript
-app.regionName.show(app.factory.new('MyView'));
-```
+    ```javascript
+    app.regionName.show(app.factory.new('MyView'));
+    ```
 
 * De forma explícita
 
-```javascript
-var myView = app.factory.new('MyView');
-$('body').html(myView.render().el);
-```
+    ```javascript
+    var myView = app.factory.new('MyView');
+    $('body').html(myView.render().el);
+    ```
 
-**Mas info**
+> **Mas info**
 
-* [Marionette.ItemView](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.itemview.md)
+> * [Marionette.ItemView](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.itemview.md)
 
 #### CollectionView ####
 
@@ -255,10 +253,10 @@ Este tipo de vistas se dan de alta en la factoría y se renderizan exactamente i
 
 Este tipo de componente conviene utilizarlo cuando se desea renderizar un componente repetidas veces, pero que además, queramos implementar funcionalidades que afecten a la colección completa.
 
-**Más info**
+> **Más info**
 
-* [Backbone.Collection](http://backbonejs.org/#Collection)
-* [Marionette.CollectionView](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.collectionview.md)
+> * [Backbone.Collection](http://backbonejs.org/#Collection)
+> * [Marionette.CollectionView](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.collectionview.md)
 
 ### Creación de Layouts ###
 
@@ -306,10 +304,10 @@ myLayout.content.show(app.factory.new('MyView'));
 Se pueden anidar tantos layouts como sean necesarios.
 
 
-**Más info**
+> **Más info**
 
-* [Marionette.Region](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.region.md)
-* [Marionette.Layout](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.layout.md)
+> * [Marionette.Region](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.region.md)
+> * [Marionette.Layout](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.layout.md)
 
 ### Controllers ###
 
@@ -364,11 +362,11 @@ define([
 });
 ```
 
-**Más info**
+> **Más info**
 
-* [Backbone.Router](http://backbonejs.org/#Router)
+> * [Backbone.Router](http://backbonejs.org/#Router)
 
-### Extender una Vista|Modelo|Colección
+### Extender una Vista-Modelo-Colección
 
 Es posible extender cualquier otro componente accesible desde la factoría a través del `app.factory.get()`, de la forma que se muestra a continuación:
 
@@ -542,7 +540,7 @@ Las configuraciones de todos los módulos se compilan en un único fichero en la
 ```javascript
 var config = app.modulesConfig.get('moduleName'[, modelName]);
 ```
-* **Nota**: Es posible obtener directamente un tipo específico de `Backbone.Model`, si se establece el nombre del modelo en el parámetro `modelName` (debe de ser el mismo nombre con el que se dió de alta en la factoría).
+> **Nota**: Es posible obtener directamente un tipo específico de `Backbone.Model`, si se establece el nombre del modelo en el parámetro `modelName` (debe de ser el mismo nombre con el que se dió de alta en la factoría).
 
 
 ## Comunicación entre Módulos ##
@@ -592,9 +590,9 @@ app.vent.on('event:name', function(args) {
 app.vent.trigger('event:name', {bar: true});
 ```
 
-**Más info**
+> **Más info**
 
-* [Marionette.Application](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.application.md)
+> * [Marionette.Application](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.application.md)
 
 ### RequestResponse ###
 
@@ -611,9 +609,9 @@ console.log(result);
 
 Al igual que con `EventAggregator`, es posible pasar parámetros con la petición.
 
-**Más info**
+> **Más info**
 
-* [Marionette.RequestResponse](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.requestresponse.md)
+> * [Marionette.RequestResponse](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.requestresponse.md)
 
 ### Commands ###
 
@@ -627,6 +625,6 @@ app.commands.setHandler("foo", function(bar){
 app.execute("foo", "baz");
 ```
 
-**Más info**
+> **Más info**
 
-* [Marionette.Commands](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.commands.md)
+> * [Marionette.Commands](https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.commands.md)

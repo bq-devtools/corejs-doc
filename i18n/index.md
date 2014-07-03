@@ -1,10 +1,10 @@
 ---
-layout: page
+layout: doc
 ---
 
 
-I18n
-====
+# I18n
+
 
 La aplicación tiene los recursos localizados en el directorio:
 
@@ -28,13 +28,13 @@ en-US 	// Inglés Estados Unidos
 
 Normalmente con tener los recursos separados por idioma es suficiente, pero a veces es interesante también separarlo por país cuando el contenido internacionalizable es diferente entre los paises con un mismo idioma, por ejemplo, con los cambios de moneda, fechas y palabras/expresiones locales.
 
-**Más Info**
+> **Más Info**
 
-* [ISO countries codes](http://en.wikipedia.org/wiki/ISO_3166-1)
-* [ISO languages codes](http://www.loc.gov/standards/iso639-2/php/code_list.php)
-* [IANA languages codes](http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry)
-* [Google+ JS SDK supported langs](https://developers.google.com/+/web/api/supported-languages)
-* [Facebook JS SDK supported langs](https://www.facebook.com/translations/FacebookLocales.xml) [2](https://developers.facebook.com/docs/internationalization/#plugins)
+> * [ISO countries codes](http://en.wikipedia.org/wiki/ISO_3166-1)
+> * [ISO languages codes](http://www.loc.gov/standards/iso639-2/php/code_list.php)
+> * [IANA languages codes](http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry)
+> * [Google+ JS SDK supported langs](https://developers.google.com/+/web/api/supported-languages)
+> * [Facebook JS SDK supported langs](https://www.facebook.com/translations/FacebookLocales.xml) [2](https://developers.facebook.com/docs/internationalization/#plugins)
 
 
 ### Idioma por defecto
@@ -67,103 +67,103 @@ app.locale.changed = function() {
 
 * **locales.json**
 
-Los recursos donde se definen las claves para los textos siguen un formato `JSON` y deben de estar en el siguiente directorio:
+	Los recursos donde se definen las claves para los textos siguen un formato `JSON` y deben de estar en el siguiente directorio:
 
-```
-~/main/src/webapp/res/locales/[country]/locales.json
-```
-
-Para la localización de textos se propone la siguiente convención de pares clave-valor:
-
-* Las claves irán en minúsculas, con las palabras separadas con el carácter `-`.
-
-	```json
-	{
-		"key-with-multiple-words": "Locale string content"
-	}
+	```
+	~/main/src/webapp/res/locales/[country]/locales.json
 	```
 
-* Textos con parámetros:
+	Para la localización de textos se propone la siguiente convención de pares clave-valor:
 
-	```javascript
-	// Given resources
-	{
-		"welcome_male": "Bienvenido __name__ __surnames__"
-	}
+	* Las claves irán en minúsculas, con las palabras separadas con el carácter `-`.
 
-	$.t('welcome_male', {name: 'Juan', surnames: 'Pérez'});
-	```
+		```json
+		{
+			"key-with-multiple-words": "Locale string content"
+		}
+		```
 
-* Las claves irán precedidas por el tipo de mensaje (error, alerta, acción) cuando proceda:
+	* Textos con parámetros:
 
-	```json
-	{
-		"error-field-required": "Error campo obligatorio",
-		"info-value-too-high": "Valor demasiado alto",
-		"action-save": "Guardar"
-	}
-	```
+		```javascript
+		// Given resources
+		{
+			"welcome_male": "Bienvenido __name__ __surnames__"
+		}
 
+		$.t('welcome_male', {name: 'Juan', surnames: 'Pérez'});
+		```
 
-* Para textos que se vean afectados por la pluralización es necesaio definir 2 claves, uno de ellos con el sufijo `_plural`:
+	* Las claves irán precedidas por el tipo de mensaje (error, alerta, acción) cuando proceda:
 
-	```json
-	{
-		"info-message": "Tienes un mensaje",
-		"info-message_plural": "Tienes __numMensajes__ mensajes"
-	}
-	```
-	```javascript
-	$.t("info-message", { numMensajes:   0 }); // -> zero
-	$.t("info-message", { numMensajes:   1 }); // -> singular
-	```
-
-	La selección del texto apropiado se decide en tiempo de ejecución en función de la cantidad.
-	Es posible tener mayor control sobre los plurales siguiendo el siguiente formato:
-
-	```json
-	{
-		"key_plural_0": "zero",
-		"key_plural_2": "two",
-		"key_plural_3": "few",
-		"key_plural_11": "many",
-		"key_plural_100": "plural"
-	}
-	```
+		```json
+		{
+			"error-field-required": "Error campo obligatorio",
+			"info-value-too-high": "Valor demasiado alto",
+			"action-save": "Guardar"
+		}
+		```
 
 
-* Para los textos que se vean afectados por un contexto (por ejemplo, el género), tendrán el siguiente formato:
+	* Para textos que se vean afectados por la pluralización es necesaio definir 2 claves, uno de ellos con el sufijo `_plural`:
 
-	```javascript
-	{
-		"friend": "A friend",
-		"friend_male": "A boyfriend",
-		"friend_female": "A girlfriend"
-	}
+		```json
+		{
+			"info-message": "Tienes un mensaje",
+			"info-message_plural": "Tienes __numMensajes__ mensajes"
+		}
+		```
+		```javascript
+		$.t("info-message", { numMensajes:   0 }); // -> zero
+		$.t("info-message", { numMensajes:   1 }); // -> singular
+		```
 
-	$.t("friend"); // -> A friend
-	$.t("friend", { context: 'male' }); // -> A boyfriend
-	$.t("friend", { context: 'female' }); // -> A girlfriend
-	```
+		La selección del texto apropiado se decide en tiempo de ejecución en función de la cantidad.
+		Es posible tener mayor control sobre los plurales siguiendo el siguiente formato:
 
-	En este caso, el contexto es el género, y puede tomar los siguientes valores: '', 'male', 'female'.
+		```json
+		{
+			"key_plural_0": "zero",
+			"key_plural_2": "two",
+			"key_plural_3": "few",
+			"key_plural_11": "many",
+			"key_plural_100": "plural"
+		}
+		```
 
-* Si el valor lleva código html, será necesario poner el sufijo `HTML__` en las variables sin escapar:
-Por ejemplo, si se quisiera poner:
 
-	```javascript
-	}
-		"key1": "Not escaped __nameHTML__",
-	    "key2": "Escaped __name__"
-	}
-	 
-	$.t("key2", { name: '<tag>' }); // -> Escaped &lt;tag&gt;
-	$.t("key1", { name: '<tag>' }); // -> Not escaped <tag></tag>
-	```
+	* Para los textos que se vean afectados por un contexto (por ejemplo, el género), tendrán el siguiente formato:
 
-**Más Info**
+		```javascript
+		{
+			"friend": "A friend",
+			"friend_male": "A boyfriend",
+			"friend_female": "A girlfriend"
+		}
 
-* [i18Next](http://i18next.com/pages/doc_features.html)
+		$.t("friend"); // -> A friend
+		$.t("friend", { context: 'male' }); // -> A boyfriend
+		$.t("friend", { context: 'female' }); // -> A girlfriend
+		```
+
+		En este caso, el contexto es el género, y puede tomar los siguientes valores: '', 'male', 'female'.
+
+	* Si el valor lleva código html, será necesario poner el sufijo `HTML__` en las variables sin escapar:
+	Por ejemplo, si se quisiera poner:
+
+		```javascript
+		}
+			"key1": "Not escaped __nameHTML__",
+		    "key2": "Escaped __name__"
+		}
+		 
+		$.t("key2", { name: '<tag>' }); // -> Escaped &lt;tag&gt;
+		$.t("key1", { name: '<tag>' }); // -> Not escaped <tag></tag>
+		```
+
+> **Más Info**
+
+> * [i18Next](http://i18next.com/pages/doc_features.html)
 
 
 #### Integración en Templates
@@ -174,7 +174,7 @@ Por ejemplo, si se quisiera poner:
 	<a id="btn1" href="#" data-i18n="localized-text-key"></a>
 	```
 
-	el contenido de `localized-text-key` aparecerá dentro de la etiqueta `<a></a>`;
+	El contenido de `localized-text-key` aparecerá dentro de la etiqueta `<a></a>`;
 
 * Añadir (al principio o final) del texto al contenido de un tag HTML
 
@@ -192,9 +192,9 @@ Por ejemplo, si se quisiera poner:
 	* El texto asociado a `[html]` aparecerá dentro del tag asocuado.
 	* El texto asociado a `[data-attribute]` aparecerá en el atributo `data-attribute`.
 
-**Más Info**
+> **Más Info**
 
-* [i18Next](http://i18next.com/pages/doc_jquery.html)
+> * [i18Next](http://i18next.com/pages/doc_jquery.html)
 
 
 ### Formato para Números
@@ -203,50 +203,50 @@ Para formatear y operar con números, ya sean enteros, con decimales o con unida
 
 * **numeral.js**
 
-Los recursos donde se definen las reglas para los formatos de números:
+	Los recursos donde se definen las reglas para los formatos de números:
 
-```bash
-~/main/src/webapp/res/locales/[country]/numeral.js
-```
+	```bash
+	~/main/src/webapp/res/locales/[country]/numeral.js
+	```
 
-Y debe seguir el siguiente formato de ejemplo para su correcta compilación:
+	Y debe seguir el siguiente formato de ejemplo para su correcta compilación:
 
-```javascript
-(function() {
-    'use strict';
-    var language = {
-        delimiters: {
-            thousands: ',',
-            decimal: '.'
-        },
-        abbreviations: {
-            thousand: 'k',
-            million: 'm',
-            billion: 'b',
-            trillion: 't'
-        },
-        ordinal: function(number) {
-            var b = number % 10;
-            return (~~(number % 100 / 10) === 1) ? 'th' :
-                (b === 1) ? 'st' :
-                (b === 2) ? 'nd' :
-                (b === 3) ? 'rd' : 'th';
-        },
-        currency: {
-            symbol: '£'
-        }
-    };
-    // same name as forlder lang-country code
-    numeral.language('en-GB', language);
-}());
-```
+	```javascript
+	(function() {
+	    'use strict';
+	    var language = {
+	        delimiters: {
+	            thousands: ',',
+	            decimal: '.'
+	        },
+	        abbreviations: {
+	            thousand: 'k',
+	            million: 'm',
+	            billion: 'b',
+	            trillion: 't'
+	        },
+	        ordinal: function(number) {
+	            var b = number % 10;
+	            return (~~(number % 100 / 10) === 1) ? 'th' :
+	                (b === 1) ? 'st' :
+	                (b === 2) ? 'nd' :
+	                (b === 3) ? 'rd' : 'th';
+	        },
+	        currency: {
+	            symbol: '£'
+	        }
+	    };
+	    // same name as forlder lang-country code
+	    numeral.language('en-GB', language);
+	}());
+	```
 
-Existen numerosos idiomas ya implementados dentro del componente numeral que se descarga bower.
+	Existen numerosos idiomas ya implementados dentro del componente numeral que se descarga bower.
 
 
-**Más Info**
+> **Más Info**
 
-* [Numeral.js](http://numeraljs.com/)
+> * [Numeral.js](http://numeraljs.com/)
 
 
 ### Formato para Fechas
@@ -256,74 +256,74 @@ Para formatear y operar con fechas y unidades de tiempo usaremos [Moment.js](htt
 
 * **moment.js**
 
-Los recursos donde se definen las reglas para los formatos de números:
+	Los recursos donde se definen las reglas para los formatos de números:
 
-```bash
-~/main/src/webapp/res/locales/[country]/moment.js
-```
+	```bash
+	~/main/src/webapp/res/locales/[country]/moment.js
+	```
 
-Y debe seguir el siguiente formato de ejemplo para su correcta compilación:
+	Y debe seguir el siguiente formato de ejemplo para su correcta compilación:
 
-```javascript
-(function() {
+	```javascript
+	(function() {
 
-    'use strict';
-    moment.lang('en-GB', {
-        months: 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_'),
-        monthsShort: 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_'),
-        weekdays: 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_'),
-        weekdaysShort: 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_'),
-        weekdaysMin: 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_'),
-        longDateFormat: {
-            LT: 'HH:mm',
-            L: 'DD/MM/YYYY',
-            LL: 'D MMMM YYYY',
-            LLL: 'D MMMM YYYY LT',
-            LLLL: 'dddd, D MMMM YYYY LT'
-        },
-        calendar: {
-            sameDay: '[Today at] LT',
-            nextDay: '[Tomorrow at] LT',
-            nextWeek: 'dddd [at] LT',
-            lastDay: '[Yesterday at] LT',
-            lastWeek: '[Last] dddd [at] LT',
-            sameElse: 'L'
-        },
-        relativeTime: {
-            future: 'in %s',
-            past: '%s ago',
-            s: 'a few seconds',
-            m: 'a minute',
-            mm: '%d minutes',
-            h: 'an hour',
-            hh: '%d hours',
-            d: 'a day',
-            dd: '%d days',
-            M: 'a month',
-            MM: '%d months',
-            y: 'a year',
-            yy: '%d years'
-        },
-        ordinal: function(number) {
-            var b = number % 10,
-                output = (~~(number % 100 / 10) === 1) ? 'th' :
-                    (b === 1) ? 'st' :
-                    (b === 2) ? 'nd' :
-                    (b === 3) ? 'rd' : 'th';
-            return number + output;
-        },
-        week: {
-            dow: 1, // Monday is the first day of the week.
-            doy: 4 // The week that contains Jan 4th is the first week of the year.
-        }
-    });
+	    'use strict';
+	    moment.lang('en-GB', {
+	        months: 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_'),
+	        monthsShort: 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_'),
+	        weekdays: 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_'),
+	        weekdaysShort: 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_'),
+	        weekdaysMin: 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_'),
+	        longDateFormat: {
+	            LT: 'HH:mm',
+	            L: 'DD/MM/YYYY',
+	            LL: 'D MMMM YYYY',
+	            LLL: 'D MMMM YYYY LT',
+	            LLLL: 'dddd, D MMMM YYYY LT'
+	        },
+	        calendar: {
+	            sameDay: '[Today at] LT',
+	            nextDay: '[Tomorrow at] LT',
+	            nextWeek: 'dddd [at] LT',
+	            lastDay: '[Yesterday at] LT',
+	            lastWeek: '[Last] dddd [at] LT',
+	            sameElse: 'L'
+	        },
+	        relativeTime: {
+	            future: 'in %s',
+	            past: '%s ago',
+	            s: 'a few seconds',
+	            m: 'a minute',
+	            mm: '%d minutes',
+	            h: 'an hour',
+	            hh: '%d hours',
+	            d: 'a day',
+	            dd: '%d days',
+	            M: 'a month',
+	            MM: '%d months',
+	            y: 'a year',
+	            yy: '%d years'
+	        },
+	        ordinal: function(number) {
+	            var b = number % 10,
+	                output = (~~(number % 100 / 10) === 1) ? 'th' :
+	                    (b === 1) ? 'st' :
+	                    (b === 2) ? 'nd' :
+	                    (b === 3) ? 'rd' : 'th';
+	            return number + output;
+	        },
+	        week: {
+	            dow: 1, // Monday is the first day of the week.
+	            doy: 4 // The week that contains Jan 4th is the first week of the year.
+	        }
+	    });
 
-}());
-```
+	}());
+	```
 
-Existen numerosos idiomas ya implementados dentro del componente moment que se descarga bower.
+	Existen numerosos idiomas ya implementados dentro del componente moment que se descarga bower.
 
 
-**Más Info**
+> **Más Info**
 
-* [Moment.js](http://momentjs.com/docs/#/displaying/)
+> * [Moment.js](http://momentjs.com/docs/#/displaying/)
