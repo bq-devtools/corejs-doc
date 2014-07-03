@@ -340,6 +340,7 @@ Para hacer uso del servicio tendremos que tener una cuenta activa, y establecer 
 
 > **Más info**
 
+> * [coreJS Selenium Testing workshop resources](https://github.com/anthanh/corejs_selenium_workshop)
 > * [testem](https://github.com/airportyh/testem)
 > * [WebDriverJS](https://code.google.com/p/selenium/wiki/WebDriverJs)
 > * [seleniumJS API](http://selenium.googlecode.com/git/docs/api/javascript/index.html)
