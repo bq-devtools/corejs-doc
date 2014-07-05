@@ -278,7 +278,13 @@ Para ello hay que seguir los siguientes pasos:
 
 1. Descargar e instalar [VirtualBox](https://www.virtualbox.org/).
 
-2. Descargar la imagen de Windows **[Pendiente]**
+2. Descargar la imagen de Windows
+    
+    * [parte 1](https://s3-eu-west-1.amazonaws.com/selenium-vms/win7_ie11/W7_IE11.part01.rar)
+    * [parte 2](https://s3-eu-west-1.amazonaws.com/selenium-vms/win7_ie11/W7_IE11.part02.rar)
+    * [parte 3](https://s3-eu-west-1.amazonaws.com/selenium-vms/win7_ie11/W7_IE11.part03.rar)
+    * [parte 4](https://s3-eu-west-1.amazonaws.com/selenium-vms/win7_ie11/W7_IE11.part04.rar)
+    * [parte 5](https://s3-eu-west-1.amazonaws.com/selenium-vms/win7_ie11/W7_IE11.part05.rar)
 
 3. Descomprimir archivos, en linux:
     
