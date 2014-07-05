@@ -15,14 +15,17 @@ h4 {
     color: #336699;
     /*display: inline-block;*/
 }
-
 .logo .logo-js {
     color: white;
 }
-
 /**
  * HOME
  */
+@media only screen and (max-width: 900px) {
+    .site-head {
+        padding-top: 170px;
+    }
+}
  .site-head {
     padding-top: 90px;
     margin-bottom: 0px;
@@ -33,44 +36,35 @@ h4 {
 .site-head .subtitle {
     font-size: 25px;
 }
-
 .site-head .logo .logo-text {
     font-size: 46px;
 }
-
 .claims {
     padding-top: 2em;
     padding-bottom: 2em;
 }
-
 .claims:nth-child(7) .container {
     /*background-color: #336699;*/
     border-top: 1px solid #bbb;
 }
-
-@media (min-width:992px) {
-    .claims .claims-text {
-        margin-top: 5%;
+@media (max-width: 767px) {
+    .claims {
+        text-align: center;
     }
 }
-
 .claims.claims-slides {
     text-align: center;
 }
-
 .claims .container {
     margin-bottom: 0;
 }
-
 .claims img {
-    max-height: 15em;
-    max-width: 24em;
+    max-height: 90%;
+    max-width: 90%;
 }
-
 .claims h3 {
     margin-top: 0px;
 }
-
 /* The font is too large in the post view. Revert to small size*/
  .post-header .blog-title {
     font-size:inherit;
@@ -158,13 +152,14 @@ blockquote {
     background: #336699;
     /*box-shadow: inset -5px 0px 10px -5px #000;*/
 }
-.site-head {
-}
+
 /**
  * POST
  */
-.content-doc {
-    margin-left: 250px;
+@media (min-width: 768px) {
+    .content-doc {
+        margin-left: 250px;
+    }
 }
 .content-doc .post img {
     max-width: 80%;
@@ -173,27 +168,21 @@ blockquote {
 .content-doc+.site-footer {
     margin-left: 250px;
 }
-
-
 /**
  * MENU
  */
-
-.doc-title {
+ .doc-title {
     margin-left: 6%;
 }
-
 .main_item {
     text-align: center;
     padding: 20px 0px 20px 0px;
     border-radius: 5px;
 }
-
 .main_item i {
     color: #303538;
     font-size: 7em;
 }
-
 .main_item span {
     color: #303538;
     display: block;
@@ -205,12 +194,10 @@ blockquote {
 .main_item:hover {
     background-color: #eee;
 }
-
 /**
  * NAVBAR
  */
-
-.nav {
+ .nav {
     position: fixed;
     z-index: 1;
     width: 100%;
@@ -218,36 +205,36 @@ blockquote {
     padding-left: 50px;
     border-top: 5px solid #336699;
 }
-
 .nav h1 {
     color: #fff;
     margin: 0px;
     display: inline-block;
 }
-
 .nav__logo {
     font-size: 25px;
     font-weight: bold;
+    float: left;
 }
-
 .nav__logo span {
     color: #eee;
 }
-
 .nav__logo img {
     width: 45px;
 }
 .nav__logo:hover {
     text-decoration: none;
 }
-
 .nav__menu {
+    float: left;
     padding: 0;
     margin: 0;
     display: inline-block;
     margin-left: 63px;
 }
-
+.nav__menu--mobile {
+    float: right;
+    margin-top: 10px;
+}
 .nav .nav__menu__link, .nav .nav__submenu__link {
     line-height: 3.5em;
     color: #fff;
@@ -258,19 +245,15 @@ blockquote {
     text-decoration: none;
     background-color: #336699;
 }
-
 .nav__menu__item {
     display: inline-block;
 }
-
 .nav__menu__item, .nav__submenu__item {
     list-style: none;
 }
-
 .nav__menu__item:hover .nav__submenu {
     display: block;
 }
-
 .nav__submenu {
     background-color: #303538;
     position: absolute;
@@ -279,4 +262,3 @@ blockquote {
     padding: 0;
     z-index: 1;
 }
-

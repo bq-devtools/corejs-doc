@@ -14,21 +14,21 @@ layout: index
 
 <section class="row claims">
 	<div class="container">
-		<div class="col-sm-6 claims-text">
+		<div class="col-sm-4 col-sm-push-2 claims-text">
 			<h3>El stack más completo para tu webapp</h3>
 			<p>Formado por librerías y tecnologías probadas en aplicaciones y servicios web actuales.</p>
 		</div>
-		<div class="col-sm-6">
+		<div class="col-sm-4 col-sm-push-2">
 			<img src="/assets/images/stack.png" alt="coreJS slides" />
 		</div>
 	</div>
 </section>
 <section class="row claims">
 	<div class="container">
-		<div class="col-sm-6 col-sm-push-1">
+		<div class="col-sm-4 col-sm-push-2">
 			<img src="/assets/images/modular.png" alt="coreJS slides" />
 		</div>
-		<div class="col-sm-6 claims-text">
+		<div class="col-sm-4 col-sm-push-2 claims-text">
 			<h3>Diseñado de forma modular</h3>
 			<p>Incorpora a tu proyecto aquellos módulos que aporten la funcionalidad que necesita tu webapp, integración con redes sociales, componentes gráficos, o desarrolla los tuyos propios.</p>
 		</div>
@@ -36,21 +36,21 @@ layout: index
 </section>
 <section class="row claims">
 	<div class="container">
-		<div class="col-sm-6 claims-text">
+		<div class="col-sm-4 col-sm-push-2 claims-text">
 			<h3>Pruebas, pruebas, pruebas!</h3>
 			<p>Incorpora todas las herramientas y tecnologías para desarrollar tus test unitarios, integración y funcionales con Mocha, SinonJS y Selenium ya sea en local o contra SauceLabs.</p>
 		</div>
-		<div class="col-sm-6">
+		<div class="col-sm-4 col-sm-push-2">
 			<img src="/assets/images/test.png" alt="coreJS slides" />
 		</div>
 	</div>
 </section>
 <section class="row claims">
 	<div class="container">
-		<div class="col-sm-6 col-sm-push-2">
+		<div class="col-sm-4 col-sm-push-2">
 			<img src="/assets/images/grunt.png" alt="coreJS slides" />
 		</div>
-		<div class="col-sm-6 claims-text">
+		<div class="col-sm-4 col-sm-push-2 claims-text">
 			<h3>Tareas automatizadas</h3>
 			<p>Gracias a las tareas automatizadas de construcción, optimización, testing y otros que incorpora, es posible realizar tareas complejas con simples comandos que pueden adaptarse y automatizarse fácilmente a cualquier workflow.</p>
 		</div>
