@@ -220,6 +220,7 @@ blockquote {
 }
 .nav__logo img {
     width: 45px;
+    margin-right: 10px;
 }
 .nav__logo:hover {
     text-decoration: none;
