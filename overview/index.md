@@ -859,7 +859,7 @@ Por defecto incorpora los siguientes polyfills: `localStorage`, `sessionStorage`
 
 coreJS y sus módulos tienen como objetivo dar soporte a los siguientes navegadores:
 
-* IE9+
+* IE10+
 * Chrome 35+
 * Firefox 29+
 * Safari 7+
