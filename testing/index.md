@@ -280,11 +280,11 @@ Para ello hay que seguir los siguientes pasos:
 
 2. Descargar la imagen de Windows
     
-    https://s3-eu-west-1.amazonaws.com/selenium-vms/win7_ie11/W7_IE11.part01.rar
-    https://s3-eu-west-1.amazonaws.com/selenium-vms/win7_ie11/W7_IE11.part02.rar
-    https://s3-eu-west-1.amazonaws.com/selenium-vms/win7_ie11/W7_IE11.part03.rar
-    https://s3-eu-west-1.amazonaws.com/selenium-vms/win7_ie11/W7_IE11.part04.rar
-    https://s3-eu-west-1.amazonaws.com/selenium-vms/win7_ie11/W7_IE11.part05.rar
+        https://s3-eu-west-1.amazonaws.com/selenium-vms/win7_ie11/W7_IE11.part01.rar
+        https://s3-eu-west-1.amazonaws.com/selenium-vms/win7_ie11/W7_IE11.part02.rar
+        https://s3-eu-west-1.amazonaws.com/selenium-vms/win7_ie11/W7_IE11.part03.rar
+        https://s3-eu-west-1.amazonaws.com/selenium-vms/win7_ie11/W7_IE11.part04.rar
+        https://s3-eu-west-1.amazonaws.com/selenium-vms/win7_ie11/W7_IE11.part05.rar
 
 3. Descomprimir archivos, en linux:
     
