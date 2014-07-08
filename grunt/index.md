@@ -63,6 +63,18 @@ Esta tarea construye el proyecto listo para desplegar en el directorio `target/d
 grunt # => grunt dist
 ```
 
+> **Nota**: Es posible cambiar el puerto donde se levvanta el servidor web añadiendo el siguiente valor en `package.json`:
+
+	{
+		"name": "corejs-example-app",
+		"version": "0.0.1-SNAPSHOT",
+		...
+		"config": {
+			"liveReloadPort": 1233, // Change liveReload port number
+			"serverPort": 1234 // Change server port number
+		}
+	}
+
 
 ## Testing
 
@@ -118,6 +130,18 @@ Existen varias tareas en grunt que arranacan los test unitarios, todo depende de
 	```
 	grunt server:selenium --keepalive
 	```
+
+> **Nota**: Es posible cambiar el puerto donde se levvanta el servidor web para los tests añadiendo el siguiente valor en `package.json`:
+
+	{
+		"name": "corejs-example-app",
+		"version": "0.0.1-SNAPSHOT",
+		...
+		"config": {
+			"liveReloadPort": 1233, // Change liveReload port number
+			"testPort": 1234 // Change server test port number
+		}
+	}
 
 > **Más Info**
 
