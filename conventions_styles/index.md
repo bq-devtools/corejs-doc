@@ -97,21 +97,25 @@ var objectNameLikethis.methodNamesLikeThis = function() { };
 
 ## Comentarios
 
-En línea:
+El formato de los comentarios que se trata de seguir es la establecida por [JSDoc](http://usejsdoc.org/), ya que formará parte de la documentación **autogenerada**.
 
-```javascript
-// Comentario
-```
+Un ejemplo de uso podría ser la siguiente documentación: http://davidshimjs.github.io/jaguarjs/doc/
 
-En bloque:
+Para el resto de comentarios internos:
 
-```javascript
-/**
- * Nombre componente 
- * Use: 
- * Example:
- */
-```
+* En línea:
+
+	```javascript
+	// Comentario
+	```
+
+* En bloque:
+
+	```javascript
+	/**
+	 * Block comment
+	 */
+	```
 
 > **Más Info**
 
