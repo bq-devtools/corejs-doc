@@ -26,7 +26,7 @@ Estas tareas instalan las dependencias necesarias y configuran el proyecto coreJ
 ```bash
 npm cache clean
 bower cache clean
-npm run clean
+npm run clean	# En su defecto -> sudo npm cache clean
 ```
 
 
