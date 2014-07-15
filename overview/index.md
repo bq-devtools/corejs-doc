@@ -44,17 +44,17 @@ En este repositorio define el proceso de construcción y otras tareas automatiza
     ```
 
 * **coreJS Base**
-En este repositorio se guarda los módulos principales de toda webapp (localización, integración con backend, factorías, configuración, ...)
+En este repositorio se guarda los módulos principales de toda webapp (localización, integración con backend, factorías, configuración, ...), así como módulos reutilizables entre aplicaciones.
 
     ```bash
     git@bitbucket.org:mundoreader/corejs-base.git
     ```
 
-* **coreJS Modules**
-En este repositorio almacena los módulos de coreJS que pueden reutilizar|extender otros proyectos.
+* **coreJS Components Boilerplate**
+En este repositorio define un arquetipo que almacena los módulos de coreJS que pueden reutilizar|extender otros proyectos.
 
     ```bash
-    git@bitbucket.org:mundoreader/corejs-modules.git
+    git@bitbucket.org:mundoreader/corejs-component-boilerplate.git
     ```
 
 * **coreJS [projectName] Modules**
