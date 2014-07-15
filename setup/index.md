@@ -107,7 +107,7 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
 * Instalar [Yeoman](http://yeoman.io/), [Grunt](http://gruntjs.com/) y [Bower](http://bower.io/)
 
     ```bash
-    npm install -g yo
+    sudo npm install -g yo
     ```
 
 * Descargar e instalar [Java](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
