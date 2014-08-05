@@ -84,16 +84,23 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
     git config --global user.email "Your Email Address"
     ```
 
-* Instalar [node + npm](http://nodejs.org/)
+* Instalar [node + npm](http://nodejs.org/) ([instalación sin sudo](https://gist.github.com/isaacs/579814#file-using-homebrew-sh))
 
     ```bash
+    PREFIX=$(brew --prefix)
+     
+    sudo mkdir -p $PREFIX/{share/man,bin,lib/node,include/node}
+    sudo chown -R $USER $PREFIX/{share/man,bin,lib/node,include/node}
+     
     brew install node
+     
+    curl https://www.npmjs.org/install.sh | sh
     ```
 
 * Instalar [PhamtonJS](http://phantomjs.org/download.html)
 
     ```bash
-    sudo npm install -g mocha-phantomjs@">=3.3.1" phantomjs@">=1.9.7-1"
+    npm install -g mocha-phantomjs@">=3.3.1" phantomjs@">=1.9.7-1"
     ```
 
 * Instalar [compass](http://compass-style.org/install/)
@@ -107,7 +114,7 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
 * Instalar [Yeoman](http://yeoman.io/), [Grunt](http://gruntjs.com/) y [Bower](http://bower.io/)
 
     ```bash
-    sudo npm install -g yo
+    npm install -g yo
     ```
 
 * Descargar e instalar [Java](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
@@ -147,13 +154,19 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
     echo "gem: --no-ri --no-rdoc" > ~/.gemrc
     ```
 
-* Instalar nodejs + npm
+* Instalar nodejs + npm ([instalación sin sudo](https://gist.github.com/isaacs/579814#file-node-and-npm-in-30-seconds-sh))
 
     ```bash
     sudo apt-get install python g++ make
-    sudo add-apt-repository ppa:chris-lea/node.js
-    sudo apt-get update
-    sudo apt-get install nodejs
+    echo 'export PATH=$HOME/local/bin:$PATH' >> ~/.bashrc # .bashrc or .zshrc if you have oh-my-zsh
+    . ~/.bashrc
+    mkdir ~/local
+    mkdir ~/node-latest-install
+    cd ~/node-latest-install
+    curl http://nodejs.org/dist/node-latest.tar.gz | tar xz --strip-components=1
+    ./configure --prefix=~/local
+    make install
+    curl https://www.npmjs.org/install.sh | sh
     ```
 
 * Instalar compass
@@ -172,7 +185,7 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
 * Instalar [PhamtonJS](http://phantomjs.org/download.html)
 
     ```bash
-    sudo npm install -g mocha-phantomjs@">=3.3.1" phantomjs@">=1.9.7-1"
+    npm install -g mocha-phantomjs@">=3.3.1" phantomjs@">=1.9.7-1"
     ```
 
 * Instalar [Yeoman](http://yeoman.io/), [Grunt](http://gruntjs.com/) y [Bower](http://bower.io/)
