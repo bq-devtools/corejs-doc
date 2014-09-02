@@ -123,6 +123,8 @@
             
                 <li data-name="app.common.getConfig"><a href="app.common.html#getConfig">getConfig</a></li>
             
+                <li data-name="app.common.getOrDefault"><a href="app.common.html#getOrDefault">getOrDefault</a></li>
+            
                 <li data-name="app.common.isProduction"><a href="app.common.html#isProduction">isProduction</a></li>
             
                 <li data-name="app.common.set"><a href="app.common.html#set">set</a></li>
@@ -1666,6 +1668,8 @@
             
                 <li data-name="iam.UserBuilder.UserBuilder#delete"><a href="iam.UserBuilder.html#UserBuilder#delete">UserBuilder#delete</a></li>
             
+                <li data-name="iam.UserBuilder.UserBuilder#disconnect"><a href="iam.UserBuilder.html#UserBuilder#disconnect">UserBuilder#disconnect</a></li>
+            
                 <li data-name="iam.UserBuilder.UserBuilder#get"><a href="iam.UserBuilder.html#UserBuilder#get">UserBuilder#get</a></li>
             
                 <li data-name="iam.UserBuilder.UserBuilder#getIdentities"><a href="iam.UserBuilder.html#UserBuilder#getIdentities">UserBuilder#getIdentities</a></li>
@@ -1697,9 +1701,13 @@
             
                 <li data-name="iam.UsersBuilder.UsersBuilder#deleteMe"><a href="iam.UsersBuilder.html#UsersBuilder#deleteMe">UsersBuilder#deleteMe</a></li>
             
+                <li data-name="iam.UsersBuilder.UsersBuilder#disconnectMe"><a href="iam.UsersBuilder.html#UsersBuilder#disconnectMe">UsersBuilder#disconnectMe</a></li>
+            
                 <li data-name="iam.UsersBuilder.UsersBuilder#get"><a href="iam.UsersBuilder.html#UsersBuilder#get">UsersBuilder#get</a></li>
             
                 <li data-name="iam.UsersBuilder.UsersBuilder#getMe"><a href="iam.UsersBuilder.html#UsersBuilder#getMe">UsersBuilder#getMe</a></li>
+            
+                <li data-name="iam.UsersBuilder.UsersBuilder#signOutMe"><a href="iam.UsersBuilder.html#UsersBuilder#signOutMe">UsersBuilder#signOutMe</a></li>
             
                 <li data-name="iam.UsersBuilder.UsersBuilder#updateMe"><a href="iam.UsersBuilder.html#UsersBuilder#updateMe">UsersBuilder#updateMe</a></li>
             
@@ -1945,284 +1953,289 @@
     
     <section>
         <article>
-            <pre class="prettyprint source"><code>'use strict';
+            <pre class="prettyprint source "><code>'use strict';
 /* global define */
 define([
-    'corejs/app',
-    'corejs/engine/silkroad/services'
-],
+        'corejs/app',
+        'corejs/engine/silkroad/services',
+        'corejs/engine/silkroad/common'
+    ],
 
-    function(app, services) {
+    function(app, services, common) {
 
-    /**
-     * Module with BQPON operations.
-     * @exports bqpon
-     * @namespace
-     */
-    var bqpon = {};
+        /**
+         * Module with BQPON operations.
+         * @exports bqpon
+         * @namespace
+         */
+        var bqpon = {};
 
-    /**
-     * Helper function to build the request uri.
-     * @param  {String} shopId Shop id.
-     * @param  {String} action Redeem, unredeem, ...
-     * @param  {String} id     id required for some methods (delete DSL, get campaign, ...)
-     * @return {String}        Uri to perform the request.
-     */
-    var buildUri = function(shopId, action) {
-        var uri = app.common.get('bqponEndpoint') + 'coupon/' + shopId;
-        if (action !== undefined) {
-            uri += '/' + action;
+        /**
+         * Helper function to build the request uri.
+         * @param  {String} shopId Shop id.
+         * @param  {String} action Action verb (redeem, unredeem, ...)
+         * @param  {String} id     id required for some methods (delete DSL, get campaign, ...)
+         * @return {String}        Uri to perform the request.
+         */
+        var buildUri = function(shopId, action) {
+            var uri = app.common.get('bqponEndpoint') + 'coupon/' + shopId;
+            if (action !== undefined) {
+                uri += '/' + action;
+            }
+            return uri;
+        };
+
+        /**
+         * Helper function to make a request.
+         * @param {Object} params Parameters of the request.
+         */
+        var request = function(params) {
+            params.withAuth = true;
+            return services.request(params, true);
+        };
+
+        /**
+         * Creates a new CampaignBuilder.
+         * @param  {String} shopId Shop id.
+         * @return {bqpon.CampaignBuilder}
+         */
+        bqpon.campaignManager = function(shopId) {
+            return new CampaignBuilder(shopId);
+        };
+
+        /**
+         * Builder for campaign requests.
+         * @class
+         * @memberOf bqpon
+         * @param {String} shopId Shop id.
+         */
+        function CampaignBuilder(shopId) {
+            this.uri = buildUri(shopId, 'campaign');
         }
-        return uri;
-    };
 
-    /**
-     * Helper function to make a request.
-     * @param {Object} params Parameters of the request.
-     */
-    var request = function(params) {
-        params.withAuth = true;
-        return services.request(params, true);
-    };
+        /**
+         * Create a new campaign.
+         * @method
+         * @memberOf bqpon.CampaignBuilder
+         * @param {Object} campaign Campaign object.
+         * @return {Promise} Q promise that resolves to the id of the created campaign.
+         */
+        CampaignBuilder.prototype.create = function(campaign) {
+            return request({
+                url: this.uri,
+                method: services.method.POST,
+                data: campaign
+            }).
+            then(function(res) {
+                return services.extractLocationId(res);
+            });
+        };
 
-    /**
-     * Creates a new CampaignBuilder.
-     * @param  {String} shopId Shop id.
-     * @return {bqpon.CampaignBuilder}
-     */
-    bqpon.campaignManager = function(shopId) {
-        return new CampaignBuilder(shopId);
-    };
+        /**
+         * List all campaigns of a shop.
+         * @method
+         * @memberOf bqpon.CampaignBuilder
+         * @param  {Object} [params]              Params of the silkroad request
+         * @return {Promise}                    Q promise that resolves to an {Array} of Purchases or rejects with a {@link SilkRoadError}
+         */
+        CampaignBuilder.prototype.getAll = function(params) {
+            app.log.debug('bqponInterface.campaign.getAll');
+            return request({
+                url: this.uri,
+                method: services.method.GET,
+                query: params ? common.serializeParams(params) : null
+            });
+        };
+        /**
+         * Update campaign.
+         * @method
+         * @memberOf bqpon.CampaignBuilder
+         * @param {String} campaignId Campaign id.
+         * @param {Object} campaign   Campaign object.
+         * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
+         */
+        CampaignBuilder.prototype.update = function(campaign) {
+            return request({
+                url: this.uri + '/' + campaign.id,
+                method: services.method.PUT,
+                data: campaign
+            });
+        };
 
-    /**
-     * Builder for campaign requests.
-     * @class
-     * @memberOf bqpon
-     * @param {String} shopId Shop id.
-     */
-    function CampaignBuilder(shopId) {
-        this.uri = buildUri(shopId, 'campaign');
-    }
+        /**
+         * Delete campaign.
+         * @method
+         * @memberOf bqpon.CampaignBuilder
+         * @param {String} campaignId Campaign id.
+         * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
+         */
+        CampaignBuilder.prototype.delete = function(campaignId) {
+            return request({
+                url: this.uri + '/' + campaignId,
+                method: services.method.DELETE
+            });
+        };
 
-    /**
-     * Create a new campaign.
-     * @method 
-     * @memberOf bqpon.CampaignBuilder
-     * @param {Object} campaign Campaign object.
-     * @return {Promise} Q promise that resolves to the id of the created campaign.
-     */
-    CampaignBuilder.prototype.create = function(campaign) {
-        return request({
-            url: this.uri,
-            method: services.method.POST,
-            data: campaign
-        }, true).
-        then(function(res) {
-            return services.extractLocationId(res);
-        });
-    };
+        /**
+         * Get campaign.
+         * @method
+         * @memberOf bqpon.CampaignBuilder
+         * @param {String} campaignId Campaign id.
+         * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
+         */
+        CampaignBuilder.prototype.get = function(campaignId) {
+            return request({
+                url: this.uri + '/' + campaignId,
+                method: services.method.GET
+            });
+        };
 
-    /**
-     * List all campaigns of a shop.
-     * @method 
-     * @memberOf bqpon.CampaignBuilder
-     * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
-     */
-    CampaignBuilder.prototype.getAll = function() {
-        return request({
-            url: this.uri,
-            method: services.method.GET
-        });
-    };
+        /**
+         * Get campaign coupons.
+         * @method
+         * @memberOf bqpon.CampaignBuilder
+         * @param {String} campaignId Campaign id.
+         * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
+         */
+        CampaignBuilder.prototype.getCoupons = function(campaignId) {
+            return request({
+                url: this.uri + '/' + campaignId + '/coupons',
+                method: services.method.GET
+            });
+        };
 
-    /**
-     * Update campaign.
-     * @method 
-     * @memberOf bqpon.CampaignBuilder
-     * @param {String} campaignId Campaign id.
-     * @param {Object} campaign   Campaign object.
-     * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
-     */
-    CampaignBuilder.prototype.update = function(campaignId, campaign) {
-        return request({
-            url: this.uri + '/' + campaignId,
-            method: services.method.PUT,
-            data: campaign
-        });
-    };
+        /**
+         * Creates a new RedeemBuilder.
+         * @param  {String} shopId Shop id.
+         * @return {bqpon.RedeemBuilder}
+         */
+        bqpon.redeemManager = function(shopId) {
+            return new RedeemBuilder(shopId);
+        };
 
-    /**
-     * Delete campaign.
-     * @method 
-     * @memberOf bqpon.CampaignBuilder
-     * @param {String} campaignId Campaign id.
-     * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
-     */
-    CampaignBuilder.prototype.delete = function(campaignId) {
-        return request({
-            url: this.uri + '/' + campaignId,
-            method: services.method.DELETE
-        });
-    };
+        /**
+         * Builder for redeem requests.
+         * @class
+         * @memberOf bqpon
+         * @param {String} shopId Shop id.
+         */
+        function RedeemBuilder(shopId) {
+            this.uri = buildUri(shopId);
+        }
 
-    /**
-     * Get campaign.
-     * @method 
-     * @memberOf bqpon.CampaignBuilder
-     * @param {String} campaignId Campaign id.
-     * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
-     */
-    CampaignBuilder.prototype.get = function(campaignId) {
-        return request({
-            url: this.uri + '/' + campaignId,
-            method: services.method.GET
-        });
-    };
+        /**
+         * Validate a coupon.
+         * @method
+         * @memberOf bqpon.RedeemBuilder
+         * @param {String} redeemCouponRequest Request for redeem a coupon.
+         * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
+         */
+        RedeemBuilder.prototype.validate = function(redeemCouponRequest) {
+            return request({
+                url: this.uri + '/validate',
+                method: services.method.POST,
+                data: redeemCouponRequest
+            });
+        };
 
-    /**
-     * Get campaign coupons.
-     * @method 
-     * @memberOf bqpon.CampaignBuilder
-     * @param {String} campaignId Campaign id.
-     * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
-     */
-    CampaignBuilder.prototype.getCoupons = function(campaignId) {
-        return request({
-            url: this.uri + '/' + campaignId + '/coupons',
-            method: services.method.GET
-        });
-    };
+        /**
+         * Redeems a coupon.
+         * @method
+         * @memberOf bqpon.RedeemBuilder
+         * @param {String} redeemCouponRequest Request for redeem a coupon.
+         * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
+         */
+        RedeemBuilder.prototype.redeem = function(redeemCouponRequest) {
+            return request({
+                url: this.uri + '/redeem',
+                method: services.method.POST,
+                data: redeemCouponRequest
+            });
+        };
 
-    /**
-     * Creates a new RedeemBuilder.
-     * @param  {String} shopId Shop id.
-     * @return {bqpon.RedeemBuilder}
-     */
-    bqpon.redeemManager = function(shopId) {
-        return new RedeemBuilder(shopId);
-    };
+        /**
+         * Undo a redeemed coupon.
+         * @method
+         * @memberOf bqpon.RedeemBuilder
+         * @param {String} redeemCouponRequest Request for undo a redeemed coupon.
+         * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
+         */
+        RedeemBuilder.prototype.unredeem = function(unredeemCouponRequest) {
+            return request({
+                url: this.uri + '/unredeem',
+                method: services.method.PUT,
+                data: unredeemCouponRequest
+            });
+        };
 
-    /**
-     * Builder for redeem requests.
-     * @class
-     * @memberOf bqpon
-     * @param {String} shopId Shop id.
-     */
-    function RedeemBuilder(shopId) {
-        this.uri = buildUri(shopId);
-    }
+        /**
+         * Creates a new RulesBuilder.
+         * @param  {String} shopId Shop id.
+         * @return {bqpon.RulesBuilder}
+         */
+        bqpon.rulesManager = function(shopId) {
+            return new RulesBuilder(shopId);
+        };
 
-    /**
-     * Validate a coupon.
-     * @method 
-     * @memberOf bqpon.RedeemBuilder
-     * @param {String} redeemCouponRequest Request for redeem a coupon.
-     * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
-     */
-    RedeemBuilder.prototype.validate = function(redeemCouponRequest) {
-        return request({
-            url: this.uri + '/validate',
-            method: services.method.POST,
-            data: redeemCouponRequest
-        });
-    };
+        /**
+         * Builder for saving and list DSL sentences.
+         * @class
+         * @memberOf bqpon
+         * @param {String} shopId Shop id.
+         */
+        function RulesBuilder(shopId) {
+            this.uri = buildUri(shopId, 'rules');
+        }
 
-    /**
-     * Redeems a coupon.
-     * @method 
-     * @memberOf bqpon.RedeemBuilder
-     * @param {String} redeemCouponRequest Request for redeem a coupon.
-     * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
-     */
-    RedeemBuilder.prototype.redeem = function(redeemCouponRequest) {
-        return request({
-            url: this.uri + '/redeem',
-            method: services.method.POST,
-            data: redeemCouponRequest
-        });
-    };
+        /**
+         * Save DSL sentence.
+         * @method
+         * @memberOf bqpon.RulesBuilder
+         * @param {Object} dsl DSL sentence.
+         * @return {Promise} Q promise that resolves to the id of the saved dsl.
+         */
+        RulesBuilder.prototype.save = function(dsl) {
+            return request({
+                url: this.uri,
+                method: services.method.POST,
+                data: dsl
+            }).
+            then(function(res) {
+                return services.extractLocationId(res);
+            });
+        };
 
-    /**
-     * Undo a redeemed coupon.
-     * @method 
-     * @memberOf bqpon.RedeemBuilder
-     * @param {String} redeemCouponRequest Request for undo a redeemed coupon.
-     * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
-     */
-    RedeemBuilder.prototype.unredeem = function(unredeemCouponRequest) {
-        return request({
-            url: this.uri + '/unredeem',
-            method: services.method.PUT,
-            data: unredeemCouponRequest
-        });
-    };
+        /**
+         * List DSL sentences in a shop.
+         * @method
+         * @memberOf bqpon.RulesBuilder
+         * @param  {Object} [params]       Params of the silkroad request
+         * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
+         */
+        RulesBuilder.prototype.getAll = function(params) {
+            app.log.debug('bqponInterface.rules.getAll');
+            return request({
+                url: this.uri,
+                method: services.method.GET,
+                query: params ? common.serializeParams(params) : null
+            });
+        };
 
-    /**
-     * Creates a new RulesBuilder.
-     * @param  {String} shopId Shop id.
-     * @return {bqpon.RulesBuilder}
-     */
-    bqpon.rulesManager = function(shopId) {
-        return new RulesBuilder(shopId);
-    };
-
-    /**
-     * Builder for saving and list DSL sentences.
-     * @class
-     * @memberOf bqpon
-     * @param {String} shopId Shop id.
-     */
-    function RulesBuilder(shopId) {
-        this.uri = buildUri(shopId, 'rules');
-    }
-
-    /**
-     * Save DSL sentence.
-     * @method 
-     * @memberOf bqpon.RulesBuilder
-     * @param {Object} dsl DSL sentence.
-     * @return {Promise} Q promise that resolves to the id of the saved dsl.
-     */
-    RulesBuilder.prototype.save = function(dsl) {
-        return request({
-            url: this.uri,
-            method: services.method.POST,
-            data: dsl
-        }, true).
-        then(function(res) {
-            return services.extractLocationId(res);
-        });
-    };
-
-    /**
-     * List DSL sentences in a shop.
-     * @method 
-     * @memberOf bqpon.RulesBuilder
-     * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
-     */
-    RulesBuilder.prototype.getAll = function() {
-        return request({
-            url: this.uri,
-            method: services.method.GET
-        });
-    };
-
-    /**
-     * Delete a DSL sentence.
-     * @method 
-     * @memberOf bqpon.RulesBuilder
-     * @param {String} dslId DSL sentence id.
-     * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
-     */
-    RulesBuilder.prototype.delete = function(dslId) {
-        return request({
-            url: this.uri + '/' + dslId,
-            method: services.method.DELETE
-        });
-    };
-
-    return bqpon;
-});
+        /**
+         * Delete a DSL sentence.
+         * @method
+         * @memberOf bqpon.RulesBuilder
+         * @param {String} dslId DSL sentence id.
+         * @return {Promise} Q promise that resolves to a Resource {Object} or rejects with a {@link SilkRoadError}
+         */
+        RulesBuilder.prototype.delete = function(dslId) {
+            return request({
+                url: this.uri + '/' + dslId,
+                method: services.method.DELETE
+            });
+        };
+        return bqpon;
+    });
 </code></pre>
         </article>
     </section>
@@ -2231,10 +2244,11 @@ define([
 
 
 
+
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Thu Jul 17 2014 08:18:41 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Sep 02 2014 08:15:28 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

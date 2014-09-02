@@ -123,6 +123,8 @@
             
                 <li data-name="app.common.getConfig"><a href="app.common.html#getConfig">getConfig</a></li>
             
+                <li data-name="app.common.getOrDefault"><a href="app.common.html#getOrDefault">getOrDefault</a></li>
+            
                 <li data-name="app.common.isProduction"><a href="app.common.html#isProduction">isProduction</a></li>
             
                 <li data-name="app.common.set"><a href="app.common.html#set">set</a></li>
@@ -1666,6 +1668,8 @@
             
                 <li data-name="iam.UserBuilder.UserBuilder#delete"><a href="iam.UserBuilder.html#UserBuilder#delete">UserBuilder#delete</a></li>
             
+                <li data-name="iam.UserBuilder.UserBuilder#disconnect"><a href="iam.UserBuilder.html#UserBuilder#disconnect">UserBuilder#disconnect</a></li>
+            
                 <li data-name="iam.UserBuilder.UserBuilder#get"><a href="iam.UserBuilder.html#UserBuilder#get">UserBuilder#get</a></li>
             
                 <li data-name="iam.UserBuilder.UserBuilder#getIdentities"><a href="iam.UserBuilder.html#UserBuilder#getIdentities">UserBuilder#getIdentities</a></li>
@@ -1697,9 +1701,13 @@
             
                 <li data-name="iam.UsersBuilder.UsersBuilder#deleteMe"><a href="iam.UsersBuilder.html#UsersBuilder#deleteMe">UsersBuilder#deleteMe</a></li>
             
+                <li data-name="iam.UsersBuilder.UsersBuilder#disconnectMe"><a href="iam.UsersBuilder.html#UsersBuilder#disconnectMe">UsersBuilder#disconnectMe</a></li>
+            
                 <li data-name="iam.UsersBuilder.UsersBuilder#get"><a href="iam.UsersBuilder.html#UsersBuilder#get">UsersBuilder#get</a></li>
             
                 <li data-name="iam.UsersBuilder.UsersBuilder#getMe"><a href="iam.UsersBuilder.html#UsersBuilder#getMe">UsersBuilder#getMe</a></li>
+            
+                <li data-name="iam.UsersBuilder.UsersBuilder#signOutMe"><a href="iam.UsersBuilder.html#UsersBuilder#signOutMe">UsersBuilder#signOutMe</a></li>
             
                 <li data-name="iam.UsersBuilder.UsersBuilder#updateMe"><a href="iam.UsersBuilder.html#UsersBuilder#updateMe">UsersBuilder#updateMe</a></li>
             
@@ -1945,7 +1953,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source"><code>'use strict';
+            <pre class="prettyprint source "><code>'use strict';
 /* global define, gapi */
 /* jshint sub: true */
 define([
@@ -2096,7 +2104,10 @@ define([
      * gapi sdk must be available before this call
      * @return {Promise}    a promise that resolves with oauth user
      */
-    oauth.register = function() {
+    oauth.register = function(params) {
+
+        params = params || {};
+        params.properties = params.properties || {};
 
         var args = oauth.buildAuthParams();
 
@@ -2116,6 +2127,7 @@ define([
                 }
 
                 app.log.debug('google.gapi.me', response);
+                response.image = response.image || {};
                 oauth.user = {
                     oauthService: 'google',
                     profile: response,
@@ -2125,6 +2137,9 @@ define([
                     firstName: response.name.givenName,
                     lastName: response.name.familyName
                 };
+                oauth.user.properties = params.properties || {};
+                oauth.user.properties.avatar = response[1];
+
                 dfd.resolve(oauth.user);
 
             });
@@ -2162,13 +2177,11 @@ define([
      * @return {Promise} Promise that resolves with the revoke token response
      */
     oauth.disconect = function() {
-        return app.reqres.request('gapi').then(function(gapi) {
-	        return app.services.request({
-	            type: 'GET',
-	            url: 'https://accounts.google.com/o/oauth2/revoke?token=' + gapi.auth.getToken()['access_token'],
-	            contentType: 'application/json',
-	            dataType: 'jsonp'
-	        });
+        return app.services.request({
+            type: 'GET',
+            url: 'https://accounts.google.com/o/oauth2/revoke?token=' + gapi.auth.getToken()['access_token'],
+            contentType: 'application/json',
+            dataType: 'jsonp'
         });
     };
     app.vent.on('oauth:service:disconect:google', oauth.disconect);
@@ -2190,24 +2203,23 @@ define([
      */
     oauth.checkStatus = function() {
         app.log.debug('oauth.checkStatus');
-        return app.reqres.request('gapi').then(function(gapi) {
-            var googleConfig = app.modulesConfig.get('google');
 
-            var sessionParams = {
-                'client_id': googleConfig['client_id'],
-                'session_state': null
-            };
-            var dfd = q.defer();
-            gapi.auth.checkSessionState(sessionParams, function(response) {
-                app.log.debug('oauth.checkStatus.response', response);
-                if (response) {
-                    dfd.reject({error:'google:not:logged'});
-                } else {
-                    dfd.resolve(response);
-                }
-            });
-            return dfd.promise;
+        var googleConfig = app.modulesConfig.get('google');
+
+        var sessionParams = {
+            'client_id': googleConfig['client_id'],
+            'session_state': null
+        };
+        var dfd = q.defer();
+        gapi.auth.checkSessionState(sessionParams, function(response) {
+            app.log.debug('oauth.checkStatus.response', response);
+            if (response) {
+                dfd.reject({error:'google:not:logged'});
+            } else {
+                dfd.resolve(response);
+            }
         });
+        return dfd.promise;
     };
     app.reqres.setHandler('oauth:service:status:check:google', oauth.checkStatus);
 
@@ -2221,10 +2233,11 @@ define([
 
 
 
+
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Thu Jul 17 2014 08:18:40 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Sep 02 2014 08:15:28 GMT+0200 (CEST)
         </footer>
     </div>
 </div>

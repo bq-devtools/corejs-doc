@@ -123,6 +123,8 @@
             
                 <li data-name="app.common.getConfig"><a href="app.common.html#getConfig">getConfig</a></li>
             
+                <li data-name="app.common.getOrDefault"><a href="app.common.html#getOrDefault">getOrDefault</a></li>
+            
                 <li data-name="app.common.isProduction"><a href="app.common.html#isProduction">isProduction</a></li>
             
                 <li data-name="app.common.set"><a href="app.common.html#set">set</a></li>
@@ -1666,6 +1668,8 @@
             
                 <li data-name="iam.UserBuilder.UserBuilder#delete"><a href="iam.UserBuilder.html#UserBuilder#delete">UserBuilder#delete</a></li>
             
+                <li data-name="iam.UserBuilder.UserBuilder#disconnect"><a href="iam.UserBuilder.html#UserBuilder#disconnect">UserBuilder#disconnect</a></li>
+            
                 <li data-name="iam.UserBuilder.UserBuilder#get"><a href="iam.UserBuilder.html#UserBuilder#get">UserBuilder#get</a></li>
             
                 <li data-name="iam.UserBuilder.UserBuilder#getIdentities"><a href="iam.UserBuilder.html#UserBuilder#getIdentities">UserBuilder#getIdentities</a></li>
@@ -1697,9 +1701,13 @@
             
                 <li data-name="iam.UsersBuilder.UsersBuilder#deleteMe"><a href="iam.UsersBuilder.html#UsersBuilder#deleteMe">UsersBuilder#deleteMe</a></li>
             
+                <li data-name="iam.UsersBuilder.UsersBuilder#disconnectMe"><a href="iam.UsersBuilder.html#UsersBuilder#disconnectMe">UsersBuilder#disconnectMe</a></li>
+            
                 <li data-name="iam.UsersBuilder.UsersBuilder#get"><a href="iam.UsersBuilder.html#UsersBuilder#get">UsersBuilder#get</a></li>
             
                 <li data-name="iam.UsersBuilder.UsersBuilder#getMe"><a href="iam.UsersBuilder.html#UsersBuilder#getMe">UsersBuilder#getMe</a></li>
+            
+                <li data-name="iam.UsersBuilder.UsersBuilder#signOutMe"><a href="iam.UsersBuilder.html#UsersBuilder#signOutMe">UsersBuilder#signOutMe</a></li>
             
                 <li data-name="iam.UsersBuilder.UsersBuilder#updateMe"><a href="iam.UsersBuilder.html#UsersBuilder#updateMe">UsersBuilder#updateMe</a></li>
             
@@ -1945,7 +1953,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source"><code>'use strict';
+            <pre class="prettyprint source "><code>'use strict';
 /* global define */
 define([
     'corejs/app',
@@ -2030,15 +2038,16 @@ define([
      * @method
      * @memberOf resources.CollectionBuilder
      * @param {Object} data        The element to be added
-     * @param {String} contentType Mime type of the added data
+     * @param {String} dataType    Mime type of the added data
      * @return {Promise}           Q promise that resolves to the new resource id or rejects with a {@link SilkRoadError}
      */
-    CollectionBuilder.prototype.add = function(data, contentType) {
+    CollectionBuilder.prototype.add = function(data, dataType) {
         app.log.debug('resourceInterface.collection.add', data);
         return services.requestXHR({
             url: buildUri(this.type),
             method: services.method.POST,
-            contentType: contentType,
+            contentType: dataType,
+            Accept: dataType,
             data: data,
             withAuth: true
         }).then(function(res) {
@@ -2081,8 +2090,9 @@ define([
     ResourceBuilder.prototype.get = function(dataType, params) {
         app.log.debug('resourceInterface.resource.get', dataType);
         var args = params || {};
-        args.url =  buildUri(this.type, this.id);
+        args.url = buildUri(this.type, this.id);
         args.method = services.method.GET;
+        args.contentType = dataType;
         args.Accept = dataType;
         return request(args);
     };
@@ -2092,16 +2102,17 @@ define([
      * @method
      * @memberOf resources.ResourceBuilder
      * @param  {Object} data        Data to be updated
-     * @param  {String} contentType Mime tipe of the sent data
+     * @param  {String} dataType Mime tipe of the sent data
      * @return {Promise}            Q promise that resolves to undefined (void) or rejects with a {@link SilkRoadError}
      */
-    ResourceBuilder.prototype.update = function(data, contentType) {
+    ResourceBuilder.prototype.update = function(data, dataType) {
         app.log.debug('resourceInterface.resource', data);
         return request({
             url: buildUri(this.type, this.id),
             method: services.method.PUT,
             data: data,
-            contentType: contentType
+            contentType: dataType,
+            Accept: dataType
         });
     };
 
@@ -2109,13 +2120,16 @@ define([
      * Deletes a resource
      * @method
      * @memberOf resources.ResourceBuilder
+     * @param  {String} dataType Mime tipe of the delete data
      * @return {Promise}          Q promise that resolves to undefined (void) or rejects with a {@link SilkRoadError}
      */
-    ResourceBuilder.prototype.delete = function() {
+    ResourceBuilder.prototype.delete = function(dataType) {
         app.log.debug('resourceInterface.resource.delete');
         return request({
             url: buildUri(this.type, this.id),
-            method: services.method.DELETE
+            method: services.method.DELETE,
+            contentType: dataType,
+            Accept: dataType
         });
     };
 
@@ -2231,9 +2245,11 @@ define([
     };
 
     return resources;
-});</code></pre>
+});
+</code></pre>
         </article>
     </section>
+
 
 
 
@@ -2242,7 +2258,7 @@ define([
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Thu Jul 17 2014 08:18:41 GMT+0200 (CEST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Sep 02 2014 08:15:29 GMT+0200 (CEST)
         </footer>
     </div>
 </div>
