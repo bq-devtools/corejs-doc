@@ -212,7 +212,7 @@ Para formatear y operar con números, ya sean enteros, con decimales o con unida
 	Y debe seguir el siguiente formato de ejemplo para su correcta compilación:
 
 	```javascript
-	(function() {
+	(function(numeral) {
 	    'use strict';
 	    var language = {
 	        delimiters: {
@@ -238,7 +238,7 @@ Para formatear y operar con números, ya sean enteros, con decimales o con unida
 	    };
 	    // same name as forlder lang-country code
 	    numeral.language('en-GB', language);
-	}());
+	}(numeral));
 	```
 
 	Existen numerosos idiomas ya implementados dentro del componente numeral que se descarga bower.
@@ -265,7 +265,7 @@ Para formatear y operar con fechas y unidades de tiempo usaremos [Moment.js](htt
 	Y debe seguir el siguiente formato de ejemplo para su correcta compilación:
 
 	```javascript
-	(function() {
+	(function(moment) {
 
 	    'use strict';
 	    moment.lang('en-GB', {
@@ -318,7 +318,7 @@ Para formatear y operar con fechas y unidades de tiempo usaremos [Moment.js](htt
 	        }
 	    });
 
-	}());
+	}(moment));
 	```
 
 	Existen numerosos idiomas ya implementados dentro del componente moment que se descarga bower.

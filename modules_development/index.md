@@ -102,7 +102,7 @@ define([
 Ya sólo falta dar de alta el modelo en la factoría para que pueda ser instanciable. Para ello lo declaramos en el inicializador de módulo (`modules/myModule/start.js`):
 ```
 app.addInitializer(function() {
-  app.models.add('MyModel', MyModel);
+  app.factory.add('MyModel', MyModel);
 });
 ```
 
@@ -188,7 +188,7 @@ Para dar de alta la vista en la factoría para que pueda ser instanciable. Para 
 
 ```javascript
 app.addInitializer(function() {
-  app.views.add('MyView', MyView);
+  app.factory.add('MyView', MyView);
 });
 ```
 
