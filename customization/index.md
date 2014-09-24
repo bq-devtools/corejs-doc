@@ -22,20 +22,31 @@ Las hojas de estilo están organizadas en la siguiente estructura de proyecto [S
     │   │   ├── _utils.scss         // clases útiles para la maquetación
     │   │   └── _variables.scss     // definición de variables del proyecto
     │   └── main.scss               // importación de todos los estilos
-    └── img
-        └── common                  // imágenes genéricas
-            └── logo.png
-        ├── modules                 // imágenes de los módulos de la app
-        └── sprites                 // sprites generados por compass desde _sprites.scss
-            └── icons
-                ├── xs
-                ├── xs-retina
-                ├── sm
-                ├── sm-retina
-                ├── md
-                ├── md-retina
-                ├── lg
-                └── lg-retina
+    ├── img
+    │   ├── *.png                   // imágenes genéricas
+    │   └── icons                   // sprites generados por compass desde _sprites.scss
+    │       ├── xs
+    │       ├── xs-retina
+    │       ├── sm
+    │       ├── sm-retina
+    │       ├── md
+    │       ├── md-retina
+    │       ├── lg
+    │       └── lg-retina
+    └── scripts
+        └── modules
+            └── moduleName
+                └── img
+                    ├── *.png                   // imágenes genéricas
+                    └── icons                   // sprites generados por compass desde _sprites.scss
+                        ├── xs
+                        ├── xs-retina
+                        ├── sm
+                        ├── sm-retina
+                        ├── md
+                        ├── md-retina
+                        ├── lg
+                        └── lg-retina
 ```
 
 ## Sprites
@@ -47,7 +58,7 @@ Se definirán carpetas para los diferentes puntos de ruptura ([break points RWD]
 Para los nombres de carpetas de las imágenes se utilizarán tallas, añadiendo retina para aquellas imagenes en dicho formato:
 
 ```
-└── sprites                 
+└── img                 
     └── icons
         ├── xs
         ├── xs-retina
