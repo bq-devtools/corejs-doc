@@ -179,8 +179,8 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
     ./configure --prefix=~/.local
     make install
     
-    # expose bin to default nodejs bin for sublime plugins
-    sudo ln -s /home/<user>/local/bin/node  /usr/bin/nodejs 
+    # Expose bin to default nodejs bin for sublime plugins
+    sudo ln -s /home/<user>/.local/bin/node  /usr/bin/nodejs 
     
     # npm
 
