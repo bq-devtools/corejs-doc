@@ -179,7 +179,7 @@ src/test/selenium
     └── *.js
 ```
 
-#### Ejemplo de test Selenium
+#### Ejemplo básico
 
 ```javascript
 /* global describe, it, after, before */
@@ -225,6 +225,58 @@ describe('Google Search', function() {
 });
 ```
 
+#### SeleniumUtils
+
+coreJS extiende la API del webdriverJS con los `mixines` implementados en [corejs-build](https://bitbucket.org/mundoreader/corejs-build/src/8c036cd9e2d09bbe8ed8ced4b3ed2c05a64705f5/src/main/js/lib/selenium/mixins/?at=master)
+
+#### Ejemplo con SeleniumUtils
+
+```javascript
+/* global describe, it, after, before */
+'use strict';
+
+var assert = require('assert'),
+    seleniumUtils = require('grunt-corejs-build/lib/selenium/common.js'),
+    WAIT_TIMEOUT = 5000;
+
+describe('[' + seleniumUtils.getDriverString() + '] Google Search', function() {
+
+    this.timeout(30000);
+    this.slow(5000);
+
+    var driver;
+
+    beforeEach(function() {
+        driver = seleniumUtils.getDriver();
+        driver.setDefaultTimeout(WAIT_TIMEOUT);
+    });
+
+    afterEach(function(done) {
+        driver.quit().then(done);
+    });
+
+    it('should work', function(done) {
+        
+        driver.getAndWaitFor(seleniumUtils.getWebRoot() + '/#/login', {id: 'username'}).then(function(webElement) {
+            webElement.clear().sendKeys('webdriver');
+            driver.findElement({id: 'remember'}).click();
+
+            return driver.waitForElementPresent({id: 'login-button'});
+        }).then(function() {
+            return driver.waitForEnabled({id: 'login-button'});
+        }).then(function() {
+            return driver.assertValueEqual({id: 'login-response'}, 'ok');
+        }).then(function() {
+            return driver.assertAttributeEqual({id: 'login-button'}, 'data-action', 'login');
+        }).then(function() {
+            return driver.assertInnerHtmlEqual({id: 'login-button'}, 'Login');
+        }).then(function() {
+            return;
+        }).thenFinally(done.bind(this));
+
+    });
+});
+```
 
 Es posible configurar los tests a través del archivo opcional `.selenium`
 
@@ -258,12 +310,22 @@ Una vez se tengan los test implementados y la configuración deseada, basta con 
 grunt test:selenium
 ```
 
+Como se puede observar en el ejemplo de **test con SeleniumUtils**, si hacemos uso del método `driver.getWebRoot()` para navegar por la web, podremos aprovecharnos de la siguiente ejecución parametrizada:
+
+```bash
+grunt test:selenium --www-root=http://some-domain.com:8000/
+```
+
+Esto nos permite que un mismo conjunto de test puedan lanzarse contra cualquier otra web.
+
+#### Informe de resultados
+
 El informe generado está disponible en los siguientes recursos:
 
 ```
-selenium-[browser].tap  // Para el reporter TAP
-selenium-[browser].xml  // Para el reporter XUNIT
-selenium-[browser].txt  // Para el resto de reporters
+target/surefire-reports/selenium-[browser].tap  // Para el reporter TAP
+target/surefire-reports/selenium-[browser].xml  // Para el reporter XUNIT
+target/surefire-reports/selenium-[browser].txt  // Para el resto de reporters
 ```
 
 
