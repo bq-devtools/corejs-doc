@@ -159,15 +159,42 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
 
     ```bash
     sudo apt-get install python g++ make
-    echo 'export PATH=$HOME/local/bin:$PATH' >> ~/.bashrc # .bashrc or .zshrc if you have oh-my-zsh
+
+    # .bashrc or .zshrc if you have oh-my-zsh
+    echo 'export PATH=$HOME/.local/bin:$PATH' >> ~/.bashrc
     . ~/.bashrc
-    mkdir ~/local
-    mkdir ~/node-latest-install
-    cd ~/node-latest-install
-    curl http://nodejs.org/dist/node-latest.tar.gz | tar xz --strip-components=1
-    ./configure --prefix=~/local
+    
+    mkdir ~/.local
+    cd .local
+    mkdir ~/node
+    cd ~/node
+    
+    # node
+    git clone https://github.com/joyent/node.git
+    git checkout "v0.10.24"
+
+    # Latest
+    # curl http://nodejs.org/dist/node-latest.tar.gz | tar xz --strip-components=1
+    
+    ./configure --prefix=~/.local
     make install
-    curl https://www.npmjs.org/install.sh | sh
+    
+    # expose bin to default nodejs bin for sublime plugins
+    sudo ln -s /home/<user>/local/bin/node  /usr/bin/nodejs 
+    
+    # npm
+
+    mkdir ~/.local/npm
+    cd ~/.local/npm
+
+    git clone git@github.com:npm/npm.git
+    git checkout tags/v1.4.23
+
+    make install 
+
+    # Latest
+    # curl https://www.npmjs.org/install.sh | sh
+  
     ```
 
 * Instalar compass
