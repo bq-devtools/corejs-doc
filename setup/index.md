@@ -54,6 +54,7 @@ Esta apartado describe todas las tecnologías usadas para el desarrollo de aplic
         * **[SASS](https://sublime.wbond.net/packages/Sass)**
         * **[SASSBeautify](https://github.com/badsyntax/SassBeautify)**
         * **[DocBlockr](https://github.com/spadgos/sublime-jsdocs)**
+        * **[EditorConfig](https://sublime.wbond.net/packages/EditorConfig)**
         * ...
     * Snippets
         * [pendiente]
