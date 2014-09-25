@@ -441,6 +441,7 @@ En particular se proponen los siguientes atributos:
 * `data-target`: Es un elemento afectado en una acción en concreto, con el mismo nombre del action que lo provocó.
 * `data-rel`: Es un elemento/componente con significado propio, ayuda a establecer un contexto. Por ejemplo `modal`, `dropdown`.
 * `data-rel-id`: Es un elemento/componente único, con el fin de diferenciarse de los elementos o componentes comunes con un mismo data-rel.
+* `data-element`: Identifica cualquier otro elemento necesario para los tests.
 
 * **Ejemplo**
 
