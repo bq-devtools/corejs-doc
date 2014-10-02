@@ -128,6 +128,12 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
     sudo apt-get install curl
     ```
 
+* Instalar [GIT](http://git-scm.com/)
+
+    ```bash
+    sudo apt-get install git
+    ```
+
 * Instalar Java
 
     ```bash
@@ -165,17 +171,12 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
     . ~/.bashrc
     
     mkdir ~/.local
-    cd .local
-    mkdir ~/node
-    cd ~/node
+    cd ~/.local
     
     # node
     git clone https://github.com/joyent/node.git
+    cd node
     git checkout "v0.10.24"
-
-    # Latest
-    # curl http://nodejs.org/dist/node-latest.tar.gz | tar xz --strip-components=1
-    
     ./configure --prefix=~/.local
     make install
     
@@ -184,17 +185,13 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
     
     # npm
 
-    mkdir ~/.local/npm
-    cd ~/.local/npm
+    cd ~/.local
 
     git clone git@github.com:npm/npm.git
+    cd npm
     git checkout tags/v1.4.23
-
     make install 
 
-    # Latest
-    # curl https://www.npmjs.org/install.sh | sh
-  
     ```
 
 * Instalar compass
@@ -202,12 +199,6 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
     ```bash
     gem update --system
     gem install compass
-    ```
-
-* Instalar [GIT](http://git-scm.com/)
-
-    ```bash
-    sudo apt-get install git
     ```
 
 * Instalar [PhamtonJS](http://phantomjs.org/download.html)
