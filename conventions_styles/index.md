@@ -95,6 +95,14 @@ var objectNameLikethis.methodNamesLikeThis = function() { };
 
 > * [Resumen breve de IdiomaticJS (Slides)](http://slid.es/antai/js_con_estilo)
 
+
+## Backbone & Marionette
+
+> **Más info**
+
+> * [Design rules](http://cloudandcode.tumblr.com/post/98671637921/design-rules-in-a-backbone-marionette-app)
+
+
 ## Comentarios
 
 El formato de los comentarios que se trata de seguir es la establecida por [JSDoc](http://usejsdoc.org/), ya que formará parte de la documentación **autogenerada**.
