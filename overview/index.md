@@ -459,21 +459,25 @@ Este módulo se encarga de gestionar los diferentes tipos de objetos de la aplic
 // Models
 app.factory.add('CompontentNameModel', CompontentNameModel);
 app.factory.new('CompontentNameModel', options);
+app.factory.singleton('CompontentNameModel', options);
 app.factory.get('CompontentNameModel');
 
 // Collections
 app.factory.add('CompontentNameCollection', CompontentNameCollection);
 app.factory.new('CompontentNameCollection', options);
+app.factory.singleton('CompontentNameCollection', options);
 app.factory.get('CompontentNameCollection');
 
 // Views
 app.factory.add('CompontentNameView', CompontentNameView);
 app.factory.new('CompontentNameView', options);
+app.factory.singleton('CompontentNameView', options);
 app.factory.get('CompontentNameView');
 
 // Layouts
 app.factory.add('CompontentNameLayout', CompontentNameLayout);
 app.factory.new('CompontentNameLayout', options);
+app.factory.singleton('CompontentNameLayout', options);
 app.factory.get('CompontentNameLayout');
 ```
 
