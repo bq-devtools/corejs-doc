@@ -167,8 +167,8 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
     sudo apt-get install python g++ make
 
     # .bashrc or .zshrc if you have oh-my-zsh
-    echo 'export PATH=$HOME/.local/bin:$PATH' >> ~/.bashrc
-    . ~/.bashrc
+    echo 'export PATH=$HOME/.local/bin:$PATH' >> ~/.bashrc && source ~/.bashrc
+    echo "export NODE_PATH=$NODE_PATH:$HOME/.local/lib/node_modules" >> ~/.bashrc && source ~/.bashrc
     
     mkdir ~/.local
     cd ~/.local
@@ -181,7 +181,8 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
     make install
     
     # Expose bin to default nodejs bin for sublime plugins
-    sudo ln -s /home/<user>/.local/bin/node  /usr/bin/nodejs 
+    sudo ln -s ~/.local/bin/node  /usr/bin/nodejs
+    sudo ln -s ~/.local/lib/node_modules /usr/local/lib/
     
     # npm
 
