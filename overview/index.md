@@ -40,14 +40,14 @@ Esqueleto de proyecto coreJS listo para el desarrollo.
 En este repositorio define el proceso de construcción y otras tareas automatizadas a través de **[Grunt](http://gruntjs.com/)**.
 
     ```bash
-    git@bitbucket.org:mundoreader/corejs-build.git
+    git clone ssh://<username>@git.dev.bqsoftware.net:29418/corejs-build
     ```
 
 * **coreJS Base**
 En este repositorio se guarda los módulos principales de toda webapp (localización, integración con backend, factorías, configuración, ...), así como módulos reutilizables entre aplicaciones.
 
     ```bash
-    git@bitbucket.org:mundoreader/corejs-base.git
+    git clone ssh://<username>@git.dev.bqsoftware.net:29418/corejs-base
     ```
 
 * **coreJS Components Boilerplate**
