@@ -110,12 +110,12 @@ app.locale.changed = function() {
 		```json
 		{
 			"info-message": "Tienes un mensaje",
-			"info-message_plural": "Tienes __numMensajes__ mensajes"
+			"info-message_plural": "Tienes __count__ mensajes"
 		}
 		```
 		```javascript
-		$.t("info-message", { numMensajes:   0 }); // -> zero
-		$.t("info-message", { numMensajes:   1 }); // -> singular
+		$.t("info-message", { count:   0 }); // -> zero
+		$.t("info-message", { count:   1 }); // -> singular
 		```
 
 		La selección del texto apropiado se decide en tiempo de ejecución en función de la cantidad.
