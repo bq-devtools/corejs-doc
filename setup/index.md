@@ -191,6 +191,10 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
     git clone git@github.com:npm/npm.git
     cd npm
     git checkout tags/v1.4.23
+
+    #Sustituir [owner]:[group] por tu usuario -> pepe:pepe
+    sudo chown -R [owner]:[group] ~/.npm/*
+
     make install 
 
     ```
