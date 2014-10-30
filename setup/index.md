@@ -161,7 +161,7 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
     echo "gem: --no-ri --no-rdoc" > ~/.gemrc
     ```
 
-* Instalar nodejs + npm ([instalación sin sudo](https://gist.github.com/isaacs/579814#file-node-and-npm-in-30-seconds-sh))
+* Instalar nodejs + npm sin sudo ([fuente original](https://gist.github.com/isaacs/579814#file-node-and-npm-in-30-seconds-sh))
 
     ```bash
     sudo apt-get install python g++ make
