@@ -91,7 +91,7 @@ Existen varias tareas en grunt que arranacan los test unitarios, todo depende de
 
 * Test unitarios con informe de resultados en [TAP](http://en.wikipedia.org/wiki/Test_Anything_Protocol)
 
-	El resultado de los tests aparecerán por consola y generará un informe en formato `xunit` en `target/test_results.tap`.
+	El resultado de los tests aparecerán por consola y generará un informe en formato `xunit` en `target/surefire-reports/test_results.tap`.
 
 	```
 	grunt maven-test
@@ -107,7 +107,7 @@ Existen varias tareas en grunt que arranacan los test unitarios, todo depende de
 
 * Test unitarios crossbrowser
 
-	El resultado de los tests aparecerán por consola y generará un informe en formato `xunit` en `target/test_results.xml`.
+	El resultado de los tests aparecerán por consola y generará un informe en formato `xunit` en `target/surefire-reports/test_results.xml`.
 
 	```
 	grunt test:testem
@@ -115,7 +115,7 @@ Existen varias tareas en grunt que arranacan los test unitarios, todo depende de
 
 * Test funcionales crossbrowser
 
-	El resultado de los tests aparecerán por consola y generará un informe en formato `xunit` en `target/selenium-[launcher_name].xml`.
+	El resultado de los tests aparecerán por consola y generará un informe en formato `xunit` en `target/surefire-reports/selenium-[launcher_name].xml`.
 
 	```
 	grunt test:selenium
