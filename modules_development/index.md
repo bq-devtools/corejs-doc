@@ -25,6 +25,7 @@ src/main/webapp
         ├──loader.js                // Declaración de móduloas a cargar
         └──myModule                 // Nombre del módulo
             ├── start.js            // Inicialización y carga de dependencias
+            ├── controller.js       // Controlador del módulo
             ├── css                 // Hojas de estilo del módulo
             │   └── *.scss
             ├── res
