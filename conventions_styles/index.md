@@ -102,7 +102,7 @@ var objectNameLikethis.methodNamesLikeThis = function() { };
 
 > * [Design rules](http://cloudandcode.tumblr.com/post/98671637921/design-rules-in-a-backbone-marionette-app)
 
-** Módulos **
+### Módulos
 
 Exponer a la aplicación cada módulo, con el nombre del mismo.
 
@@ -120,7 +120,8 @@ Exponer a la aplicación cada módulo, con el nombre del mismo.
         app.books.view = view;
 
 
-** Controllers **
+### Controllers
+
 Usar controladores de Marionette (Backbone.Marionette.Controller) en vez de objetos planos JavaScript.
 
 
