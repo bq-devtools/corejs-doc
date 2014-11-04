@@ -135,7 +135,7 @@ Usar controladores de Marionette (Backbone.Marionette.Controller) en vez de obje
 
 Los controladores de Marionette nos aportan ciertos beneficios frente a los objetos JavaScript planos:
 
-*   Podemos hacer uso de 'listenTo' en vez de 'on' para escuchar eventos, evitando así memory leaks y "controladores zombies".
+*   Podemos hacer uso de 'listenTo' en vez de 'on' para escuchar eventos, evitando así memory leaks y "vistas zombies".
 
             var controller = Marionette.Controller.extend({
                 renderView: function(region){
