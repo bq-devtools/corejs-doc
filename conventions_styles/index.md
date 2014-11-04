@@ -31,10 +31,10 @@ Los desarrolladores que usan [Sublime](http://www.sublimetext.com/), pueden bene
 
 ```javascript
 /*
- * BEM 
+ * BEM
  * Stands for "Block", "Element", "Modifier"
  */
- 
+
 .nav                     // bloque
 .nav__item {}            // elemento de bloque
 .nav__item--selected {}  // modificador de elemento de bloque
@@ -102,6 +102,101 @@ var objectNameLikethis.methodNamesLikeThis = function() { };
 
 > * [Design rules](http://cloudandcode.tumblr.com/post/98671637921/design-rules-in-a-backbone-marionette-app)
 
+** Módulos **
+
+Exponer a la aplicación cada módulo, con el nombre del mismo.
+
+        ** Módulo books **
+
+        var controller = Marionette.Controller.extend({
+        });
+
+        var view = Marionette.ItemView.extend({
+        });
+
+
+        app.books = app.books || {};
+        app.books.controller = controller;
+        app.books.view = view;
+
+
+** Controllers **
+Usar controladores de Marionette (Backbone.Marionette.Controller) en vez de objetos planos JavaScript.
+
+
+        var controller = Marionette.Controller.extend({
+
+        });
+
+> **Más info**
+
+> * [Marionette Controller](http://marionettejs.com/docs/v1.8.2/marionette.controller.html)
+
+Los controladores de Marionette nos aportan ciertos beneficios frente a los objetos JavaScript planos:
+
+*   Podemos hacer uso de 'listenTo' en vez de 'on' para escuchar eventos, evitando así memory leaks y "controladores zombies".
+
+            var controller = Marionette.Controller.extend({
+                renderView: function(region){
+                    var view = Marionette.View({
+
+                    });
+
+                    region.show(view);
+
+                    this.listenTo(view,'dom:refresh',function(){
+
+                    });
+                }
+            });
+
+*   Podemos extender controladores, pudiendo heredar funcionalidad de un controlador a  otro.
+
+            var controllerA = Marionette.Controller.extend({
+                listBooks: function(){
+                }
+            });
+
+            var controllerB = controllerA.extend({
+                showBooks: function(){
+
+                }
+                //Controller B hereda el método listBooks de controller A
+            });
+
+Además para poder reaprovechar mejor la lógica de negocio entre controladores, se han definido ciertas prácticas que podrían favorecer la reutilización de los controladores:
+
+*   Declarar vistas/modelos/colecciones/recursos (dependencias) como atributos propios de los controllers.
+
+                var controller = Marionette.Controller.extend({
+                    view: bookView,
+                    collection: collectionBooks,
+                    model: book
+                    renderView: function(region){
+                        region.show(this.view);
+                    }
+                });
+
+
+*   LLamar a los controladores con ellos mismos como contexto, para pooder hacer uso de this.
+
+                app.router('/books', 'list:books', function(){
+                    controller.renderView();
+                });
+
+                var controller = Marionette.Controller.extend({
+                    view: bookView,
+                    collection: collectionBooks,
+                    model: book
+                    renderView: function(region){
+                        region.show(this.view);
+                    }
+                });
+
+*   Refactorizar los métodos en los controladores para reutilizar la lógica
+
+-------
+
 
 ## Comentarios
 
@@ -113,17 +208,17 @@ Para el resto de comentarios internos:
 
 * En línea:
 
-	```javascript
-	// Comentario
-	```
+    ```javascript
+    // Comentario
+    ```
 
 * En bloque:
 
-	```javascript
-	/**
-	 * Block comment
-	 */
-	```
+    ```javascript
+    /**
+     * Block comment
+     */
+    ```
 
 > **Más Info**
 
