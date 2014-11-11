@@ -2387,7 +2387,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="app.silkroad.assets.html">Namespace: assets</h1>
+        <h1 class="page-title" data-filename="Backbone.sync.html">Namespace: sync</h1>
         
 
 
@@ -2396,9 +2396,7 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="app.html">app</a><a href="app.silkroad.html">.silkroad</a>.</span>
-    
-    assets
+    sync
     </h2>
     
 </header>  
@@ -2409,7 +2407,7 @@
     
     
         
-            <div class="description"><p>Module for organize user assets.</p></div>
+            <div class="description"><p>Translate this full exampe query to a SilkRoad Compliant QueryString:</p></div>
         
         
         
@@ -2439,6 +2437,112 @@
 
         
         
+            <h3>Examples</h3>
+            
+
+    
+    <pre class="prettyprint"><code><p>var requestParams = {
+    resource: 'resource:entity',
+    id: 'id',
+    rel: 'relType',
+    relationData: {},
+    uri: 'relUri',
+    data: 'object',
+    query: [
+        { $eq: {field: 'value'} },
+        { $eq: {field2: 'value2'} },
+        { $gt: {field: 'value'} },
+        { $gte: {field: 'value'} },
+        { $lt: {field: 'value'} },
+        { $lte: {field: 'value'} },
+        { $ne: {field: 'value'} },
+        { $eq: {field: 'value'} },
+        { $like: {field: 'value'} },
+        { $in: {field: ['value1', 'value2']} },
+        { $all: {field: ['value1', 'value2']} }
+    ],
+    page: { page: 0, size: 10 },
+    sort: { field: 'asc' },
+    aggregation: {
+        '$count': '*'
+    },
+    success: function() {},
+    error: function() {}
+};
+var model = app.factory.new('Model');
+var promise = model.fetch(requestParams);</p></code></pre>
+    
+
+
+    
+    <pre class="prettyprint"><code><p>var MyModel = app.factory.get('Model').extend({
+    requestParams: {
+        resource: 'resource:entity',
+        id: 'id',
+        success: function() {},
+        error: function() {}
+    }
+});</p>
+<p>var model = new MyModel();
+var promise = model.fetch();</p></code></pre>
+    
+
+
+    
+    <pre class="prettyprint"><code><p>var MyCollection = app.factory.get('Collection').extend({
+    requestParams: {
+        resource: 'resource:entity',
+        rel: 'relType',
+        relationData: {},
+        uri: 'relUri',
+        data: 'object',
+        query: [
+            { $eq: {field: 'value'} },
+            { $eq: {field2: 'value2'} },
+            { $gt: {field: 'value'} },
+            { $gte: {field: 'value'} },
+            { $lt: {field: 'value'} },
+            { $lte: {field: 'value'} },
+            { $ne: {field: 'value'} },
+            { $eq: {field: 'value'} },
+            { $like: {field: 'value'} },
+            { $in: {field: ['value1', 'value2']} },
+            { $all: {field: ['value1', 'value2']} }
+        ],
+        page: { page: 0, size: 10 },
+        sort: { field: 'asc' },
+        aggregation: {
+            '$count': '*'
+        },
+        success: function() {},
+        error: function() {}
+    }
+});</p>
+<p>var collection = new MyCollection();
+var promise = collection.fetch();</p></code></pre>
+    
+
+
+    
+    <pre class="prettyprint"><code><p>var model = new Backbone.Model({
+    id: 1
+});</p>
+<p>model.fetch().then(function(model) {
+    // fetched model
+});</p>
+<p>model.set('id', undefined);
+model.save().then(function(model) {
+    // created or updated model
+});</p>
+<p>model.destroy().then(function(model) {
+    // deleted model
+});</p>
+<p>model.on('sync', function() {
+    // deleted, created or updated model
+});</p></code></pre>
+    
+
+        
     
     </div>
     
@@ -2454,138 +2558,6 @@
     
     
     
-    
-        <h3 class="subsection-title">Methods</h3>
-        
-        <dl>
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="asset">
-            
-            <span class="type-signature static">static</span>app.silkroad.assets.asset<span class="signature">(<span class="optional">id</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="assets.AssetBuilder.html">assets.AssetBuilder</a>}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="assets.js.html">modules/silkroad/assets.js</a>, <a href="assets.js.html#line22">line 22</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Creates a new Asset Builder</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>id</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>The id of the asset</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-
-
-    
-    
-    
-</dd>
-
-        </dl>
     
     
     
@@ -2602,7 +2574,7 @@
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 11 2014 23:55:39 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 11 2014 23:55:40 GMT+0100 (CET)
         </footer>
     </div>
 </div>

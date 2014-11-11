@@ -257,6 +257,39 @@
             </ul>
             <ul class="methods itemMembers">
             
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="app.facebook.init"><a href="app.facebook.html#init">init</a></li>
+            
+                <li data-name="app.facebook.initCallback"><a href="app.facebook.html#initCallback">initCallback</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="app.facebook">
+            <span class="title">
+                <a href="app.facebook.html">app.facebook</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="app.facebook.init"><a href="app.facebook.html#init">init</a></li>
+            
+                <li data-name="app.facebook.initCallback"><a href="app.facebook.html#initCallback">initCallback</a></li>
+            
             </ul>
             <ul class="events itemMembers">
             
@@ -538,6 +571,33 @@
             
             </ul>
             <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="app.googleSdk">
+            <span class="title">
+                <a href="app.googleSdk.html">app.googleSdk</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="app.googleSdk.init"><a href="app.googleSdk.html#init">init</a></li>
+            
+                <li data-name="app.googleSdk.initCallback"><a href="app.googleSdk.html#initCallback">initCallback</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1508,6 +1568,27 @@
             </ul>
         </li>
     
+        <li class="item" data-name="Backbone.sync">
+            <span class="title">
+                <a href="Backbone.sync.html">Backbone.sync</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="oauth">
             <span class="title">
                 <a href="oauth.html">oauth</a>
@@ -2306,7 +2387,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="start.js__.html">Source: modules/silkroad/start.js</h1>
+        <h1 class="page-title" data-filename="start.js__.html">Source: modules/facebook-sdk/start.js</h1>
         
 
 
@@ -2317,62 +2398,76 @@
 /* global define */
 define([
     'corejs/app',
-    'corejs/modules/silkroad/assets',
-    'corejs/modules/silkroad/bqpon',
-    'corejs/modules/silkroad/common',
-    'corejs/modules/silkroad/ec',
-    'corejs/modules/silkroad/evci',
-    'corejs/modules/silkroad/iam',
-    'corejs/modules/silkroad/notifications',
-    'corejs/modules/silkroad/oauth',
-    'corejs/modules/silkroad/oauthAccessToken',
-    'corejs/modules/silkroad/oauthProvider',
-    'corejs/modules/silkroad/resources',
-    'corejs/modules/silkroad/services',
-    'corejs/modules/silkroad/silkRoadError'
-], function(
-    app,
-    assets,
-    bqpon,
-    common,
-    ec,
-    evci,
-    iam,
-    notifications,
-    oauth,
-    oauthAcessToken,
-    oauthProvider,
-    resources,
-    services,
-    silkRoadError
-) {
+    'q',
+], function(app, q) {
 
     /**
-     * A module to manage silkroad requests
-     * @exports silkroad
+     * A plugin for facebook-module to retrieve facebook sdk
+     * @exports facebook
      * @namespace
      * @memberof app
      */
-    var silkroad = {
-        assets:             assets,
-        bqpon:              bqpon,
-        common:             common,
-        ec:                 ec,
-        evci:               evci,
-        iam:                iam,
-        notifications:      notifications,
-        oauth:              oauth,
-        oauthAcessToken:    oauthAcessToken,
-        oauthProvider:      oauthProvider,
-        resources:          resources,
-        services:           services,
-        silkRoadError:      silkRoadError
+    var facebookSdk = {};
+
+    /**
+     * Loads facebook JS library
+     */
+    facebookSdk.init = function() {
+        app.log.debug('facebook:loader');
+        // FB async loader
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = '//connect.facebook.net/en_US/all.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
     };
 
-    app.silkroad = silkroad;
+    app.fbAsync = q.defer();
 
-    return silkroad;
+    /**
+     * Facebook loaded callback
+     * @return {Promise} that resolves with de FB namespace initialized
+     */
+    facebookSdk.initCallback = function() {
+        var params = app.modulesConfig.get('facebook');
+        window.FB.init({
+            appId: params.appId,
+            xfbml: params.xfbml,
+            version: params.version
+        });
 
+        app.log.debug('facebook:loaded', window.FB);
+        app.vent.trigger('facebook:loaded', window.FB);
+        app.fbAsync.resolve(window.FB);
+    };
+
+    // FB callback must be at global context
+    window.fbAsyncInit = facebookSdk.initCallback;
+
+    // Returns a promise for facebook api onLoad callback
+    app.reqres.setHandler('FB', function() {
+        return app.fbAsync.promise;
+    });
+
+    // Timeout for FB API loader
+    setTimeout(function() {
+        if (!window.FB) {
+            app.log.error('facebook:api:not_loaded');
+            app.gAsync.reject({error: 'facebook:api:not_loaded'});
+        }
+    }, 5000);
+
+    app.vent.on('initialize:before', facebookSdk.init);
+
+    // Expose module
+    app.facebookSdk = facebookSdk;
+
+    return facebookSdk;
 });
 </code></pre>
         </article>
@@ -2386,7 +2481,7 @@ define([
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Mon Nov 03 2014 10:55:39 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 11 2014 23:55:35 GMT+0100 (CET)
         </footer>
     </div>
 </div>

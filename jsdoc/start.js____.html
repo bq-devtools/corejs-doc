@@ -257,6 +257,39 @@
             </ul>
             <ul class="methods itemMembers">
             
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="app.facebook.init"><a href="app.facebook.html#init">init</a></li>
+            
+                <li data-name="app.facebook.initCallback"><a href="app.facebook.html#initCallback">initCallback</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="app.facebook">
+            <span class="title">
+                <a href="app.facebook.html">app.facebook</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="app.facebook.init"><a href="app.facebook.html#init">init</a></li>
+            
+                <li data-name="app.facebook.initCallback"><a href="app.facebook.html#initCallback">initCallback</a></li>
+            
             </ul>
             <ul class="events itemMembers">
             
@@ -538,6 +571,33 @@
             
             </ul>
             <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="app.googleSdk">
+            <span class="title">
+                <a href="app.googleSdk.html">app.googleSdk</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="app.googleSdk.init"><a href="app.googleSdk.html#init">init</a></li>
+            
+                <li data-name="app.googleSdk.initCallback"><a href="app.googleSdk.html#initCallback">initCallback</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -1508,6 +1568,27 @@
             </ul>
         </li>
     
+        <li class="item" data-name="Backbone.sync">
+            <span class="title">
+                <a href="Backbone.sync.html">Backbone.sync</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="oauth">
             <span class="title">
                 <a href="oauth.html">oauth</a>
@@ -2306,7 +2387,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="app.js.html">Source: app.js</h1>
+        <h1 class="page-title" data-filename="start.js____.html">Source: modules/google-sdk/start.js</h1>
         
 
 
@@ -2316,138 +2397,100 @@
             <pre class="prettyprint source "><code>'use strict';
 /* global define */
 define([
-    // Libraries.
-    'jquery',
-    'underscore',
-    'q',
-    'backbone',
-
-    // Templates
-    'templates/jst',
-
-    // Load engine
-    'corejs/engine/application',
-    'corejs/engine/behaviors',
-    'corejs/engine/common',
-    'corejs/engine/factory',
-    'corejs/engine/jwt',
-    'corejs/engine/layoutManager',
-    'corejs/engine/logger',
-    'corejs/engine/modulesConfig',
-    'corejs/engine/polyfills',
-    'corejs/engine/router',
-    'corejs/engine/services',
-    'corejs/engine/session',
-    'corejs/engine/utils',
-    'corejs/engine/validate',
-
-    // Plugins.
-    'backbone.marionette'
-],
-
-function(
-    $,
-    _,
-    q,
-    Backbone,
-
-    jst,
-
-    application,
-    behaviors,
-    common,
-    factory,
-    jwt,
-    layoutManager,
-    logger,
-    modulesConfig,
-    polyfills,
-    router,
-    services,
-    session,
-    utils,
-    validate
-
-) {
+    'corejs/app',
+    'q'
+], function(app, q) {
 
     /**
-     * Provides a global location to place configuration settings and module creation
-     * @exports app
+     * A plugin for google-module to retrieve google sdk
+     * @exports googleSdk
      * @namespace
+     * @memberof app
      */
-    var app = {
-        /**
-         * The root path to run the application.
-         * @type {String}
-         * @default window.location.pathname
-         */
-        root:           window.location.pathname,
-        /**
-         * Array with compiled templates
-         * @type {Object}
-         * @namespace
-         */
-        jst:            jst,
+	var googleSdk = {};
 
-        behaviors:      behaviors,
-        common:         common,
-        factory:        factory,
-        jwt:            jwt,
-        layoutManager:  layoutManager,
-        log:            logger,
-        modulesConfig:  modulesConfig,
-        polyfills:      polyfills,
-        router:         router,
-        services:       services,
-        session:        session,
-        utils:          utils,
-        validate:       validate
+	/**
+     * Loads google JS library
+     */
+    googleSdk.init = function() {
+        app.log.debug('gapi:loader');
+        // Google API async laoder
+        (function() {
+            var po = document.createElement('script');
+            po.type = 'text/javascript';
+            po.async = true;
+            po.src = 'https://apis.google.com/js/client:plus.js?onload=gAsyncInit';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(po, s);
+        })();
     };
 
-    // Merge Marionette aplication with engine namespaces
-    app = _.extend(application, app);
+    app.gAsync = q.defer();
 
-    app.on('initialize:after', function() {
-        var miniNav = {
-            appCodeName: navigator.appCodeName,
-            appName: navigator.appName,
-            appVersion: navigator.appVersion,
-            cookieEnabled: navigator.cookieEnabled,
-            platform: navigator.platform,
-            userAgent: navigator.userAgent,
-            systemLanguage: navigator.systemLanguage
+    /**
+     * Google JS library loaded callback
+     * @return {Promise} that resolves with de gapi namespace initialized and with APIs loaded
+     */
+    googleSdk.initCallback = function() {
+        app.log.debug('google:loaded', window.gapi);
+
+        app.vent.trigger('google:loaded', window.gapi);
+
+        var googleConfig = app.modulesConfig.get('google');
+
+        window.gapi.client.setApiKey(googleConfig.apiKey);
+
+        // Google APIs loader by config
+        var apisPromises = [];
+        googleConfig.apis = googleConfig.apis || [];
+
+        var apiCallback = function(response) {
+            if (response && response.error) {
+                app.log.debug('google:api:loader:fail', response);
+                dfd.reject(response);
+            } else {
+                app.log.debug('google:api:loader:success', response);
+                dfd.resolve();
+            }
         };
+        for (var i = googleConfig.apis.length - 1; i >= 0; i--) {
+            var dfd = q.defer();
+            app.log.debug('googleSdk.initCallback.load.api: ' + googleConfig.apis[i].name + '-' + googleConfig.apis[i].version);
+            window.gapi.client.load(googleConfig.apis[i].name, googleConfig.apis[i].version, apiCallback);
+            apisPromises.push(dfd.promise);
+        }
 
-        app.log.info('app:initialize:after', window.performance, miniNav, screen);
+        q.all(apisPromises).then(function() {
+            app.gAsync.resolve(window.gapi);
+        }).fail(function(response) {
+            app.gAsync.reject(response);
+        });
+
+        return app.gAsync.promise;
+    };
+
+    // Sets Google loaded callback
+    window.gAsyncInit = googleSdk.initCallback;
+
+    // Returns a promise for google api onLoad callback
+    app.reqres.setHandler('gapi', function() {
+        return app.gAsync.promise;
     });
 
-    // wait for loaded config
-    var configLoaded = q.defer();
-    app.vent.on('app:config:global:loaded', function(config) {
-        app.common.setConfig(config);
-        app.log.setConfig(config);
-        configLoaded.resolve();
-    });
+    // Timeout for Google API loader
+    setTimeout(function() {
+        if (!window.gapi) {
+            app.log.error('gapi:not:loaded');
+            app.gAsync.reject({error: 'gapi:not:loaded'});
+        }
+    }, 5000);
 
-    // wait for loaded modules config
-    var configModuleLoaded = q.defer();
-    app.vent.on('app:config:modules:loaded', function(config) {
-        app.modulesConfig.setConfig(config);
-        configModuleLoaded.resolve();
-    });
+    // Ensure google loads after engine loads
+    app.vent.on('initialize:before', googleSdk.init);
 
-    // Start app when config and token is loaded
-    q.all([
-        configLoaded.promise,
-        configModuleLoaded.promise
-    ]).then(function() {
-        app.start();
-    });
+    app.googleSdk = googleSdk;
 
-    // Expose app
-    window.app = app;
-
-    return app;
+    return googleSdk;
 
 });
 </code></pre>
@@ -2462,7 +2505,7 @@ function(
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Mon Nov 03 2014 10:55:38 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 11 2014 23:55:35 GMT+0100 (CET)
         </footer>
     </div>
 </div>

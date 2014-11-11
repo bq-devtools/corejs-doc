@@ -2387,213 +2387,99 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="app.silkroad.assets.html">Namespace: assets</h1>
+        <h1 class="page-title" data-filename="start.js______.html">Source: modules/jquery-ajax-blob-arraybuffer/start.js</h1>
         
 
 
+    
+    <section>
+        <article>
+            <pre class="prettyprint source "><code>'use strict';
+/* global define */
+/* jshint unused:false */
+define([
+    'jquery'
+], function($) {
 
-<section>
-    
-<header>
-    <h2>
-        <span class="ancestors"><a href="app.html">app</a><a href="app.silkroad.html">.silkroad</a>.</span>
-    
-    assets
-    </h2>
-    
-</header>  
+    /**
+     * Register ajax transports for blob send/recieve and array buffer send/receive via XMLHttpRequest Level 2
+     * within the comfortable framework of the jquery ajax request, with full support for promises.
+     *
+     * Notice the +* in the dataType string? The + indicates we want this transport to be prepended to the list
+     * of potential transports (so it gets first dibs if the request passes the conditions within to provide the
+     * ajax transport, preventing the standard transport from hogging the request), and the * indicates that
+     * potentially any request with any dataType might want to use the transports provided herein.
+     *
+     * Remember to specify 'processData:false' in the ajax options when attempting to send a blob or arraybuffer -
+     * otherwise jquery will try (and fail) to convert the blob or buffer into a query string.
+     * http://www.artandlogic.com/blog/2013/11/jquery-ajax-blobs-and-array-buffers/
+     * https://gist.github.com/aaronk6/bff7cc600d863d31a7bf
+     */
+    $.ajaxTransport('+*', function(options, originalOptions, jqXHR) {
+        // Test for the conditions that mean we can/want to send/receive blobs or arraybuffers - we need XMLHttpRequest
+        // level 2 (so feature-detect against window.FormData), feature detect against window.Blob or window.ArrayBuffer,
+        // and then check to see if the dataType is blob/arraybuffer or the data itself is a Blob/ArrayBuffer
+        if (window.FormData && ((options.dataType && (options.dataType === 'blob' || options.dataType === 'arraybuffer')) ||
+            (options.data && ((window.Blob && options.data instanceof Blob) ||
+                (window.ArrayBuffer && options.data instanceof ArrayBuffer)))
+        )) {
+            return {
+                /**
+                 * Return a transport capable of sending and/or receiving blobs - in this case, we instantiate
+                 * a new XMLHttpRequest and use it to actually perform the request, and funnel the result back
+                 * into the jquery complete callback (such as the success function, done blocks, etc.)
+                 *
+                 * @param headers
+                 * @param completeCallback
+                 */
+                send: function(headers, completeCallback) {
+                    var xhr = new XMLHttpRequest(),
+                        url = options.url || window.location.href,
+                        type = options.type || 'GET',
+                        dataType = options.dataType || 'text',
+                        data = options.data || null,
+                        async = options.async || true,
+                        key;
 
-<article>
-    <div class="container-overview">
-    
-    
-    
-        
-            <div class="description"><p>Module for organize user assets.</p></div>
-        
-        
-        
-<dl class="details">
-    
-        
-    
-    
-    
+                    xhr.addEventListener('load', function() {
+                        var response = {}, status, isSuccess;
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
+                        isSuccess = xhr.status >= 200 && xhr.status &lt; 300 || xhr.status === 304;
 
-        
-        
-    
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        <h3 class="subsection-title">Methods</h3>
-        
-        <dl>
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="asset">
-            
-            <span class="type-signature static">static</span>app.silkroad.assets.asset<span class="signature">(<span class="optional">id</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="assets.AssetBuilder.html">assets.AssetBuilder</a>}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="assets.js.html">modules/silkroad/assets.js</a>, <a href="assets.js.html#line22">line 22</a>
-        </div>
-        
-    </div>
+                        if (isSuccess) {
+                            response[dataType] = xhr.response;
+                        } else {
+                            // In case an error occured we assume that the response body contains
+                            // text data - so let's convert the binary data to a string which we can
+                            // pass to the complete callback.
+                            response.text = String.fromCharCode.apply(null, new Uint8Array(xhr.response));
+                        }
 
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Creates a new Asset Builder</p>
-    </div>
-    
+                        completeCallback(xhr.status, xhr.statusText, response, xhr.getAllResponseHeaders());
+                    });
 
-    
-    
-    
-    
-    
-        
+                    xhr.open(type, url, async);
+                    xhr.responseType = dataType;
 
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>id</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
+                    for (key in headers) {
+                        if (headers.hasOwnProperty(key)) {
+                            xhr.setRequestHeader(key, headers[key]);
+                        }
+                    }
+                    xhr.send(data);
+                },
+                abort: function() {
+                    jqXHR.abort();
+                }
+            };
+        }
+    });
 
+});
+</code></pre>
+        </article>
+    </section>
 
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>The id of the asset</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-
-
-    
-    
-    
-</dd>
-
-        </dl>
-    
-    
-    
-    
-    
-</article>
-
-</section>  
 
 
 
@@ -2602,7 +2488,7 @@
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 11 2014 23:55:39 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 11 2014 23:55:36 GMT+0100 (CET)
         </footer>
     </div>
 </div>
