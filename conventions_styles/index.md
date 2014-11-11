@@ -167,19 +167,34 @@ Los controladores de Marionette nos aportan ciertos beneficios frente a los obje
 
 Además para poder reaprovechar mejor la lógica de negocio entre controladores, se han definido ciertas prácticas que podrían favorecer la reutilización de los controladores:
 
-*   Declarar vistas/modelos/colecciones/recursos (dependencias) como atributos propios de los controllers.
+*   Declarar vistas/modelos/colecciones/eventos/recursos (dependencias) como atributos propios de los controllers. Añadiremos como comentarios las claves que contendrán las instancias de los elementos comentados anteriormente.
 
                 var controller = Marionette.Controller.extend({
-                    view: bookView,
-                    collection: collectionBooks,
-                    model: book
+                    bookViewName: 'bookView',
+                    // bookView    
+                    collectionBooksName: 'collectionBooks',
+                    // collectionBooks
+                    bookModelname: book,
+                    //bookModel
+
                     renderView: function(region){
-                        region.show(this.view);
-                    }
-                });
+                        ...
 
 
-*   LLamar a los controladores con ellos mismos como contexto, para pooder hacer uso de this.
+*   Escuchar los eventos que lanzan las vistas en un método del controller, que invocaremos en el método renderView().
+
+                renderView: function() {
+                    ...
+                    this.addListeners();
+                    ...
+                },
+
+                addListeners: function() {
+                    this.view.on(controller.eventName, controller.method);
+                    ...
+
+
+*   Llamar a los controladores con ellos mismos como contexto, para pooder hacer uso de this.
 
                 app.router('/books', 'list:books', function(){
                     controller.renderView();
@@ -195,6 +210,25 @@ Además para poder reaprovechar mejor la lógica de negocio entre controladores,
                 });
 
 *   Refactorizar los métodos en los controladores para reutilizar la lógica
+
+
+### Rutas y eventos
+
+La navegación dentro de nuestra aplicación se realizará mediante eventos (nunca utilizando enlaces). Estos son los dos pasos a seguir: 
+
+* Cambiamos la url del navegador sin lanzar el evento al routeador.
+
+```javascript
+app.router.navigate('mysection', {
+    trigger: false
+});
+```
+
+* Ejecutamos la función renderView del controller del módulo a donde queremos navegar 
+
+```javascript
+controller.renderView.apply(controller.renderView, arguments);
+```
 
 -------
 
