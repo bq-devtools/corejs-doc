@@ -16,6 +16,7 @@ Esta apartado describe todas las tecnologías usadas para el desarrollo de aplic
   * **[Underscore](http://underscorejs.org/)** 1.5.2: Dependencia de Backbone. Librería de útiles para el manejo de estructuras de datos.
   * **[Handlebars](http://handlebarsjs.com/)** 1.3.0: Librería para la compilación y renderizado de plantillas.
   * **[Modernizr](http://modernizr.com/)** 2.6.2: Librería que ofrece soporte a la detección de funcionalidades del navegador del dispositivo.
+  * **[Sass](http://sass-lang.com/)** 3.4.8 (Selective Steve): Preprocesador CSS, un superset de CSS que permite desarrollar hojas de estilo más estructurados y reutilizables.
 
 ## i18n
   * **[i18next](http://i18next.com/)** 1.7.3: Librería de internacionalización con soporte para textos, géneros y plurales.
@@ -42,7 +43,7 @@ Esta apartado describe todas las tecnologías usadas para el desarrollo de aplic
     * En producción lo usaremos como proxy para que la aplicación web sea indexable.
     * En pruebas lo utilizaremos para arrancar las pruebas unitarias con mocha+phamtomJS
   * **[npm](https://npmjs.org/)** 1.3.21: Gestor de paquetes de node
-  * **[compass](http://compass-style.org/)** 0.12.2: Framework para el desarrollo de hojas de estilos en **[SASS](http://sass-lang.com/)**. Lo usaremos principalmente para su compilación y generación de sprites.
+  * **[compass](http://compass-style.org/)** 1.0.1 (Polaris): Framework para el desarrollo de hojas de estilos en **[SASS](http://sass-lang.com/)**. Lo usaremos principalmente para su compilación y generación de sprites.
   * **[Java](http://www.oracle.com/technetwork/java/javase/downloads/index.html)** 1.8: Para trabajar con Selenium WebDriver en local.
 
 ## Entorno de desarrollo
@@ -169,14 +170,15 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
     # .bashrc or .zshrc if you have oh-my-zsh
     echo 'export PATH=$HOME/.local/bin:$PATH' >> ~/.bashrc && source ~/.bashrc
     echo "export NODE_PATH=$NODE_PATH:$HOME/.local/lib/node_modules" >> ~/.bashrc && source ~/.bashrc
-    
+
     mkdir ~/.local
-    cd ~/.local
+    cd .local
+    mkdir ~/node
+    cd ~/node
     
     # node
-    git clone https://github.com/joyent/node.git
-    cd node
-    git checkout "v0.10.24"
+    curl http://nodejs.org/dist/node-latest.tar.gz | tar xz --strip-components=1
+    
     ./configure --prefix=~/.local
     make install
     
@@ -185,17 +187,9 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
     sudo ln -s ~/.local/lib/node_modules /usr/local/lib/
     
     # npm
+    curl https://www.npmjs.org/install.sh | sh
+    
 
-    cd ~/.local
-
-    git clone git@github.com:npm/npm.git
-    cd npm
-    git checkout tags/v1.4.23
-
-    #Sustituir [owner]:[group] por tu usuario -> pepe:pepe
-    sudo chown -R [owner]:[group] ~/.npm/*
-
-    make install 
 
     ```
 
