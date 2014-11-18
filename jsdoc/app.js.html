@@ -90,6 +90,35 @@
             
                 <li data-name="app.root"><a href="app.html#root">root</a></li>
             
+                <li data-name="app.root"><a href="app.html#root">root</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="app">
+            <span class="title">
+                <a href="app.html">app</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="app.root"><a href="app.html#root">root</a></li>
+            
+                <li data-name="app.root"><a href="app.html#root">root</a></li>
+            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -327,6 +356,8 @@
             
                 <li data-name="app.facebook.oauth.loginHandlers.redirect"><a href="app.facebook.oauth.html#loginHandlers.redirect">loginHandlers.redirect</a></li>
             
+                <li data-name="app.facebook.oauth.logout"><a href="app.facebook.oauth.html#logout">logout</a></li>
+            
                 <li data-name="app.facebook.oauth.me"><a href="app.facebook.oauth.html#me">me</a></li>
             
                 <li data-name="app.facebook.oauth.meHandlers.redirect"><a href="app.facebook.oauth.html#meHandlers.redirect">meHandlers.redirect</a></li>
@@ -495,6 +526,8 @@
             
                 <li data-name="app.google.oauth.loginHandlers.redirect"><a href="app.google.oauth.html#loginHandlers.redirect">loginHandlers.redirect</a></li>
             
+                <li data-name="app.google.oauth.logout"><a href="app.google.oauth.html#logout">logout</a></li>
+            
                 <li data-name="app.google.oauth.me"><a href="app.google.oauth.html#me">me</a></li>
             
                 <li data-name="app.google.oauth.meHandlers.redirect"><a href="app.google.oauth.html#meHandlers.redirect">meHandlers.redirect</a></li>
@@ -619,6 +652,54 @@
             
             </ul>
             <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="app.jst">
+            <span class="title">
+                <a href="app.jst.html">app.jst</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="app.jwt">
+            <span class="title">
+                <a href="app.jwt.html">app.jwt</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="app.jwt.createClaims"><a href="app.jwt.html#createClaims">createClaims</a></li>
+            
+                <li data-name="app.jwt.generate"><a href="app.jwt.html#generate">generate</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -2387,417 +2468,154 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="module-jwt.html">Module: jwt</h1>
+        <h1 class="page-title" data-filename="app.js.html">Source: app.js</h1>
         
 
 
+    
+    <section>
+        <article>
+            <pre class="prettyprint source "><code>'use strict';
+/* global define */
+define([
+    // Libraries.
+    'jquery',
+    'underscore',
+    'q',
+    'backbone',
 
-<section>
-    
-<header>
-    <h2>
-    jwt
-    </h2>
-    
-</header>  
+    // Templates
+    'templates/jst',
 
-<article>
-    <div class="container-overview">
-    
-    
-    
-        
-            <div class="description"><p>A module representing a jwt.</p></div>
-        
-        
-        
-<dl class="details">
-    
-        
-    
-    
-    
+    // Load engine
+    'corejs/engine/application',
+    'corejs/engine/behaviors',
+    'corejs/engine/common',
+    'corejs/engine/factory',
+    'corejs/engine/jwt',
+    'corejs/engine/layoutManager',
+    'corejs/engine/logger',
+    'corejs/engine/modulesConfig',
+    'corejs/engine/polyfills',
+    'corejs/engine/router',
+    'corejs/engine/services',
+    'corejs/engine/session',
+    'corejs/engine/utils',
+    'corejs/engine/validate',
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
+    // Plugins.
+    'backbone.marionette'
+],
 
-        
-        
-    
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        <h3 class="subsection-title">Methods</h3>
-        
-        <dl>
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="createClaims">
-            
-            <span class="type-signature static">static</span>module:jwt.createClaims<span class="signature">(params)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Object}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="jwt.js.html">engine/jwt.js</a>, <a href="jwt.js.html#line45">line 45</a>
-        </div>
-        
-    </div>
+function(
+    $,
+    _,
+    q,
+    Backbone,
 
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Returns a claim with default values, that can be overriden with params values.</p>
-    </div>
-    
+    jst,
 
-    
-    
-    
-    
-    
-        
+    application,
+    behaviors,
+    common,
+    factory,
+    jwt,
+    layoutManager,
+    logger,
+    modulesConfig,
+    polyfills,
+    router,
+    services,
+    session,
+    utils,
+    validate
 
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>params</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
+) {
 
+    /**
+     * Provides a global location to place configuration settings and module creation
+     * @exports app
+     * @namespace
+     */
+    var app = {
+        /**
+         * The root path to run the application.
+         * @type {String}
+         * @default window.location.pathname
+         */
+        root:           window.location.pathname,
+        /**
+         * Array with compiled templates
+         * @type {Object}
+         * @namespace
+         */
+        jst:            jst,
 
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Dicctionary with claims values</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
+        behaviors:      behaviors,
+        common:         common,
+        factory:        factory,
+        jwt:            jwt,
+        layoutManager:  layoutManager,
+        log:            logger,
+        modulesConfig:  modulesConfig,
+        polyfills:      polyfills,
+        router:         router,
+        services:       services,
+        session:        session,
+        utils:          utils,
+        validate:       validate
+    };
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
+    // Merge Marionette aplication with engine namespaces
+    app = _.extend(application, app);
 
-    
-    
+    app.on('initialize:after', function() {
+        var miniNav = {
+            appCodeName: navigator.appCodeName,
+            appName: navigator.appName,
+            appVersion: navigator.appVersion,
+            cookieEnabled: navigator.cookieEnabled,
+            platform: navigator.platform,
+            userAgent: navigator.userAgent,
+            systemLanguage: navigator.systemLanguage
+        };
 
-    
+        app.log.info('app:initialize:after', window.performance, miniNav, screen);
+    });
 
-    
-    
-    
-    
-    
-    
-    
+    // wait for loaded config
+    var configLoaded = q.defer();
+    app.vent.on('app:config:global:loaded', function(config) {
+        app.common.setConfig(config);
+        app.log.setConfig(config);
+        configLoaded.resolve();
+    });
 
+    // wait for loaded modules config
+    var configModuleLoaded = q.defer();
+    app.vent.on('app:config:modules:loaded', function(config) {
+        app.modulesConfig.setConfig(config);
+        configModuleLoaded.resolve();
+    });
 
-<h5>Returns:</h5>
-Object
-<br />
+    // Start app when config and token is loaded
+    q.all([
+        configLoaded.promise,
+        configModuleLoaded.promise
+    ]).then(function() {
+        app.start();
+    });
 
-    
-    
-    
-</dd>
+    // Expose app
+    window.app = app;
 
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="generate">
-            
-            <span class="type-signature static">static</span>module:jwt.generate<span class="signature">(claims, <span class="optional">secret</span>, <span class="optional">alg</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{String}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="jwt.js.html">engine/jwt.js</a>, <a href="jwt.js.html#line26">line 26</a>
-        </div>
-        
-    </div>
+    return app;
 
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>JWT-HmacSHA256 generator
-<a href="http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html">http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html</a></p>
-    </div>
-    
+});
+</code></pre>
+        </article>
+    </section>
 
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Default</th>
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>claims</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                    
-                        
-                    
-                
-                <p>Specific claims to include in the JWT (iss, aud, exp, scope, ...)</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>secret</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                    'common.clientSecret'
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>String with the client assigned secret</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>alg</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                    'common.jwtAlgorithm'
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>Object with the algorithm type</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-
-
-<h5>Returns:</h5>
-JWT string
-<br />
-
-    
-    
-    
-</dd>
-
-        </dl>
-    
-    
-    
-    
-    
-</article>
-
-</section>  
 
 
 
@@ -2806,7 +2624,7 @@ JWT string
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 11 2014 23:55:41 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 18 2014 09:56:35 GMT+0100 (CET)
         </footer>
     </div>
 </div>

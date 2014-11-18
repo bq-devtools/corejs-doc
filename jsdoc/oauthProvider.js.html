@@ -90,6 +90,35 @@
             
                 <li data-name="app.root"><a href="app.html#root">root</a></li>
             
+                <li data-name="app.root"><a href="app.html#root">root</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="app">
+            <span class="title">
+                <a href="app.html">app</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="app.root"><a href="app.html#root">root</a></li>
+            
+                <li data-name="app.root"><a href="app.html#root">root</a></li>
+            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -327,6 +356,8 @@
             
                 <li data-name="app.facebook.oauth.loginHandlers.redirect"><a href="app.facebook.oauth.html#loginHandlers.redirect">loginHandlers.redirect</a></li>
             
+                <li data-name="app.facebook.oauth.logout"><a href="app.facebook.oauth.html#logout">logout</a></li>
+            
                 <li data-name="app.facebook.oauth.me"><a href="app.facebook.oauth.html#me">me</a></li>
             
                 <li data-name="app.facebook.oauth.meHandlers.redirect"><a href="app.facebook.oauth.html#meHandlers.redirect">meHandlers.redirect</a></li>
@@ -495,6 +526,8 @@
             
                 <li data-name="app.google.oauth.loginHandlers.redirect"><a href="app.google.oauth.html#loginHandlers.redirect">loginHandlers.redirect</a></li>
             
+                <li data-name="app.google.oauth.logout"><a href="app.google.oauth.html#logout">logout</a></li>
+            
                 <li data-name="app.google.oauth.me"><a href="app.google.oauth.html#me">me</a></li>
             
                 <li data-name="app.google.oauth.meHandlers.redirect"><a href="app.google.oauth.html#meHandlers.redirect">meHandlers.redirect</a></li>
@@ -619,6 +652,54 @@
             
             </ul>
             <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="app.jst">
+            <span class="title">
+                <a href="app.jst.html">app.jst</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="app.jwt">
+            <span class="title">
+                <a href="app.jwt.html">app.jwt</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="app.jwt.createClaims"><a href="app.jwt.html#createClaims">createClaims</a></li>
+            
+                <li data-name="app.jwt.generate"><a href="app.jwt.html#generate">generate</a></li>
             
             </ul>
             <ul class="events itemMembers">
@@ -2476,7 +2557,9 @@ define([
      * @return {Promise}   A promise that resolves with an oauth user (with oauthService and oauthId)
      */
     oauthProvider.getUser = function() {
-        return oauth.user().getMe();
+        var dfd = q.defer();
+        dfd.reject('not implemented');
+        return dfd.promise;
     };
     app.reqres.setHandler('oauth:service:me:silkroad', oauthProvider.getUser);
 
@@ -2486,12 +2569,23 @@ define([
      * @return {Promise}
      */
     oauthProvider.remove = function() {
-        return oauth.user().deleteMe();
+        var dfd = q.defer();
+        dfd.reject({error: 'not implemented'});
+        return dfd.promise;
     };
     app.reqres.setHandler('oauth:service:remove:silkroad', oauthProvider.remove);
 
     /**
      * Logout from silkroad oauth service
+     * @return {Promise} Promise that resolves with the revoke token response
+     */
+    oauthProvider.logout = function() {
+        return oauth.signout();
+    };
+    app.reqres.setHandler('oauth:service:logout:silkroad', oauthProvider.logout);
+
+    /**
+     * Disconects from silkroad oauth service
      * @return {Promise} Promise that resolves with the revoke token response
      */
     oauthProvider.disconect = function() {
@@ -2505,7 +2599,9 @@ define([
      */
     oauthProvider.tokenRefresh = function() {
         var dfd = q.defer();
-        oauthProvider.login({ oauthService: 'silkroad'}).
+        oauthProvider.login({
+            oauthService: 'silkroad'
+        }).
         then(function(response) {
             if (response && response.accessToken) {
                 dfd.resolve(response);
@@ -2547,7 +2643,7 @@ define([
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 11 2014 23:55:35 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 18 2014 09:56:35 GMT+0100 (CET)
         </footer>
     </div>
 </div>
