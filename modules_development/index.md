@@ -384,6 +384,7 @@ Además podemos definir la región del layout padre sobre la que debe pintarse. 
 
 **EJEMPLO**
 
+```javascript
     var ParentLayout = Backbone.Marionette.Layout.extend({
         parentLayout: 'main',
         regions: {
@@ -403,6 +404,7 @@ Además podemos definir la región del layout padre sobre la que debe pintarse. 
     var childLayout = app.LayoutManager.setLayout('ChildLayout');
 
     childLayout.content.show(someView);
+```
 
 
 El LayoutManager se encarga de instanciar y pintar mi layout si aún no lo está y de instanciar y pintar mis layouts padres si tampoco lo están. En el caso de que mi layout o alguno de mis padres ya estén pintados, no se volveran a pintar.
@@ -422,6 +424,7 @@ Tenemos tres formas de especificar qué vistas fijas se desean y en qué regione
 
 *EN LA INICIALIZACIÓN DEL BEHAVIOR:*
 
+```javascript
      var ChildLayout = Backbone.Marionette.Layout.extend({
         parentLayout: 'ParentLayout',
         parentRegion: 'content',
@@ -437,8 +440,12 @@ Tenemos tres formas de especificar qué vistas fijas se desean y en qué regione
             }
         }
     });
+```
+
+
 *EN EL SHOW DE LA VISTA SOBRE EL LAYOUT:*
 
+```javascript
     childLayout.show(miView,{
             fixedChildView: {
                 left: { //nombre de la región
@@ -448,9 +455,12 @@ Tenemos tres formas de especificar qué vistas fijas se desean y en qué regione
                 }
            }
     });
+```
+
 
 *INVOCANDO EL MÉTODO setDefaultFixedView*
 
+```javascript
     childLayout.setDefaultFixedView({
         right: {    //nombre de la región
                     view: 'identificadorDeMiVista',
@@ -458,12 +468,14 @@ Tenemos tres formas de especificar qué vistas fijas se desean y en qué regione
                     singleton: true //Si queremos que la vista sea una única instancia Singleton
                 }
     });
-
+```
 
 
 Además el layout hace de proxy para los eventos que lancen sus vistas (tanto fijas cómo no fijas) mediante el prefijo childview:[eventname]
 
+```javascript
     childLayout.listenTo(this,'childview:evento:vista',function(){});
+```
 
 Por si no tenemos una referencia directa a la vista que se está mostrando fijamente (aunque se podria acceder a ella a través de layout.nombreRegion.currentView)
 
@@ -472,11 +484,14 @@ Por si no tenemos una referencia directa a la vista que se está mostrando fijam
 Marionette no permite la reutilización de vistas una vez que estas son cerradas (si se cierra una region, se cierra la vista que se estaba mostrando).
 Sin embargo, se ha desarrollado esta funcionalidad, de forma que una vista (layout,itemView,collectionView,compositeVIew) se puede reutilizar una vez que ha sido cerrada:
 
+```javascript
+
     var view = Marionette.ItemView({});
 
     region.show(view);
     region.close(view),
     region.show(view);
+```
 
 Sin perder los eventos a los que la habíamos ligado la vista(a través de listenTo, si se usa on no se recuperan ).
 
