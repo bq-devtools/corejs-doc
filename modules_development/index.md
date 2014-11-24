@@ -281,7 +281,7 @@ var MyLayout = Backbone.Marionette.Layout.extend({
     template: function(serializedModel) {
         app.jst['myModule/myLayout'](serializedModel);
     },
-    
+
     regions: {
         header: '[data-region="header"]',
         content: '[data-region="content"]',
@@ -367,6 +367,122 @@ define([
 
 > * [Backbone.Router](http://backbonejs.org/#Router)
 
+### Layout Manager
+
+
+El Layout Manager nos permite definir una jerarquía de layouts en nuestra aplicación, de tal forma que cuándo querámos hacer uso de un layout,
+tanto este cómo los layouts de los que depende, estén disponibles.
+
+Para ello son necesarias tres cosas:
+
+1. Definir el layout del que depende (su identificador en la factoría)
+2. Dar de alta el propio layout en la factoría
+3. Definir en la jerarquía de layouts un layout cuyo padre sea la región principal ( main ) de la aplicacion (app.main) (condición de parada)
+
+Además podemos definir la región del layout padre sobre la que debe pintarse. En caso de no delcarar ninguna, se pintará en la región content.
+
+
+**EJEMPLO**
+
+    var ParentLayout = Backbone.Marionette.Layout.extend({
+        parentLayout: 'main',
+        regions: {
+            'content' : '.content'
+        }
+    });
+
+    app.factory.add('ParentLayout', ParentLayout);
+
+    var ChildLayout = Backbone.Marionette.Layout.extend({
+        parentLayout: 'ParentLayout',
+        parentRegion: 'content'
+    });
+
+    app.factory.add('ChildLayout',ChildLayout);
+
+    var childLayout = app.LayoutManager.setLayout('ChildLayout');
+
+    childLayout.content.show(someView);
+
+
+El LayoutManager se encarga de instanciar y pintar mi layout si aún no lo está y de instanciar y pintar mis layouts padres si tampoco lo están. En el caso de que mi layout o alguno de mis padres ya estén pintados, no se volveran a pintar.
+
+#### Fixed Child Views
+
+Cómo los layouts puede que se pinten sin tener un control real de ellos (un controller que los llame etc.), se dispone de un behavior llamado **fixedChildView**
+que, aplicado sobre un layout, nos permite definir vistas fijas que se van a pintar implicitamente en ciertas regiones de un layout cada vez que este se pinte.
+
+Son necesarios seguir una serie de pasos para aplicar dicho behavior:
+
+1. Definir la vista fija en la factoría
+2. Aplicar al layout el behavior
+
+
+Tenemos tres formas de especificar qué vistas fijas se desean y en qué regiones:
+
+*EN LA INICIALIZACIÓN DEL BEHAVIOR:*
+
+     var ChildLayout = Backbone.Marionette.Layout.extend({
+        parentLayout: 'ParentLayout',
+        parentRegion: 'content',
+        behaviors:{
+            fixedChildView: {
+                defaults: {
+                    content: { //nombre de la región
+                        view: 'identificadorDeMiVista',
+                        options: 'opciones opcionales a la hora de instanciar la vista',
+                        singleton: true //Si queremos que la vista sea una única instancia Singleton
+                    }
+                }
+            }
+        }
+    });
+*EN EL SHOW DE LA VISTA SOBRE EL LAYOUT:*
+
+    childLayout.show(miView,{
+            fixedChildView: {
+                left: { //nombre de la región
+                    view: 'identificadorDeMiVista',
+                    options: 'opciones opcionales a la hora de instanciar la vista',
+                    singleton: true //Si queremos que la vista sea una única instancia Singleton
+                }
+           }
+    });
+
+*INVOCANDO EL MÉTODO setDefaultFixedView*
+
+    childLayout.setDefaultFixedView({
+        right: {    //nombre de la región
+                    view: 'identificadorDeMiVista',
+                    options: 'opciones opcionales a la hora de instanciar la vista',
+                    singleton: true //Si queremos que la vista sea una única instancia Singleton
+                }
+    });
+
+
+
+Además el layout hace de proxy para los eventos que lancen sus vistas (tanto fijas cómo no fijas) mediante el prefijo childview:[eventname]
+
+    childLayout.listenTo(this,'childview:evento:vista',function(){});
+
+Por si no tenemos una referencia directa a la vista que se está mostrando fijamente (aunque se podria acceder a ella a través de layout.nombreRegion.currentView)
+
+#### Views survival
+
+Marionette no permite la reutilización de vistas una vez que estas son cerradas (si se cierra una region, se cierra la vista que se estaba mostrando).
+Sin embargo, se ha desarrollado esta funcionalidad, de forma que una vista (layout,itemView,collectionView,compositeVIew) se puede reutilizar una vez que ha sido cerrada:
+
+    var view = Marionette.ItemView({});
+
+    region.show(view);
+    region.close(view),
+    region.show(view);
+
+Sin perder los eventos a los que la habíamos ligado la vista(a través de listenTo, si se usa on no se recuperan ).
+
+**IMPORTANTE** Para evitar memory leaks, se ha proporcionado el método destroy, quedando así la vista inservible. Si se sabe que esa vista no se va a volver a usar, llamar manualmente al método destroy para que no se ensucie la memoria.
+
+
 ### Extender una Vista-Modelo-Colección
 
 Es posible extender cualquier otro componente accesible desde la factoría a través del `app.factory.get()`, de la forma que se muestra a continuación:
@@ -402,12 +518,12 @@ Un ejemplo de `start.js` podría ser el siguiente:
 /* global define */
 define([
     'corejs/app',
-    
+
     'modules/myModule/controller',
 
     // app models
     'modules/myModule/models/myModel',
-    
+
     // app collecctions
     'modules/myModule/collections/myCollection',
 
@@ -425,12 +541,12 @@ define([
     // Define router paths (url, event, handlerFunction)
     app.router.route('myroute', 'router:route:myroute', controller.myHandler);
   });
-  
+
   app.on('initialize:after', function() {
       // Code after initialization here
       app.myRegion.show(app.factory.new('MyCollectionView'));
   });
-  
+
 });
 ```
 
@@ -448,10 +564,10 @@ define([
     'underscore',
     'backbone',
     'backbone.marionette',
-    
+
     // app models
     'modules/myModule/models/myModel',
-    
+
     // app collecctions
     'modules/myModule/collections/myCollection',
 
