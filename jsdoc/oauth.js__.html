@@ -294,6 +294,8 @@
             
                 <li data-name="app.facebook.oauth.loginHandlers.redirect"><a href="app.facebook.oauth.html#loginHandlers.redirect">loginHandlers.redirect</a></li>
             
+                <li data-name="app.facebook.oauth.logout"><a href="app.facebook.oauth.html#logout">logout</a></li>
+            
                 <li data-name="app.facebook.oauth.me"><a href="app.facebook.oauth.html#me">me</a></li>
             
                 <li data-name="app.facebook.oauth.meHandlers.redirect"><a href="app.facebook.oauth.html#meHandlers.redirect">meHandlers.redirect</a></li>
@@ -462,6 +464,8 @@
             
                 <li data-name="app.google.oauth.loginHandlers.redirect"><a href="app.google.oauth.html#loginHandlers.redirect">loginHandlers.redirect</a></li>
             
+                <li data-name="app.google.oauth.logout"><a href="app.google.oauth.html#logout">logout</a></li>
+            
                 <li data-name="app.google.oauth.me"><a href="app.google.oauth.html#me">me</a></li>
             
                 <li data-name="app.google.oauth.meHandlers.redirect"><a href="app.google.oauth.html#meHandlers.redirect">meHandlers.redirect</a></li>
@@ -566,6 +570,33 @@
             </ul>
         </li>
     
+        <li class="item" data-name="app.jwt">
+            <span class="title">
+                <a href="app.jwt.html">app.jwt</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="app.jwt.createClaims"><a href="app.jwt.html#createClaims">createClaims</a></li>
+            
+                <li data-name="app.jwt.generate"><a href="app.jwt.html#generate">generate</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="app.layoutManager">
             <span class="title">
                 <a href="app.layoutManager.html">app.layoutManager</a>
@@ -574,12 +605,6 @@
                 
             </span>
             <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="app.layoutManager.current"><a href="app.layoutManager.html#current">current</a></li>
-            
-                <li data-name="app.layoutManager.currentLayout"><a href="app.layoutManager.html#currentLayout">currentLayout</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -591,7 +616,13 @@
             
                 <li data-name="app.layoutManager.close"><a href="app.layoutManager.html#close">close</a></li>
             
+                <li data-name="app.layoutManager.getLayout"><a href="app.layoutManager.html#getLayout">getLayout</a></li>
+            
                 <li data-name="app.layoutManager.removeLayout"><a href="app.layoutManager.html#removeLayout">removeLayout</a></li>
+            
+                <li data-name="app.layoutManager.renderLayout"><a href="app.layoutManager.html#renderLayout">renderLayout</a></li>
+            
+                <li data-name="app.layoutManager.renderMainLayout"><a href="app.layoutManager.html#renderMainLayout">renderMainLayout</a></li>
             
                 <li data-name="app.layoutManager.setConfig"><a href="app.layoutManager.html#setConfig">setConfig</a></li>
             
@@ -623,6 +654,8 @@
                 <li data-name="app.layoutManager.config.contentRegionName"><a href="app.layoutManager.config.html#contentRegionName">contentRegionName</a></li>
             
                 <li data-name="app.layoutManager.config.mainRegionName"><a href="app.layoutManager.config.html#mainRegionName">mainRegionName</a></li>
+            
+                <li data-name="app.layoutManager.config.rootLayout"><a href="app.layoutManager.config.html#rootLayout">rootLayout</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -1508,6 +1541,27 @@
             </ul>
         </li>
     
+        <li class="item" data-name="Backbone.sync">
+            <span class="title">
+                <a href="Backbone.sync.html">Backbone.sync</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="oauth">
             <span class="title">
                 <a href="oauth.html">oauth</a>
@@ -2383,7 +2437,7 @@ define([
                 'response_type': 'token'
             },
             state: {
-                remember: (args.remember?1:0),
+                remember: (args.remember ? 1 : 0),
                 fragment: 'social/google/login'
             }
         };
@@ -2394,7 +2448,9 @@ define([
             try {
                 response = JSON.parse(response);
             } catch (e) {
-                response = { error: 'response:bad:format' };
+                response = {
+                    error: 'response:bad:format'
+                };
             }
 
             if (response['access_token']) {
@@ -2425,7 +2481,7 @@ define([
                 'response_type': 'code'
             },
             state: {
-                remember: (args.remember?1:0),
+                remember: (args.remember ? 1 : 0),
                 fragment: 'social/google/login'
             }
         });
@@ -2452,10 +2508,6 @@ define([
     };
     app.reqres.setHandler('oauth:service:login:google', oauth.login);
 
-
-    /**
-     * REGISTER HANDLERS
-     */
 
     var registerPopupDeferred;
     oauth.registerResponseHandler = function(response) {
@@ -2501,7 +2553,9 @@ define([
             try {
                 response = JSON.parse(response);
             } catch (e) {
-                response = { error: 'response:bad:format' };
+                response = {
+                    error: 'response:bad:format'
+                };
             }
 
             if (response['access_token']) {
@@ -2620,8 +2674,15 @@ define([
     app.reqres.setHandler('oauth:service:remove:google', oauth.remove);
 
     /**
-     * DISCONECT HANDLERS
+     * Disconect from google oauth service
+     * @return {Promise} Promise that resolves with the revoke token response
      */
+    oauth.logout = function() {
+        var dfd = q.defer();
+        dfd.resolve();
+        return dfd.promise;
+    };
+    app.reqres.setHandler('oauth:service:logout:google', oauth.logout);
 
     /**
      * Disconect from google oauth service
@@ -2635,7 +2696,7 @@ define([
             dataType: 'jsonp'
         });
     };
-    app.vent.on('oauth:service:disconect:google', oauth.disconect);
+    app.reqres.setHandler('oauth:service:disconect:google', oauth.disconect);
 
     /**
      * Google oauth token refresh handler
@@ -2694,7 +2755,7 @@ define([
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Mon Nov 03 2014 10:55:39 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 25 2014 15:27:50 GMT+0100 (CET)
         </footer>
     </div>
 </div>

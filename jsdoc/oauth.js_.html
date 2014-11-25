@@ -294,6 +294,8 @@
             
                 <li data-name="app.facebook.oauth.loginHandlers.redirect"><a href="app.facebook.oauth.html#loginHandlers.redirect">loginHandlers.redirect</a></li>
             
+                <li data-name="app.facebook.oauth.logout"><a href="app.facebook.oauth.html#logout">logout</a></li>
+            
                 <li data-name="app.facebook.oauth.me"><a href="app.facebook.oauth.html#me">me</a></li>
             
                 <li data-name="app.facebook.oauth.meHandlers.redirect"><a href="app.facebook.oauth.html#meHandlers.redirect">meHandlers.redirect</a></li>
@@ -462,6 +464,8 @@
             
                 <li data-name="app.google.oauth.loginHandlers.redirect"><a href="app.google.oauth.html#loginHandlers.redirect">loginHandlers.redirect</a></li>
             
+                <li data-name="app.google.oauth.logout"><a href="app.google.oauth.html#logout">logout</a></li>
+            
                 <li data-name="app.google.oauth.me"><a href="app.google.oauth.html#me">me</a></li>
             
                 <li data-name="app.google.oauth.meHandlers.redirect"><a href="app.google.oauth.html#meHandlers.redirect">meHandlers.redirect</a></li>
@@ -566,6 +570,33 @@
             </ul>
         </li>
     
+        <li class="item" data-name="app.jwt">
+            <span class="title">
+                <a href="app.jwt.html">app.jwt</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="app.jwt.createClaims"><a href="app.jwt.html#createClaims">createClaims</a></li>
+            
+                <li data-name="app.jwt.generate"><a href="app.jwt.html#generate">generate</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="app.layoutManager">
             <span class="title">
                 <a href="app.layoutManager.html">app.layoutManager</a>
@@ -574,12 +605,6 @@
                 
             </span>
             <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="app.layoutManager.current"><a href="app.layoutManager.html#current">current</a></li>
-            
-                <li data-name="app.layoutManager.currentLayout"><a href="app.layoutManager.html#currentLayout">currentLayout</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -591,7 +616,13 @@
             
                 <li data-name="app.layoutManager.close"><a href="app.layoutManager.html#close">close</a></li>
             
+                <li data-name="app.layoutManager.getLayout"><a href="app.layoutManager.html#getLayout">getLayout</a></li>
+            
                 <li data-name="app.layoutManager.removeLayout"><a href="app.layoutManager.html#removeLayout">removeLayout</a></li>
+            
+                <li data-name="app.layoutManager.renderLayout"><a href="app.layoutManager.html#renderLayout">renderLayout</a></li>
+            
+                <li data-name="app.layoutManager.renderMainLayout"><a href="app.layoutManager.html#renderMainLayout">renderMainLayout</a></li>
             
                 <li data-name="app.layoutManager.setConfig"><a href="app.layoutManager.html#setConfig">setConfig</a></li>
             
@@ -623,6 +654,8 @@
                 <li data-name="app.layoutManager.config.contentRegionName"><a href="app.layoutManager.config.html#contentRegionName">contentRegionName</a></li>
             
                 <li data-name="app.layoutManager.config.mainRegionName"><a href="app.layoutManager.config.html#mainRegionName">mainRegionName</a></li>
+            
+                <li data-name="app.layoutManager.config.rootLayout"><a href="app.layoutManager.config.html#rootLayout">rootLayout</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -1508,6 +1541,27 @@
             </ul>
         </li>
     
+        <li class="item" data-name="Backbone.sync">
+            <span class="title">
+                <a href="Backbone.sync.html">Backbone.sync</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="oauth">
             <span class="title">
                 <a href="oauth.html">oauth</a>
@@ -2317,14 +2371,14 @@
 /* global define */
 /* jshint sub: true */
 define([
-	'corejs/app',
-	'jquery',
-	'underscore',
-	'q',
+    'corejs/app',
+    'jquery',
+    'underscore',
+    'q',
     'corejs/modules/facebook/controller',
-	'corejs/engine/validate',
-	'corejs/modules/silkroad/iam',
-	'corejs/engine/accessToken'
+    'corejs/engine/validate',
+    'corejs/modules/silkroad/iam',
+    'corejs/engine/accessToken'
 ], function(app, $, _, q, controller, validate) {
 
     /**
@@ -2333,7 +2387,7 @@ define([
      * @namespace
      * @memberof app.facebook
      */
-	var oauth = {
+    var oauth = {
 
         /**
          * DEFAULT_METHOD constant
@@ -2345,15 +2399,15 @@ define([
         TOKEN: 'FBAccessToken'
     };
 
-	var loginPopupDeferred;
-	oauth.tokenResponse = function(response) {
-		app.log.debug('facebook:oauth:token:handler', response);
-		if (response.accessToken) {
-			return loginPopupDeferred.resolve(response);
-		}
-		// response should be an accessToken object
-		return loginPopupDeferred.reject(response);
-	};
+    var loginPopupDeferred;
+    oauth.tokenResponse = function(response) {
+        app.log.debug('facebook:oauth:token:handler', response);
+        if (response.accessToken) {
+            return loginPopupDeferred.resolve(response);
+        }
+        // response should be an accessToken object
+        return loginPopupDeferred.reject(response);
+    };
 
     /**
      * available login methods
@@ -2368,7 +2422,7 @@ define([
      * @return {Promise}    A promise that resolves with an IAM accessToken
      */
     oauth.loginHandlers.popup = function(args) {
-		loginPopupDeferred = q.defer();
+        loginPopupDeferred = q.defer();
 
         // Prevent logged user to shows popup
         if (app.session.get(oauth.TOKEN)) {
@@ -2383,7 +2437,7 @@ define([
                 'response_type': 'token'
             },
             state: {
-                remember: (args.remember?1:0),
+                remember: (args.remember ? 1 : 0),
                 fragment: 'social/facebook/login'
             }
         };
@@ -2394,7 +2448,9 @@ define([
             try {
                 response = JSON.parse(response);
             } catch (e) {
-                response = { error: 'response:bad:format' };
+                response = {
+                    error: 'response:bad:format'
+                };
             }
 
             if (response['access_token']) {
@@ -2407,8 +2463,8 @@ define([
             }
         });
 
-		return loginPopupDeferred.promise;
-	};
+        return loginPopupDeferred.promise;
+    };
 
     /**
      * Facebook oauth redirect login.
@@ -2419,18 +2475,18 @@ define([
      * @param {Boolean} [args.remember=0]
      */
     oauth.loginHandlers.redirect = function(args) {
-		var url = buildURL({
-			query: {
-				'response_type': 'code'
-			},
-			state: {
-				remember: (args.remember?1:0),
-				fragment: 'social/facebook/login'
-			}
-		});
-		app.utils.redirect(url);
-		return q.defer().promise;
-	};
+        var url = buildURL({
+            query: {
+                'response_type': 'code'
+            },
+            state: {
+                remember: (args.remember ? 1 : 0),
+                fragment: 'social/facebook/login'
+            }
+        });
+        app.utils.redirect(url);
+        return q.defer().promise;
+    };
 
     /**
      * Facebook oauth login handler
@@ -2439,7 +2495,7 @@ define([
      * @param  {String} [args.method=popup]
      * @return {Promise}    A promise that resolves with an IAM accessToken
      */
-	oauth.login = function(args) {
+    oauth.login = function(args) {
         args = args || {};
         args.method = args.method || oauth.DEFAULT_METHOD;
         if (oauth.loginHandlers[args.method]) {
@@ -2448,22 +2504,18 @@ define([
             app.log.error('facebook:oauth:service:login:method_undefined');
             return q.defer().reject('facebook:oauth:service:login:method_undefined');
         }
-	};
-	app.reqres.setHandler('oauth:service:login:facebook', oauth.login);
+    };
+    app.reqres.setHandler('oauth:service:login:facebook', oauth.login);
 
 
-	/**
-	 * REGISTER HANDLERS
-	 */
-
-	var registerPopupDeferred;
-	oauth.registerResponseHandler = function(response) {
-		if (response.oauthId) {
+    var registerPopupDeferred;
+    oauth.registerResponseHandler = function(response) {
+        if (response.oauthId) {
             // response should be an oauthUser
             return registerPopupDeferred.resolve(response);
         }
-		return registerPopupDeferred.reject(response);
-	};
+        return registerPopupDeferred.reject(response);
+    };
 
     /**
      * available register methods
@@ -2476,7 +2528,7 @@ define([
      * @return {Promise}    a promise that resolves with oauth user
      */
     oauth.registerHandlers.popup = function() {
-		registerPopupDeferred = q.defer();
+        registerPopupDeferred = q.defer();
 
         // Prevent logged user to shows popup
         if (app.session.get(oauth.TOKEN)) {
@@ -2500,7 +2552,9 @@ define([
             try {
                 response = JSON.parse(response);
             } catch (e) {
-                response = { error: 'response:bad:format' };
+                response = {
+                    error: 'response:bad:format'
+                };
             }
 
             if (response['access_token']) {
@@ -2515,8 +2569,8 @@ define([
             }
         });
 
-		return registerPopupDeferred.promise;
-	};
+        return registerPopupDeferred.promise;
+    };
 
     /**
      * Facebook oauth redirect register.
@@ -2527,17 +2581,17 @@ define([
      * @param {Boolean} [args.remember=0]
      */
     oauth.registerHandlers.redirect = function() {
-		var url = buildURL({
-			query: {
-				'response_type': 'token'
-			},
-			state: {
-				fragment: 'social/facebook/register'
-			}
-		});
-		app.utils.redirect(url);
-		return q.defer().promise;
-	};
+        var url = buildURL({
+            query: {
+                'response_type': 'token'
+            },
+            state: {
+                fragment: 'social/facebook/register'
+            }
+        });
+        app.utils.redirect(url);
+        return q.defer().promise;
+    };
 
     /**
      * Facebook oauth register handler
@@ -2545,7 +2599,7 @@ define([
      * @param {String} [args.method=popup]
      * @return {Promise}    a promise that resolves with oauth user
      */
-	oauth.register = function(args) {
+    oauth.register = function(args) {
         args = args || {};
         args.method = args.method || oauth.DEFAULT_METHOD;
         if (oauth.registerHandlers[args.method]) {
@@ -2555,7 +2609,7 @@ define([
             return q.defer().reject('facebook:oauth:service:register:method_undefined');
         }
     };
-	app.reqres.setHandler('oauth:service:register:facebook', oauth.register);
+    app.reqres.setHandler('oauth:service:register:facebook', oauth.register);
 
 
     /**
@@ -2609,66 +2663,77 @@ define([
      * Facebook oauth remove handler, doesn't do nothing
      * @return {Promise}     An auto-resolved promise
      */
-	oauth.remove = function() {
-		var dfd = q.defer();
-		dfd.resolve();
-		return dfd.promise;
-	};
-	app.reqres.setHandler('oauth:service:remove:facebook', oauth.remove);
+    oauth.remove = function() {
+        var dfd = q.defer();
+        dfd.resolve();
+        return dfd.promise;
+    };
+    app.reqres.setHandler('oauth:service:remove:facebook', oauth.remove);
 
-	/**
-	 * Disconects from facebook oauth service
-	 * @return {Promise} Promise that resolves with the revoke token response
-	 */
-	oauth.disconect = function() {
-		var dfd = q.defer();
-		dfd.resolve();
-		return dfd.promise;
-	};
-	app.vent.on('oauth:service:disconect:facebook', oauth.disconect);
+    /**
+     * Logouts from facebook oauth service
+     * @return {Promise} Promise that resolves with the revoke token response
+     */
+    oauth.logout = function() {
+        var dfd = q.defer();
+        dfd.resolve();
+        return dfd.promise;
+    };
+    app.reqres.setHandler('oauth:service:logout:facebook', oauth.logout);
+
+    /**
+     * Disconects from facebook oauth service
+     * @return {Promise} Promise that resolves with the revoke token response
+     */
+    oauth.disconect = function() {
+        var dfd = q.defer();
+        dfd.resolve();
+        return dfd.promise;
+    };
+    app.reqres.setHandler('oauth:service:disconect:facebook', oauth.disconect);
 
     /**
      * Facebook oauth token refresh handler
      * @return {Promise} a promise that resolves with an IAM accessToken
      */
-	oauth.tokenRefresh = function() {
-		var dfd = q.defer();
-		dfd.resolve();
-		return dfd.promise;
-	};
-	app.reqres.setHandler('oauth:service:token:refresh:facebook', oauth.tokenRefresh);
+    oauth.tokenRefresh = function() {
+        var dfd = q.defer();
+        dfd.resolve();
+        return dfd.promise;
+    };
+    app.reqres.setHandler('oauth:service:token:refresh:facebook', oauth.tokenRefresh);
 
-	/**
-	 * UTILS
-	 */
+    /**
+     * UTILS
+     */
 
-	var buildURL = function(args, isPopup) {
-		validate.isValue(args.state.fragment, 'Missing fragment');
-		validate.isValue(args.query['response_type'], 'Missing response_type');
+    var buildURL = function(args, isPopup) {
+        validate.isValue(args.state.fragment, 'Missing fragment');
+        validate.isValue(args.query['response_type'], 'Missing response_type');
 
-		app.log.debug('facebook.login.config', app.modulesConfig.get('facebook'));
+        app.log.debug('facebook.login.config', app.modulesConfig.get('facebook'));
 
-		var config = app.modulesConfig.get('facebook');
-		var state = {};
-		var query = {
-			'client_id': config['appId'],
-			scope: app.services.arrayScopesToString(config.scope),
-			'redirect_uri': app.common.get('wwwRoot') + 'oauth.html',
-			display: (isPopup? 'popup': undefined)
-		};
-		_.extend(query, args.query);
-		_.extend(state, args.state);
+        var config = app.modulesConfig.get('facebook');
+        var state = {};
+        var query = {
+            'client_id': config['appId'],
+            scope: app.services.arrayScopesToString(config.scope),
+            'redirect_uri': app.common.get('wwwRoot') + 'oauth.html',
+            display: (isPopup ? 'popup' : undefined)
+        };
+        _.extend(query, args.query);
+        _.extend(state, args.state);
 
-		app.log.debug('facebook.buildURL.query', query);
-		app.log.debug('facebook.buildURL.state', state);
+        app.log.debug('facebook.buildURL.query', query);
+        app.log.debug('facebook.buildURL.state', state);
 
-		query.state = JSON.stringify(state);
-		var url = 'https://www.facebook.com/dialog/oauth?' + $.param(query);
-		app.log.debug('facebook.buildURL.location', url);
-		return url;
-	};
+        query.state = JSON.stringify(state);
+        var url = 'https://www.facebook.com/dialog/oauth?' + $.param(query);
+        app.log.debug('facebook.buildURL.location', url);
+        return url;
+    };
 
-	return oauth;
+    return oauth;
 
 });
 </code></pre>
@@ -2683,7 +2748,7 @@ define([
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Mon Nov 03 2014 10:55:39 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 25 2014 15:27:50 GMT+0100 (CET)
         </footer>
     </div>
 </div>

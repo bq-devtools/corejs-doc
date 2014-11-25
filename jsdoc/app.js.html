@@ -294,6 +294,8 @@
             
                 <li data-name="app.facebook.oauth.loginHandlers.redirect"><a href="app.facebook.oauth.html#loginHandlers.redirect">loginHandlers.redirect</a></li>
             
+                <li data-name="app.facebook.oauth.logout"><a href="app.facebook.oauth.html#logout">logout</a></li>
+            
                 <li data-name="app.facebook.oauth.me"><a href="app.facebook.oauth.html#me">me</a></li>
             
                 <li data-name="app.facebook.oauth.meHandlers.redirect"><a href="app.facebook.oauth.html#meHandlers.redirect">meHandlers.redirect</a></li>
@@ -462,6 +464,8 @@
             
                 <li data-name="app.google.oauth.loginHandlers.redirect"><a href="app.google.oauth.html#loginHandlers.redirect">loginHandlers.redirect</a></li>
             
+                <li data-name="app.google.oauth.logout"><a href="app.google.oauth.html#logout">logout</a></li>
+            
                 <li data-name="app.google.oauth.me"><a href="app.google.oauth.html#me">me</a></li>
             
                 <li data-name="app.google.oauth.meHandlers.redirect"><a href="app.google.oauth.html#meHandlers.redirect">meHandlers.redirect</a></li>
@@ -566,6 +570,33 @@
             </ul>
         </li>
     
+        <li class="item" data-name="app.jwt">
+            <span class="title">
+                <a href="app.jwt.html">app.jwt</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="app.jwt.createClaims"><a href="app.jwt.html#createClaims">createClaims</a></li>
+            
+                <li data-name="app.jwt.generate"><a href="app.jwt.html#generate">generate</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="app.layoutManager">
             <span class="title">
                 <a href="app.layoutManager.html">app.layoutManager</a>
@@ -574,12 +605,6 @@
                 
             </span>
             <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="app.layoutManager.current"><a href="app.layoutManager.html#current">current</a></li>
-            
-                <li data-name="app.layoutManager.currentLayout"><a href="app.layoutManager.html#currentLayout">currentLayout</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -591,7 +616,13 @@
             
                 <li data-name="app.layoutManager.close"><a href="app.layoutManager.html#close">close</a></li>
             
+                <li data-name="app.layoutManager.getLayout"><a href="app.layoutManager.html#getLayout">getLayout</a></li>
+            
                 <li data-name="app.layoutManager.removeLayout"><a href="app.layoutManager.html#removeLayout">removeLayout</a></li>
+            
+                <li data-name="app.layoutManager.renderLayout"><a href="app.layoutManager.html#renderLayout">renderLayout</a></li>
+            
+                <li data-name="app.layoutManager.renderMainLayout"><a href="app.layoutManager.html#renderMainLayout">renderMainLayout</a></li>
             
                 <li data-name="app.layoutManager.setConfig"><a href="app.layoutManager.html#setConfig">setConfig</a></li>
             
@@ -623,6 +654,8 @@
                 <li data-name="app.layoutManager.config.contentRegionName"><a href="app.layoutManager.config.html#contentRegionName">contentRegionName</a></li>
             
                 <li data-name="app.layoutManager.config.mainRegionName"><a href="app.layoutManager.config.html#mainRegionName">mainRegionName</a></li>
+            
+                <li data-name="app.layoutManager.config.rootLayout"><a href="app.layoutManager.config.html#rootLayout">rootLayout</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -1508,6 +1541,27 @@
             </ul>
         </li>
     
+        <li class="item" data-name="Backbone.sync">
+            <span class="title">
+                <a href="Backbone.sync.html">Backbone.sync</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="oauth">
             <span class="title">
                 <a href="oauth.html">oauth</a>
@@ -2316,141 +2370,148 @@
             <pre class="prettyprint source "><code>'use strict';
 /* global define */
 define([
-    // Libraries.
-    'jquery',
-    'underscore',
-    'q',
-    'backbone',
+        // Libraries.
+        'jquery',
+        'underscore',
+        'q',
+        'backbone',
 
-    // Templates
-    'templates/jst',
+        // Templates
+        'templates/jst',
 
-    // Load engine
-    'corejs/engine/application',
-    'corejs/engine/behaviors',
-    'corejs/engine/common',
-    'corejs/engine/factory',
-    'corejs/engine/jwt',
-    'corejs/engine/layoutManager',
-    'corejs/engine/logger',
-    'corejs/engine/modulesConfig',
-    'corejs/engine/polyfills',
-    'corejs/engine/router',
-    'corejs/engine/services',
-    'corejs/engine/session',
-    'corejs/engine/utils',
-    'corejs/engine/validate',
+        // Load engine
+        'corejs/engine/application',
+        'corejs/engine/behaviors',
+        'corejs/engine/common',
+        'corejs/engine/factory',
+        'corejs/engine/jwt',
+        'corejs/engine/layoutManager',
+        'corejs/engine/logger',
+        'corejs/engine/modulesConfig',
+        'corejs/engine/polyfills',
+        'corejs/engine/router',
+        'corejs/engine/services',
+        'corejs/engine/session',
+        'corejs/engine/utils',
+        'corejs/engine/validate',
+        'corejs/engine/layoutManager.behavior',
+        'corejs/engine/marionette.region',
+        'corejs/engine/marionette.revive.views',
+        // Plugins.
+        'backbone.marionette'
+    ],
 
-    // Plugins.
-    'backbone.marionette'
-],
+    function(
+        $,
+        _,
+        q,
+        Backbone,
 
-function(
-    $,
-    _,
-    q,
-    Backbone,
+        jst,
 
-    jst,
+        application,
+        behaviors,
+        common,
+        factory,
+        jwt,
+        layoutManager,
+        logger,
+        modulesConfig,
+        polyfills,
+        router,
+        services,
+        session,
+        utils,
+        validate,
+        fixedChildViewBehavior
 
-    application,
-    behaviors,
-    common,
-    factory,
-    jwt,
-    layoutManager,
-    logger,
-    modulesConfig,
-    polyfills,
-    router,
-    services,
-    session,
-    utils,
-    validate
-
-) {
-
-    /**
-     * Provides a global location to place configuration settings and module creation
-     * @exports app
-     * @namespace
-     */
-    var app = {
+    ) {
         /**
-         * The root path to run the application.
-         * @type {String}
-         * @default window.location.pathname
-         */
-        root:           window.location.pathname,
-        /**
-         * Array with compiled templates
-         * @type {Object}
+         * Provides a global location to place configuration settings and module creation
+         * @exports app
          * @namespace
          */
-        jst:            jst,
+        var app = {
+            /**
+             * The root path to run the application.
+             * @type {String}
+             * @default window.location.pathname
+             */
+            root: window.location.pathname,
+            /**
+             * Array with compiled templates
+             * @type {Object}
+             * @namespace
+             */
+            jst: jst,
 
-        behaviors:      behaviors,
-        common:         common,
-        factory:        factory,
-        jwt:            jwt,
-        layoutManager:  layoutManager,
-        log:            logger,
-        modulesConfig:  modulesConfig,
-        polyfills:      polyfills,
-        router:         router,
-        services:       services,
-        session:        session,
-        utils:          utils,
-        validate:       validate
-    };
-
-    // Merge Marionette aplication with engine namespaces
-    app = _.extend(application, app);
-
-    app.on('initialize:after', function() {
-        var miniNav = {
-            appCodeName: navigator.appCodeName,
-            appName: navigator.appName,
-            appVersion: navigator.appVersion,
-            cookieEnabled: navigator.cookieEnabled,
-            platform: navigator.platform,
-            userAgent: navigator.userAgent,
-            systemLanguage: navigator.systemLanguage
+            behaviors: behaviors,
+            common: common,
+            factory: factory,
+            jwt: jwt,
+            layoutManager: layoutManager,
+            log: logger,
+            modulesConfig: modulesConfig,
+            polyfills: polyfills,
+            router: router,
+            services: services,
+            session: session,
+            utils: utils,
+            validate: validate
         };
 
-        app.log.info('app:initialize:after', window.performance, miniNav, screen);
-    });
+        // Merge Marionette aplication with engine namespaces
+        app = _.extend(application, app);
 
-    // wait for loaded config
-    var configLoaded = q.defer();
-    app.vent.on('app:config:global:loaded', function(config) {
-        app.common.setConfig(config);
-        app.log.setConfig(config);
-        configLoaded.resolve();
-    });
+        app.on('initialize:after', function() {
+            var miniNav = {
+                appCodeName: navigator.appCodeName,
+                appName: navigator.appName,
+                appVersion: navigator.appVersion,
+                cookieEnabled: navigator.cookieEnabled,
+                platform: navigator.platform,
+                userAgent: navigator.userAgent,
+                systemLanguage: navigator.systemLanguage
+            };
 
-    // wait for loaded modules config
-    var configModuleLoaded = q.defer();
-    app.vent.on('app:config:modules:loaded', function(config) {
-        app.modulesConfig.setConfig(config);
-        configModuleLoaded.resolve();
-    });
+            app.log.info('app:initialize:after', window.performance, miniNav, screen);
+        });
 
-    // Start app when config and token is loaded
-    q.all([
-        configLoaded.promise,
-        configModuleLoaded.promise
-    ]).then(function() {
-        app.start();
-    });
+        // wait for loaded config
+        var configLoaded = q.defer();
+        app.vent.on('app:config:global:loaded', function(config) {
+            app.common.setConfig(config);
+            app.log.setConfig(config);
+            configLoaded.resolve();
+        });
 
-    // Expose app
-    window.app = app;
+        // wait for loaded modules config
+        var configModuleLoaded = q.defer();
+        app.vent.on('app:config:modules:loaded', function(config) {
+            app.modulesConfig.setConfig(config);
+            configModuleLoaded.resolve();
+        });
 
-    return app;
+        // Add behavior to application as default
+        app.behaviors.add({
+            name: 'fixedChildView',
+            behaviorClass: fixedChildViewBehavior
+        });
 
-});
-</code></pre>
+        // Start app when config and token is loaded
+        q.all([
+            configLoaded.promise,
+            configModuleLoaded.promise
+        ]).then(function() {
+            app.start();
+        });
+
+        // Expose app
+        window.app = app;
+
+        return app;
+
+    });</code></pre>
         </article>
     </section>
 
@@ -2462,7 +2523,7 @@ function(
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Mon Nov 03 2014 10:55:38 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 25 2014 15:27:49 GMT+0100 (CET)
         </footer>
     </div>
 </div>

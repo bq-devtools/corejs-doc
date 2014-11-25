@@ -294,6 +294,8 @@
             
                 <li data-name="app.facebook.oauth.loginHandlers.redirect"><a href="app.facebook.oauth.html#loginHandlers.redirect">loginHandlers.redirect</a></li>
             
+                <li data-name="app.facebook.oauth.logout"><a href="app.facebook.oauth.html#logout">logout</a></li>
+            
                 <li data-name="app.facebook.oauth.me"><a href="app.facebook.oauth.html#me">me</a></li>
             
                 <li data-name="app.facebook.oauth.meHandlers.redirect"><a href="app.facebook.oauth.html#meHandlers.redirect">meHandlers.redirect</a></li>
@@ -462,6 +464,8 @@
             
                 <li data-name="app.google.oauth.loginHandlers.redirect"><a href="app.google.oauth.html#loginHandlers.redirect">loginHandlers.redirect</a></li>
             
+                <li data-name="app.google.oauth.logout"><a href="app.google.oauth.html#logout">logout</a></li>
+            
                 <li data-name="app.google.oauth.me"><a href="app.google.oauth.html#me">me</a></li>
             
                 <li data-name="app.google.oauth.meHandlers.redirect"><a href="app.google.oauth.html#meHandlers.redirect">meHandlers.redirect</a></li>
@@ -566,6 +570,33 @@
             </ul>
         </li>
     
+        <li class="item" data-name="app.jwt">
+            <span class="title">
+                <a href="app.jwt.html">app.jwt</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="app.jwt.createClaims"><a href="app.jwt.html#createClaims">createClaims</a></li>
+            
+                <li data-name="app.jwt.generate"><a href="app.jwt.html#generate">generate</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="app.layoutManager">
             <span class="title">
                 <a href="app.layoutManager.html">app.layoutManager</a>
@@ -574,12 +605,6 @@
                 
             </span>
             <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="app.layoutManager.current"><a href="app.layoutManager.html#current">current</a></li>
-            
-                <li data-name="app.layoutManager.currentLayout"><a href="app.layoutManager.html#currentLayout">currentLayout</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -591,7 +616,13 @@
             
                 <li data-name="app.layoutManager.close"><a href="app.layoutManager.html#close">close</a></li>
             
+                <li data-name="app.layoutManager.getLayout"><a href="app.layoutManager.html#getLayout">getLayout</a></li>
+            
                 <li data-name="app.layoutManager.removeLayout"><a href="app.layoutManager.html#removeLayout">removeLayout</a></li>
+            
+                <li data-name="app.layoutManager.renderLayout"><a href="app.layoutManager.html#renderLayout">renderLayout</a></li>
+            
+                <li data-name="app.layoutManager.renderMainLayout"><a href="app.layoutManager.html#renderMainLayout">renderMainLayout</a></li>
             
                 <li data-name="app.layoutManager.setConfig"><a href="app.layoutManager.html#setConfig">setConfig</a></li>
             
@@ -623,6 +654,8 @@
                 <li data-name="app.layoutManager.config.contentRegionName"><a href="app.layoutManager.config.html#contentRegionName">contentRegionName</a></li>
             
                 <li data-name="app.layoutManager.config.mainRegionName"><a href="app.layoutManager.config.html#mainRegionName">mainRegionName</a></li>
+            
+                <li data-name="app.layoutManager.config.rootLayout"><a href="app.layoutManager.config.html#rootLayout">rootLayout</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -1508,6 +1541,27 @@
             </ul>
         </li>
     
+        <li class="item" data-name="Backbone.sync">
+            <span class="title">
+                <a href="Backbone.sync.html">Backbone.sync</a>
+                
+                <span class="static">static</span>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="oauth">
             <span class="title">
                 <a href="oauth.html">oauth</a>
@@ -2376,6 +2430,469 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="createChildView">
+            
+            createChildView<span class="signature">(childViewData)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Marionette.html#View">Marionette.View</a>}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="layoutManager.behavior.js.html">engine/layoutManager.behavior.js</a>, <a href="layoutManager.behavior.js.html#line92">line 92</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Instanciates a view through the factory object</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>childViewData</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>The child view default fixed Data options</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+view instance
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="getFixedChildViews">
+            
+            getFixedChildViews<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Object}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="layoutManager.behavior.js.html">engine/layoutManager.behavior.js</a>, <a href="layoutManager.behavior.js.html#line62">line 62</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Gets the fixed child views instances</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+that contains the fixed childs views instances as {view: viewInstance, region: 'nameOfTheRegion'}
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="proxyEventsViews">
+            
+            proxyEventsViews<span class="signature">(view)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="layoutManager.behavior.js.html">engine/layoutManager.behavior.js</a>, <a href="layoutManager.behavior.js.html#line116">line 116</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Proxies all child view events and re-trigger in the layout view as 'childview:[eventname]'</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>view</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Marionette.html#View">Marionette.View</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="proxyShowRegionMethod">
+            
+            proxyShowRegionMethod<span class="signature">(region, regionName)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="layoutManager.behavior.js.html">engine/layoutManager.behavior.js</a>, <a href="layoutManager.behavior.js.html#line158">line 158</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Proxies regions show method to admit fixed options in region.show call.
+If setDefaultFixed true and name opts are passed the
+view's factory name is &quot;stored&quot; in the factory.
+Ex: region.show(view,{menu:{ view: 'MenuBar',singleton: true} })</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>region</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Region</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Region to be proxied</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>regionName</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Region to be proxied</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="send">
             
             send<span class="signature">(headers, completeCallback)</span>
@@ -2503,6 +3020,385 @@ into the jquery complete callback (such as the success function, done blocks, et
     
 </dd>
 
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="setDefaultFixedView">
+            
+            setDefaultFixedView<span class="signature">(fixedChildViews)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="layoutManager.behavior.js.html">engine/layoutManager.behavior.js</a>, <a href="layoutManager.behavior.js.html#line108">line 108</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Set defaults fixed view in the layout view for
+the next render layout (show event)</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>fixedChildViews</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>The view options object
+       {view: (String) viewFactoryName, options: (Object) viewInstanciationOptions, singleton: (boolean) ifSingleton  }</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="setUpRegions">
+            
+            setUpRegions<span class="signature">()</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="layoutManager.behavior.js.html">engine/layoutManager.behavior.js</a>, <a href="layoutManager.behavior.js.html#line129">line 129</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Iterates over the Layout View regions to set up the options
+call proxyShowRegionMethod and spyRegionShowView over each region</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="showFixedChildViews">
+            
+            showFixedChildViews<span class="signature">()</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="layoutManager.behavior.js.html">engine/layoutManager.behavior.js</a>, <a href="layoutManager.behavior.js.html#line47">line 47</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Shows the fixed child views in the regions</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="spyRegionShowView">
+            
+            spyRegionShowView<span class="signature">(region)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="layoutManager.behavior.js.html">engine/layoutManager.behavior.js</a>, <a href="layoutManager.behavior.js.html#line144">line 144</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Listens before:show event region and call
+proxyEventsView to proxy view events through
+the layoutView</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>region</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Marionette.html#Region">Marionette.Region</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>[description]</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
         </dl>
     
     
@@ -2522,7 +3418,7 @@ into the jquery complete callback (such as the success function, done blocks, et
     
         
         <div class="tag-source">
-            <a href="user.js.html">engine/user.js</a>, <a href="user.js.html#line152">line 152</a>
+            <a href="user.js.html">engine/user.js</a>, <a href="user.js.html#line159">line 159</a>
         </div>
         
     </div>
@@ -2688,7 +3584,7 @@ into the jquery complete callback (such as the success function, done blocks, et
     
         
         <div class="tag-source">
-            <a href="user.js.html">engine/user.js</a>, <a href="user.js.html#line186">line 186</a>
+            <a href="user.js.html">engine/user.js</a>, <a href="user.js.html#line193">line 193</a>
         </div>
         
     </div>
@@ -2927,7 +3823,7 @@ into the jquery complete callback (such as the success function, done blocks, et
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Mon Nov 03 2014 10:55:40 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 25 2014 15:27:51 GMT+0100 (CET)
         </footer>
     </div>
 </div>
