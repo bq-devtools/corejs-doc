@@ -90,35 +90,6 @@
             
                 <li data-name="app.root"><a href="app.html#root">root</a></li>
             
-                <li data-name="app.root"><a href="app.html#root">root</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="app">
-            <span class="title">
-                <a href="app.html">app</a>
-                
-                <span class="static">static</span>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="app.root"><a href="app.html#root">root</a></li>
-            
-                <li data-name="app.root"><a href="app.html#root">root</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -659,27 +630,6 @@
             </ul>
         </li>
     
-        <li class="item" data-name="app.jst">
-            <span class="title">
-                <a href="app.jst.html">app.jst</a>
-                
-                <span class="static">static</span>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
         <li class="item" data-name="app.jwt">
             <span class="title">
                 <a href="app.jwt.html">app.jwt</a>
@@ -716,12 +666,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="app.layoutManager.current"><a href="app.layoutManager.html#current">current</a></li>
-            
-                <li data-name="app.layoutManager.currentLayout"><a href="app.layoutManager.html#currentLayout">currentLayout</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -732,7 +676,13 @@
             
                 <li data-name="app.layoutManager.close"><a href="app.layoutManager.html#close">close</a></li>
             
+                <li data-name="app.layoutManager.getLayout"><a href="app.layoutManager.html#getLayout">getLayout</a></li>
+            
                 <li data-name="app.layoutManager.removeLayout"><a href="app.layoutManager.html#removeLayout">removeLayout</a></li>
+            
+                <li data-name="app.layoutManager.renderLayout"><a href="app.layoutManager.html#renderLayout">renderLayout</a></li>
+            
+                <li data-name="app.layoutManager.renderMainLayout"><a href="app.layoutManager.html#renderMainLayout">renderMainLayout</a></li>
             
                 <li data-name="app.layoutManager.setConfig"><a href="app.layoutManager.html#setConfig">setConfig</a></li>
             
@@ -764,6 +714,8 @@
                 <li data-name="app.layoutManager.config.contentRegionName"><a href="app.layoutManager.config.html#contentRegionName">contentRegionName</a></li>
             
                 <li data-name="app.layoutManager.config.mainRegionName"><a href="app.layoutManager.config.html#mainRegionName">mainRegionName</a></li>
+            
+                <li data-name="app.layoutManager.config.rootLayout"><a href="app.layoutManager.config.html#rootLayout">rootLayout</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -2468,7 +2420,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="start.js______.html">Source: modules/jquery-ajax-blob-arraybuffer/start.js</h1>
+        <h1 class="page-title" data-filename="marionette.region.js.html">Source: engine/marionette.region.js</h1>
         
 
 
@@ -2477,84 +2429,74 @@
         <article>
             <pre class="prettyprint source "><code>'use strict';
 /* global define */
-/* jshint unused:false */
 define([
-    'jquery'
-], function($) {
+    'underscore',
+    'corejs/engine/application',
+    'backbone.marionette'
+], function(_, app, Marionette) {
+
+    var originalRegion = Marionette.Region;
 
     /**
-     * Register ajax transports for blob send/recieve and array buffer send/receive via XMLHttpRequest Level 2
-     * within the comfortable framework of the jquery ajax request, with full support for promises.
-     *
-     * Notice the +* in the dataType string? The + indicates we want this transport to be prepended to the list
-     * of potential transports (so it gets first dibs if the request passes the conditions within to provide the
-     * ajax transport, preventing the standard transport from hogging the request), and the * indicates that
-     * potentially any request with any dataType might want to use the transports provided herein.
-     *
-     * Remember to specify 'processData:false' in the ajax options when attempting to send a blob or arraybuffer -
-     * otherwise jquery will try (and fail) to convert the blob or buffer into a query string.
-     * http://www.artandlogic.com/blog/2013/11/jquery-ajax-blobs-and-array-buffers/
-     * https://gist.github.com/aaronk6/bff7cc600d863d31a7bf
+     * Extends region funcionality (trigger a before:show:render event over the view before render the view)
      */
-    $.ajaxTransport('+*', function(options, originalOptions, jqXHR) {
-        // Test for the conditions that mean we can/want to send/receive blobs or arraybuffers - we need XMLHttpRequest
-        // level 2 (so feature-detect against window.FormData), feature detect against window.Blob or window.ArrayBuffer,
-        // and then check to see if the dataType is blob/arraybuffer or the data itself is a Blob/ArrayBuffer
-        if (window.FormData && ((options.dataType && (options.dataType === 'blob' || options.dataType === 'arraybuffer')) ||
-            (options.data && ((window.Blob && options.data instanceof Blob) ||
-                (window.ArrayBuffer && options.data instanceof ArrayBuffer)))
-        )) {
-            return {
-                /**
-                 * Return a transport capable of sending and/or receiving blobs - in this case, we instantiate
-                 * a new XMLHttpRequest and use it to actually perform the request, and funnel the result back
-                 * into the jquery complete callback (such as the success function, done blocks, etc.)
-                 *
-                 * @param headers
-                 * @param completeCallback
-                 */
-                send: function(headers, completeCallback) {
-                    var xhr = new XMLHttpRequest(),
-                        url = options.url || window.location.href,
-                        type = options.type || 'GET',
-                        dataType = options.dataType || 'text',
-                        data = options.data || null,
-                        async = options.async || true,
-                        key;
+    Marionette.Region = originalRegion.extend({
 
-                    xhr.addEventListener('load', function() {
-                        var response = {}, status, isSuccess;
+        show: function(view, options) {
+            this.ensureEl();
 
-                        isSuccess = xhr.status >= 200 && xhr.status &lt; 300 || xhr.status === 304;
+            var showOptions = options || {};
+            var isViewClosed = view.isClosed || _.isUndefined(view.$el);
+            var isDifferentView = view !== this.currentView;
+            var preventClose = !!showOptions.preventClose;
 
-                        if (isSuccess) {
-                            response[dataType] = xhr.response;
-                        } else {
-                            // In case an error occured we assume that the response body contains
-                            // text data - so let's convert the binary data to a string which we can
-                            // pass to the complete callback.
-                            response.text = String.fromCharCode.apply(null, new Uint8Array(xhr.response));
-                        }
+            // only close the view if we don't want to preventClose and the view is different
+            var _shouldCloseView = !preventClose && isDifferentView;
 
-                        completeCallback(xhr.status, xhr.statusText, response, xhr.getAllResponseHeaders());
-                    });
+            if (_shouldCloseView) {
+                this.close();
+            }
 
-                    xhr.open(type, url, async);
-                    xhr.responseType = dataType;
+            if (_.isFunction(view.triggerMethod)) {
+                view.triggerMethod('before:show:render');
+            } else {
+                Marionette.triggerMethod.call(view, 'before:show:render');
+            }
 
-                    for (key in headers) {
-                        if (headers.hasOwnProperty(key)) {
-                            xhr.setRequestHeader(key, headers[key]);
-                        }
-                    }
-                    xhr.send(data);
-                },
-                abort: function() {
-                    jqXHR.abort();
-                }
-            };
+            view.render();
+
+            Marionette.triggerMethod.call(this, 'before:show', view);
+
+            if (_.isFunction(view.triggerMethod)) {
+                view.triggerMethod('before:show');
+            } else {
+                Marionette.triggerMethod.call(view, 'before:show');
+            }
+
+            if (isDifferentView || isViewClosed) {
+                this.open(view);
+            }
+
+            this.currentView = view;
+
+            Marionette.triggerMethod.call(this, 'show', view);
+
+            if (_.isFunction(view.triggerMethod)) {
+                view.triggerMethod('show');
+            } else {
+                Marionette.triggerMethod.call(view, 'show');
+            }
+
+            return this;
         }
     });
+
+    Marionette.Layout = Marionette.Layout.extend({
+        regionType: Marionette.Region
+    });
+
+    return originalRegion;
+
 
 });
 </code></pre>
@@ -2569,7 +2511,7 @@ define([
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 18 2014 09:56:37 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 25 2014 15:55:07 GMT+0100 (CET)
         </footer>
     </div>
 </div>

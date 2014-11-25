@@ -90,35 +90,6 @@
             
                 <li data-name="app.root"><a href="app.html#root">root</a></li>
             
-                <li data-name="app.root"><a href="app.html#root">root</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="app">
-            <span class="title">
-                <a href="app.html">app</a>
-                
-                <span class="static">static</span>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="app.root"><a href="app.html#root">root</a></li>
-            
-                <li data-name="app.root"><a href="app.html#root">root</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -659,27 +630,6 @@
             </ul>
         </li>
     
-        <li class="item" data-name="app.jst">
-            <span class="title">
-                <a href="app.jst.html">app.jst</a>
-                
-                <span class="static">static</span>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
         <li class="item" data-name="app.jwt">
             <span class="title">
                 <a href="app.jwt.html">app.jwt</a>
@@ -716,12 +666,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="app.layoutManager.current"><a href="app.layoutManager.html#current">current</a></li>
-            
-                <li data-name="app.layoutManager.currentLayout"><a href="app.layoutManager.html#currentLayout">currentLayout</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -732,7 +676,13 @@
             
                 <li data-name="app.layoutManager.close"><a href="app.layoutManager.html#close">close</a></li>
             
+                <li data-name="app.layoutManager.getLayout"><a href="app.layoutManager.html#getLayout">getLayout</a></li>
+            
                 <li data-name="app.layoutManager.removeLayout"><a href="app.layoutManager.html#removeLayout">removeLayout</a></li>
+            
+                <li data-name="app.layoutManager.renderLayout"><a href="app.layoutManager.html#renderLayout">renderLayout</a></li>
+            
+                <li data-name="app.layoutManager.renderMainLayout"><a href="app.layoutManager.html#renderMainLayout">renderMainLayout</a></li>
             
                 <li data-name="app.layoutManager.setConfig"><a href="app.layoutManager.html#setConfig">setConfig</a></li>
             
@@ -764,6 +714,8 @@
                 <li data-name="app.layoutManager.config.contentRegionName"><a href="app.layoutManager.config.html#contentRegionName">contentRegionName</a></li>
             
                 <li data-name="app.layoutManager.config.mainRegionName"><a href="app.layoutManager.config.html#mainRegionName">mainRegionName</a></li>
+            
+                <li data-name="app.layoutManager.config.rootLayout"><a href="app.layoutManager.config.html#rootLayout">rootLayout</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -2541,106 +2493,6 @@
     
     
     
-        <h3 class="subsection-title">Members</h3>
-        
-        <dl>
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="current"><span class="type-signature static">static</span>app.layoutManager.current<span class="type-signature type backbone.marionette.layout">Backbone.Marionette.Layout</span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>layoutManager current Backbone.Marionette.Layout object</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy"><li>undefined</li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="currentLayout"><span class="type-signature static">static</span>app.layoutManager.currentLayout<span class="type-signature type string">String</span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>layoutManager current Backbone.Marionette.Layout string name added in <a href="app.factory.html"><code>app.factory</code></a></p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-default">Default Value:</dt>
-    <dd class="tag-default"><ul class="dummy"><li>undefined</li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        </dl>
-    
     
     
         <h3 class="subsection-title">Methods</h3>
@@ -2656,7 +2508,7 @@
     
         
         <div class="tag-source">
-            <a href="layoutManager.js.html">engine/layoutManager.js</a>, <a href="layoutManager.js.html#line138">line 138</a>
+            <a href="layoutManager.js.html">engine/layoutManager.js</a>, <a href="layoutManager.js.html#line263">line 263</a>
         </div>
         
     </div>
@@ -2727,6 +2579,177 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="getLayout">
+            
+            <span class="type-signature static">static</span>app.layoutManager.getLayout<span class="signature">(layoutName, opts, parent)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="Marionette.html#Layout">Marionette.Layout</a>}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="layoutManager.js.html">engine/layoutManager.js</a>, <a href="layoutManager.js.html#line93">line 93</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Gets layout instance from the factory singleton</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>layoutName</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>The name of the layout in the factory</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opts</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Options to instantiate the layout</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>parent</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Flag to know if is a parentLayout or not (to throw a more descriptive debug/error message)</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+
+<h5>Returns:</h5>
+layout instance
+<br />
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="removeLayout">
             
             <span class="type-signature static">static</span>app.layoutManager.removeLayout<span class="signature">(layoutName, options)</span>
@@ -2734,7 +2757,7 @@
     
         
         <div class="tag-source">
-            <a href="layoutManager.js.html">engine/layoutManager.js</a>, <a href="layoutManager.js.html#line92">line 92</a>
+            <a href="layoutManager.js.html">engine/layoutManager.js</a>, <a href="layoutManager.js.html#line217">line 217</a>
         </div>
         
     </div>
@@ -2866,14 +2889,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="setConfig">
+        <h4 class="name" id="renderLayout">
             
-            <span class="type-signature static">static</span>app.layoutManager.setConfig<span class="signature">(options)</span>
+            <span class="type-signature static">static</span>app.layoutManager.renderLayout<span class="signature">(layout, opts)</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="layoutManager.js.html">engine/layoutManager.js</a>, <a href="layoutManager.js.html#line58">line 58</a>
+            <a href="layoutManager.js.html">engine/layoutManager.js</a>, <a href="layoutManager.js.html#line121">line 121</a>
         </div>
         
     </div>
@@ -2884,7 +2907,7 @@
     
     
     <div class="description">
-        <p>Changes layoutManager config</p>
+        <p>Renders the layout and it's parents layouts recursively</p>
     </div>
     
 
@@ -2915,13 +2938,152 @@
 	
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>layout</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Marionette.html#Layout">Marionette.Layout</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>The layout that have to be shown</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opts</code></td>
             
             
             <td class="type">
             
                 
 <span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>options to instantiate the layout</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="renderMainLayout">
+            
+            <span class="type-signature static">static</span>app.layoutManager.renderMainLayout<span class="signature">(layoutInstance)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="layoutManager.js.html">engine/layoutManager.js</a>, <a href="layoutManager.js.html#line173">line 173</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Renders a layout into the main app region</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>layoutInstance</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Marionette.html#View">Marionette.View</a></span>
 
 
             
@@ -2982,6 +3144,186 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="setConfig">
+            
+            <span class="type-signature static">static</span>app.layoutManager.setConfig<span class="signature">(Object)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="layoutManager.js.html">engine/layoutManager.js</a>, <a href="layoutManager.js.html#line165">line 165</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Changes layoutManager config</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>Object</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>options</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options.mainRegionName</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>The name of the main region app</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options.contentRegionName</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Default parent region name</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options.rootLayout</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>The name of the main root layout</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="setContent">
             
             <span class="type-signature static">static</span>app.layoutManager.setContent<span class="signature">(view, options)</span>
@@ -2989,7 +3331,7 @@
     
         
         <div class="tag-source">
-            <a href="layoutManager.js.html">engine/layoutManager.js</a>, <a href="layoutManager.js.html#line110">line 110</a>
+            <a href="layoutManager.js.html">engine/layoutManager.js</a>, <a href="layoutManager.js.html#line235">line 235</a>
         </div>
         
     </div>
@@ -3132,7 +3474,7 @@ its view should be rendered with this method</p>
     
         
         <div class="tag-source">
-            <a href="layoutManager.js.html">engine/layoutManager.js</a>, <a href="layoutManager.js.html#line67">line 67</a>
+            <a href="layoutManager.js.html">engine/layoutManager.js</a>, <a href="layoutManager.js.html#line184">line 184</a>
         </div>
         
     </div>
@@ -3143,7 +3485,8 @@ its view should be rendered with this method</p>
     
     
     <div class="description">
-        <p>Renders the layout in app[mainRegionName] region (main by default), only if different that last one</p>
+        <p>Shows the layout into its parent.
+The layout is &quot;rendered&quot; by renderLayout method only if is not shown yet (its closed).</p>
     </div>
     
 
@@ -3271,7 +3614,7 @@ its view should be rendered with this method</p>
     
         
         <div class="tag-source">
-            <a href="layoutManager.js.html">engine/layoutManager.js</a>, <a href="layoutManager.js.html#line122">line 122</a>
+            <a href="layoutManager.js.html">engine/layoutManager.js</a>, <a href="layoutManager.js.html#line247">line 247</a>
         </div>
         
     </div>
@@ -3349,7 +3692,7 @@ its view should be rendered with this method</p>
     
         
         <div class="tag-source">
-            <a href="layoutManager.js.html">engine/layoutManager.js</a>, <a href="layoutManager.js.html#line130">line 130</a>
+            <a href="layoutManager.js.html">engine/layoutManager.js</a>, <a href="layoutManager.js.html#line255">line 255</a>
         </div>
         
     </div>
@@ -3433,7 +3776,7 @@ its view should be rendered with this method</p>
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 18 2014 09:56:39 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 25 2014 15:55:10 GMT+0100 (CET)
         </footer>
     </div>
 </div>

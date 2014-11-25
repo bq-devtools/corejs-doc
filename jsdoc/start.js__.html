@@ -90,35 +90,6 @@
             
                 <li data-name="app.root"><a href="app.html#root">root</a></li>
             
-                <li data-name="app.root"><a href="app.html#root">root</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="app">
-            <span class="title">
-                <a href="app.html">app</a>
-                
-                <span class="static">static</span>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="app.root"><a href="app.html#root">root</a></li>
-            
-                <li data-name="app.root"><a href="app.html#root">root</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -659,27 +630,6 @@
             </ul>
         </li>
     
-        <li class="item" data-name="app.jst">
-            <span class="title">
-                <a href="app.jst.html">app.jst</a>
-                
-                <span class="static">static</span>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
         <li class="item" data-name="app.jwt">
             <span class="title">
                 <a href="app.jwt.html">app.jwt</a>
@@ -716,12 +666,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="app.layoutManager.current"><a href="app.layoutManager.html#current">current</a></li>
-            
-                <li data-name="app.layoutManager.currentLayout"><a href="app.layoutManager.html#currentLayout">currentLayout</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -732,7 +676,13 @@
             
                 <li data-name="app.layoutManager.close"><a href="app.layoutManager.html#close">close</a></li>
             
+                <li data-name="app.layoutManager.getLayout"><a href="app.layoutManager.html#getLayout">getLayout</a></li>
+            
                 <li data-name="app.layoutManager.removeLayout"><a href="app.layoutManager.html#removeLayout">removeLayout</a></li>
+            
+                <li data-name="app.layoutManager.renderLayout"><a href="app.layoutManager.html#renderLayout">renderLayout</a></li>
+            
+                <li data-name="app.layoutManager.renderMainLayout"><a href="app.layoutManager.html#renderMainLayout">renderMainLayout</a></li>
             
                 <li data-name="app.layoutManager.setConfig"><a href="app.layoutManager.html#setConfig">setConfig</a></li>
             
@@ -764,6 +714,8 @@
                 <li data-name="app.layoutManager.config.contentRegionName"><a href="app.layoutManager.config.html#contentRegionName">contentRegionName</a></li>
             
                 <li data-name="app.layoutManager.config.mainRegionName"><a href="app.layoutManager.config.html#mainRegionName">mainRegionName</a></li>
+            
+                <li data-name="app.layoutManager.config.rootLayout"><a href="app.layoutManager.config.html#rootLayout">rootLayout</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -2468,7 +2420,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="start.js__.html">Source: modules/facebook-sdk/start.js</h1>
+        <h1 class="page-title" data-filename="start.js__.html">Source: modules/google/start.js</h1>
         
 
 
@@ -2480,75 +2432,34 @@
 define([
     'corejs/app',
     'q',
-], function(app, q) {
+    'corejs/modules/google/controller',
+    'corejs/modules/google/oauth'
+], function(app, q, controller, oauth) {
 
     /**
-     * A plugin for facebook-module to retrieve facebook sdk
-     * @exports facebook
+     * A module to manage google login.
+     * @exports google
      * @namespace
      * @memberof app
      */
-    var facebookSdk = {};
+	var google = {};
 
-    /**
-     * Loads facebook JS library
-     */
-    facebookSdk.init = function() {
-        app.log.debug('facebook:loader');
-        // FB async loader
-        (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {
-                return;
-            }
-            js = d.createElement(s);
-            js.id = id;
-            js.src = '//connect.facebook.net/en_US/all.js';
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-    };
+	// Set login/register routes
+    app.addInitializer(function() {
+        app.router.route('social/google/login/:code(/:remember)', 'router:route:social:google:login', controller.loginCallback);
+        app.router.route('social/google/register/:accessToken', 'router:route:social:google:register', controller.signinCallback);
+        app.router.route('social/google/me/:accessToken', 'router:route:social:google:me', controller.meCallback);
 
-    app.fbAsync = q.defer();
-
-    /**
-     * Facebook loaded callback
-     * @return {Promise} that resolves with de FB namespace initialized
-     */
-    facebookSdk.initCallback = function() {
-        var params = app.modulesConfig.get('facebook');
-        window.FB.init({
-            appId: params.appId,
-            xfbml: params.xfbml,
-            version: params.version
-        });
-
-        app.log.debug('facebook:loaded', window.FB);
-        app.vent.trigger('facebook:loaded', window.FB);
-        app.fbAsync.resolve(window.FB);
-    };
-
-    // FB callback must be at global context
-    window.fbAsyncInit = facebookSdk.initCallback;
-
-    // Returns a promise for facebook api onLoad callback
-    app.reqres.setHandler('FB', function() {
-        return app.fbAsync.promise;
+        app.vent.on('session:persistent', controller.persist);
     });
 
-    // Timeout for FB API loader
-    setTimeout(function() {
-        if (!window.FB) {
-            app.log.error('facebook:api:not_loaded');
-            app.gAsync.reject({error: 'facebook:api:not_loaded'});
-        }
-    }, 5000);
-
-    app.vent.on('initialize:before', facebookSdk.init);
-
     // Expose module
-    app.facebookSdk = facebookSdk;
+    google.oauth = oauth;
+    google.controller = controller;
+    app.google = google;
 
-    return facebookSdk;
+	return google;
+
 });
 </code></pre>
         </article>
@@ -2562,7 +2473,7 @@ define([
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 18 2014 09:56:35 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 25 2014 15:55:06 GMT+0100 (CET)
         </footer>
     </div>
 </div>

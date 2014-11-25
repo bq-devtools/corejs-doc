@@ -90,35 +90,6 @@
             
                 <li data-name="app.root"><a href="app.html#root">root</a></li>
             
-                <li data-name="app.root"><a href="app.html#root">root</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="app">
-            <span class="title">
-                <a href="app.html">app</a>
-                
-                <span class="static">static</span>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="app.root"><a href="app.html#root">root</a></li>
-            
-                <li data-name="app.root"><a href="app.html#root">root</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -659,27 +630,6 @@
             </ul>
         </li>
     
-        <li class="item" data-name="app.jst">
-            <span class="title">
-                <a href="app.jst.html">app.jst</a>
-                
-                <span class="static">static</span>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
         <li class="item" data-name="app.jwt">
             <span class="title">
                 <a href="app.jwt.html">app.jwt</a>
@@ -716,12 +666,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="app.layoutManager.current"><a href="app.layoutManager.html#current">current</a></li>
-            
-                <li data-name="app.layoutManager.currentLayout"><a href="app.layoutManager.html#currentLayout">currentLayout</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -732,7 +676,13 @@
             
                 <li data-name="app.layoutManager.close"><a href="app.layoutManager.html#close">close</a></li>
             
+                <li data-name="app.layoutManager.getLayout"><a href="app.layoutManager.html#getLayout">getLayout</a></li>
+            
                 <li data-name="app.layoutManager.removeLayout"><a href="app.layoutManager.html#removeLayout">removeLayout</a></li>
+            
+                <li data-name="app.layoutManager.renderLayout"><a href="app.layoutManager.html#renderLayout">renderLayout</a></li>
+            
+                <li data-name="app.layoutManager.renderMainLayout"><a href="app.layoutManager.html#renderMainLayout">renderMainLayout</a></li>
             
                 <li data-name="app.layoutManager.setConfig"><a href="app.layoutManager.html#setConfig">setConfig</a></li>
             
@@ -764,6 +714,8 @@
                 <li data-name="app.layoutManager.config.contentRegionName"><a href="app.layoutManager.config.html#contentRegionName">contentRegionName</a></li>
             
                 <li data-name="app.layoutManager.config.mainRegionName"><a href="app.layoutManager.config.html#mainRegionName">mainRegionName</a></li>
+            
+                <li data-name="app.layoutManager.config.rootLayout"><a href="app.layoutManager.config.html#rootLayout">rootLayout</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -2481,8 +2433,11 @@ define([
     'underscore',
     'corejs/engine/application',
     'corejs/engine/logger',
-    'corejs/engine/factory'
-], function(_, app, log, factory) {
+    'corejs/engine/factory',
+    'backbone',
+    'backbone.marionette',
+    'corejs/engine/marionette.region',
+], function(_, app, log, factory, Backbone) {
 
     /**
      * A module to manage app layouts.
@@ -2497,14 +2452,14 @@ define([
          * @type {Backbone.Marionette.Layout}
          * @default
          */
-        current: undefined,
+        //current: undefined,
 
         /**
          * layoutManager current Backbone.Marionette.Layout string name added in {@link app.factory}
          * @type {String}
          * @default
          */
-        currentLayout: undefined,
+        //currentLayout: undefined,
 
         /**
          * layoutManager config object
@@ -2524,41 +2479,163 @@ define([
              * @type {String}
              * @default
              */
-            contentRegionName: 'content'
+            contentRegionName: 'content',
+
+            /**
+             * Top level region singleton instance name
+             * @type {String}
+             */
+            rootLayout: 'main'
+        }
+    };
+
+    var iterations = 0,
+        MAX_ITERATIONS = 100;
+
+
+    layoutManager.add = function(layoutName, layout) {
+
+        factory.add(layoutName, layout);
+
+    };
+
+    /* Checks if a layout is shown
+     * @param  {Marionette.Layout} Layout isntance
+     * @return {Boolean} true if the layout is not shown, false otherwise
+     */
+    layoutManager.layoutIsDisplayed = function(layoutInstance) {
+
+        if (!(layoutInstance.isClosed) && (layoutInstance._isShown === true)) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    /**
+     * Gets layout instance from the factory singleton
+     * @param  {String} layoutName - The name of the layout in the factory
+     * @param  {Object} opts - Options to instantiate the layout
+     * @param  {Boolean} parent - Flag to know if is a parentLayout or not (to throw a more descriptive debug/error message)
+     * @return {Marionette.Layout} The layout instance
+     */
+    layoutManager.getLayout = function(layoutName, opts, parent) {
+
+        var layoutInstance = factory.singleton(layoutName, opts);
+
+        if (layoutInstance instanceof Backbone.Marionette.Layout) {
+
+            return layoutInstance;
+
+        } else {
+
+            var message = 'LayoutManagerException - It\'s not a layout instance';
+
+            if (parent) {
+                message = 'LayoutManagerException - A parent layout don\'t exists as a layout singleton instance';
+            }
+
+            throw new Error(message);
+
+        }
+
+    };
+
+
+    /**
+     * Renders the layout and it's parents layouts recursively
+     * @param  {Marionette.Layout} layout - The layout that have to be shown
+     * @param  {Object} opts - options to instantiate the layout
+     */
+    layoutManager.renderLayout = function(layout, opts) {
+        if (!this.layoutIsDisplayed(layout)) {
+
+            var parentLayout,
+                parentLayoutName,
+                parentRegionName,
+                parentRegion;
+
+            if (_.isFunction(layout.parentLayout)) {
+                parentLayoutName = layout.parentLayout(opts);
+            } else {
+                parentLayoutName = layout.parentLayout;
+            }
+
+
+            parentRegionName = layout.parentRegion || layoutManager.config.contentRegionName;
+
+            if (parentLayoutName !== layoutManager.config.rootLayout) {
+
+                parentLayout = this.getLayout(parentLayoutName, opts, true);
+
+                if (iterations &lt; MAX_ITERATIONS) {
+                    iterations++;
+                    this.renderLayout(parentLayout); //llamada recursiva
+                    parentRegion = parentLayout[parentRegionName];
+                    parentRegion.show(layout);
+                } else {
+                    throw new Error('LayoutManagerException - StackOver recursive call');
+                }
+
+            } else {
+                this.renderMainLayout(layout);
+            }
+
         }
     };
 
     /**
      * Changes layoutManager config
-     * @param {Object} options
+     * @param Object options
+     * @param {String} options.mainRegionName The name of the main region app
+     * @param {String} options.contentRegionName Default parent region name
+     * @param {String} options.rootLayout The name of the main root layout
      */
     layoutManager.setConfig = function(options) {
         this.config = _.extend(this.config, options);
     };
 
     /**
-     * Renders the layout in app[mainRegionName] region (main by default), only if different that last one
+     * Renders a layout into the main app region
+     * @param  {Marionette.View} layoutInstance
+     */
+    layoutManager.renderMainLayout = function(layoutInstance) {
+        app[this.config.rootLayout].show(layoutInstance);
+    };
+
+    /**
+     * Shows the layout into its parent.
+     * The layout is "rendered" by renderLayout method only if is not shown yet (its closed).
+     *
      * @param {String} layoutName Name of the layout added to factory
      * @param {Object} options options passed to the layout constructor
      */
-    layoutManager.setLayout = function(layoutName, options) {
-        if (this.currentLayout !== layoutName) {
+    layoutManager.setLayout = function(layoutName, opts) {
+        opts = opts || {};
 
-            var that = this;
-            log.debug('layoutManager:' + layoutName);
-            this.current = factory.new(layoutName, options);
-            this.current.on('close', function() {
-                log.debug('layoutManager:close');
-                // that.current = undefined;
-                // that.currentLayout = undefined;
-                that.close();
-            });
-            app[this.config.mainRegionName].show(this.current);
-            this.currentLayout = layoutName;
+        var layoutInstance;
 
-        } else {
-            log.debug('layoutManager:' + layoutName + ':nop');
+        try {
+
+            layoutInstance = layoutManager.getLayout(layoutName, opts);
+
+            if (!this.layoutIsDisplayed(layoutInstance)) {
+
+                if (layoutInstance.parentLayout) {
+                    iterations = 0;
+
+                    layoutManager.renderLayout(layoutInstance, opts);
+
+                } else {
+                    throw new Error('LayoutManagerException - Not parent layout founded');
+                }
+            }
+        } catch (ex) {
+            window.console.error(ex);
+            throw ex;
         }
+
+        return layoutInstance;
     };
 
     /**
@@ -2630,7 +2707,7 @@ define([
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 18 2014 09:56:36 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 25 2014 15:55:07 GMT+0100 (CET)
         </footer>
     </div>
 </div>

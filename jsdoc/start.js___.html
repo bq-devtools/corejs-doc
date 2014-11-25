@@ -90,35 +90,6 @@
             
                 <li data-name="app.root"><a href="app.html#root">root</a></li>
             
-                <li data-name="app.root"><a href="app.html#root">root</a></li>
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="app">
-            <span class="title">
-                <a href="app.html">app</a>
-                
-                <span class="static">static</span>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            <span class="subtitle">Members</span>
-            
-                <li data-name="app.root"><a href="app.html#root">root</a></li>
-            
-                <li data-name="app.root"><a href="app.html#root">root</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -659,27 +630,6 @@
             </ul>
         </li>
     
-        <li class="item" data-name="app.jst">
-            <span class="title">
-                <a href="app.jst.html">app.jst</a>
-                
-                <span class="static">static</span>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
         <li class="item" data-name="app.jwt">
             <span class="title">
                 <a href="app.jwt.html">app.jwt</a>
@@ -716,12 +666,6 @@
             </span>
             <ul class="members itemMembers">
             
-            <span class="subtitle">Members</span>
-            
-                <li data-name="app.layoutManager.current"><a href="app.layoutManager.html#current">current</a></li>
-            
-                <li data-name="app.layoutManager.currentLayout"><a href="app.layoutManager.html#currentLayout">currentLayout</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -732,7 +676,13 @@
             
                 <li data-name="app.layoutManager.close"><a href="app.layoutManager.html#close">close</a></li>
             
+                <li data-name="app.layoutManager.getLayout"><a href="app.layoutManager.html#getLayout">getLayout</a></li>
+            
                 <li data-name="app.layoutManager.removeLayout"><a href="app.layoutManager.html#removeLayout">removeLayout</a></li>
+            
+                <li data-name="app.layoutManager.renderLayout"><a href="app.layoutManager.html#renderLayout">renderLayout</a></li>
+            
+                <li data-name="app.layoutManager.renderMainLayout"><a href="app.layoutManager.html#renderMainLayout">renderMainLayout</a></li>
             
                 <li data-name="app.layoutManager.setConfig"><a href="app.layoutManager.html#setConfig">setConfig</a></li>
             
@@ -764,6 +714,8 @@
                 <li data-name="app.layoutManager.config.contentRegionName"><a href="app.layoutManager.config.html#contentRegionName">contentRegionName</a></li>
             
                 <li data-name="app.layoutManager.config.mainRegionName"><a href="app.layoutManager.config.html#mainRegionName">mainRegionName</a></li>
+            
+                <li data-name="app.layoutManager.config.rootLayout"><a href="app.layoutManager.config.html#rootLayout">rootLayout</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -2468,7 +2420,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="start.js___.html">Source: modules/google/start.js</h1>
+        <h1 class="page-title" data-filename="start.js___.html">Source: modules/google-sdk/start.js</h1>
         
 
 
@@ -2479,34 +2431,99 @@
 /* global define */
 define([
     'corejs/app',
-    'q',
-    'corejs/modules/google/controller',
-    'corejs/modules/google/oauth'
-], function(app, q, controller, oauth) {
+    'q'
+], function(app, q) {
 
     /**
-     * A module to manage google login.
-     * @exports google
+     * A plugin for google-module to retrieve google sdk
+     * @exports googleSdk
      * @namespace
      * @memberof app
      */
-	var google = {};
+	var googleSdk = {};
 
-	// Set login/register routes
-    app.addInitializer(function() {
-        app.router.route('social/google/login/:code(/:remember)', 'router:route:social:google:login', controller.loginCallback);
-        app.router.route('social/google/register/:accessToken', 'router:route:social:google:register', controller.signinCallback);
-        app.router.route('social/google/me/:accessToken', 'router:route:social:google:me', controller.meCallback);
+	/**
+     * Loads google JS library
+     */
+    googleSdk.init = function() {
+        app.log.debug('gapi:loader');
+        // Google API async laoder
+        (function() {
+            var po = document.createElement('script');
+            po.type = 'text/javascript';
+            po.async = true;
+            po.src = 'https://apis.google.com/js/client:plus.js?onload=gAsyncInit';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(po, s);
+        })();
+    };
 
-        app.vent.on('session:persistent', controller.persist);
+    app.gAsync = q.defer();
+
+    /**
+     * Google JS library loaded callback
+     * @return {Promise} that resolves with de gapi namespace initialized and with APIs loaded
+     */
+    googleSdk.initCallback = function() {
+        app.log.debug('google:loaded', window.gapi);
+
+        app.vent.trigger('google:loaded', window.gapi);
+
+        var googleConfig = app.modulesConfig.get('google');
+
+        window.gapi.client.setApiKey(googleConfig.apiKey);
+
+        // Google APIs loader by config
+        var apisPromises = [];
+        googleConfig.apis = googleConfig.apis || [];
+
+        var apiCallback = function(response) {
+            if (response && response.error) {
+                app.log.debug('google:api:loader:fail', response);
+                dfd.reject(response);
+            } else {
+                app.log.debug('google:api:loader:success', response);
+                dfd.resolve();
+            }
+        };
+        for (var i = googleConfig.apis.length - 1; i >= 0; i--) {
+            var dfd = q.defer();
+            app.log.debug('googleSdk.initCallback.load.api: ' + googleConfig.apis[i].name + '-' + googleConfig.apis[i].version);
+            window.gapi.client.load(googleConfig.apis[i].name, googleConfig.apis[i].version, apiCallback);
+            apisPromises.push(dfd.promise);
+        }
+
+        q.all(apisPromises).then(function() {
+            app.gAsync.resolve(window.gapi);
+        }).fail(function(response) {
+            app.gAsync.reject(response);
+        });
+
+        return app.gAsync.promise;
+    };
+
+    // Sets Google loaded callback
+    window.gAsyncInit = googleSdk.initCallback;
+
+    // Returns a promise for google api onLoad callback
+    app.reqres.setHandler('gapi', function() {
+        return app.gAsync.promise;
     });
 
-    // Expose module
-    google.oauth = oauth;
-    google.controller = controller;
-    app.google = google;
+    // Timeout for Google API loader
+    setTimeout(function() {
+        if (!window.gapi) {
+            app.log.error('gapi:not:loaded');
+            app.gAsync.reject({error: 'gapi:not:loaded'});
+        }
+    }, 5000);
 
-	return google;
+    // Ensure google loads after engine loads
+    app.vent.on('initialize:before', googleSdk.init);
+
+    app.googleSdk = googleSdk;
+
+    return googleSdk;
 
 });
 </code></pre>
@@ -2521,7 +2538,7 @@ define([
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 18 2014 09:56:35 GMT+0100 (CET)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Nov 25 2014 15:55:06 GMT+0100 (CET)
         </footer>
     </div>
 </div>
