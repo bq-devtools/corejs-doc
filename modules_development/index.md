@@ -401,7 +401,7 @@ Además podemos definir la región del layout padre sobre la que debe pintarse. 
 
     app.factory.add('ChildLayout',ChildLayout);
 
-    var childLayout = app.LayoutManager.setLayout('ChildLayout');
+    var childLayout = app.layoutManager.setLayout('ChildLayout');
 
     childLayout.content.show(someView);
 ```
@@ -411,7 +411,7 @@ El LayoutManager se encarga de instanciar y pintar mi layout si aún no lo está
 
 #### Fixed Child Views
 
-Cómo los layouts puede que se pinten sin tener un control real de ellos (un controller que los llame etc.), se dispone de un behavior llamado **fixedChildView**
+Cómo los layouts puede que se pinten sin tener un control real de ellos (un controller que los llame etc.), se dispone de un behavior llamado **fixedChildViews**
 que, aplicado sobre un layout, nos permite definir vistas fijas que se van a pintar implicitamente en ciertas regiones de un layout cada vez que este se pinte.
 
 Son necesarios seguir una serie de pasos para aplicar dicho behavior:
@@ -429,7 +429,7 @@ Tenemos tres formas de especificar qué vistas fijas se desean y en qué regione
         parentLayout: 'ParentLayout',
         parentRegion: 'content',
         behaviors:{
-            fixedChildView: {
+            fixedChildViews: {
                 defaults: {
                     content: { //nombre de la región
                         view: 'identificadorDeMiVista',
@@ -447,7 +447,7 @@ Tenemos tres formas de especificar qué vistas fijas se desean y en qué regione
 
 ```javascript
     childLayout.show(miView,{
-            fixedChildView: {
+            fixedChildViews: {
                 left: { //nombre de la región
                     view: 'identificadorDeMiVista',
                     options: 'opciones opcionales a la hora de instanciar la vista',
