@@ -209,7 +209,7 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
 * Instalar [Yeoman](http://yeoman.io/), [Grunt](http://gruntjs.com/) y [Bower](http://bower.io/)
 
     ```bash
-    npm install -g yo
+    npm install -g yo grunt-cli
     ```
 
 
