@@ -59,6 +59,8 @@ Esta apartado describe todas las tecnologías usadas para el desarrollo de aplic
         * ...
     * Snippets
         * [pendiente]
+  * **[Atom](https://atom.io/)**: Practicamente igual que Sublime pero opensource.
+    * [Plugins recomendados](https://atom.io/users/anthanh/stars) (instalar con `apm stars --user anthanh --install`)
   * **[Netbeans](https://netbeans.org/)**: [Pendiente]
   * **[WebStorm](http://www.jetbrains.com/webstorm/)**: [Pendiente]
 
@@ -90,19 +92,19 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
 
     ```bash
     PREFIX=$(brew --prefix)
-     
+
     sudo mkdir -p $PREFIX/{share/man,bin,lib/node,include/node}
     sudo chown -R $USER $PREFIX/{share/man,bin,lib/node,include/node}
-     
+
     brew install node
-     
+
     curl https://www.npmjs.org/install.sh | sh
     ```
 
 * Instalar [PhamtonJS](http://phantomjs.org/download.html)
 
     ```bash
-    npm install -g mocha-phantomjs@">=3.3.1" phantomjs@">=1.9.7-1"
+    npm install -g mocha-phantomjs phantomjs
     ```
 
 * Instalar [compass](http://compass-style.org/install/)
@@ -110,13 +112,19 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
     ```bash
     gem update --system
     gem install compass
+    gem install scss-lint
     ```
 
+* Instalar Linters
+
+    ```bash
+    npm install -g jshint csslint
+    ```
 
 * Instalar [Yeoman](http://yeoman.io/), [Grunt](http://gruntjs.com/) y [Bower](http://bower.io/)
 
     ```bash
-    npm install -g yo
+    npm install -g yo grunt-cli bower
     ```
 
 * Descargar e instalar [Java](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
@@ -175,20 +183,20 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
     cd .local
     mkdir ~/node
     cd ~/node
-    
+
     # node
     curl http://nodejs.org/dist/node-latest.tar.gz | tar xz --strip-components=1
-    
+
     ./configure --prefix=~/.local
     make install
-    
+
     # Expose bin to default nodejs bin for sublime plugins
     sudo ln -s ~/.local/bin/node  /usr/bin/nodejs
     sudo ln -s ~/.local/lib/node_modules /usr/local/lib/
-    
+
     # npm
     curl https://www.npmjs.org/install.sh | sh
-    
+
 
 
     ```
@@ -198,18 +206,25 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
     ```bash
     gem update --system
     gem install compass
+    gem install scss-lint
     ```
 
 * Instalar [PhamtonJS](http://phantomjs.org/download.html)
 
     ```bash
-    npm install -g mocha-phantomjs@">=3.3.1" phantomjs@">=1.9.7-1"
+    npm install -g mocha-phantomjs phantomjs
+    ```
+
+* Instalar Linters
+
+    ```bash
+    npm install -g jshint csslint
     ```
 
 * Instalar [Yeoman](http://yeoman.io/), [Grunt](http://gruntjs.com/) y [Bower](http://bower.io/)
 
     ```bash
-    npm install -g yo grunt-cli
+    npm install -g yo grunt-cli bower
     ```
 
 
@@ -233,8 +248,11 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
 * Ejecutar en Git Bash los siguientes comandos:
 
     ```bash
-    npm install -g yo mocha-phantomjs@">=3.3.1" phantomjs@">=1.9.7-1"
+    npm install -g mocha-phantomjs phantomjs
+    npm install -g jshint csslint
+    npm install -g yo grunt-cli bower
     gem install compass
+    gem install scss-lint
     ```
 
 ----------
@@ -243,7 +261,7 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
 
 Si al arrancar el proyecto sale muchas veces el error `Waiting…Fatal error: watch ENOSPC`, ejecutar el siguiente comando:
 
-* En linux: 
+* En linux:
 
     ```bash
     echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
