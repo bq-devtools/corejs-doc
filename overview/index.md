@@ -33,28 +33,28 @@ El repositorio de esta misma documentación
 Esqueleto de proyecto coreJS listo para el desarrollo.
 
     ```bash
-    git@bitbucket.org:mundoreader/corejs-app-boilerplate.git
+    git clone ssh://git@stash.bq.com:7999/swplat/corejs-app-boilerplate.git
     ```
 
 * **coreJS Build**
 En este repositorio define el proceso de construcción y otras tareas automatizadas a través de **[Grunt](http://gruntjs.com/)**.
 
     ```bash
-    git clone ssh://<username>@git.dev.bqsoftware.net:29418/corejs-build
+    git clone ssh://git@stash.bq.com:7999/swplat/corejs-build.git
     ```
 
 * **coreJS Base**
 En este repositorio se guarda los módulos principales de toda webapp (localización, integración con backend, factorías, configuración, ...), así como módulos reutilizables entre aplicaciones.
 
     ```bash
-    git clone ssh://<username>@git.dev.bqsoftware.net:29418/corejs-base
+    git clone ssh://git@stash.bq.com:7999/swplat/corejs-base.git
     ```
 
 * **coreJS Components Boilerplate**
 En este repositorio define un arquetipo que almacena los módulos de coreJS que pueden reutilizar|extender otros proyectos.
 
     ```bash
-    git@bitbucket.org:mundoreader/corejs-component-boilerplate.git
+    git clone ssh://git@stash.bq.com:7999/swplat/corejs-component-boilerplate.git
     ```
 
 * **coreJS [projectName] Modules**
@@ -109,7 +109,7 @@ En este repositorio almacena los módulos de la webapp específica en función d
 
 La aplicación tiene un documento de parámetros y constantes por defecto en el repositorio de la aplicación con nombre`corejs-[projectName]-app`, en `src/main/webapp/res/config/config.json`, que permiten la configuración de la aplicación, así como su fácil acceso para el resto de los módulos.
 
-A conitnuación se explican cada uno de los parámetros. 
+A conitnuación se explican cada uno de los parámetros.
 
 | Clave | Descripción | Tipo | Obligatorio |
 |-------|-------------|------|-------------|
@@ -246,7 +246,7 @@ var CFG = {
     "iamEndpoint": "http://dev.iam.int.bqws.io/v1.0/",
     "clientId": "providedClientId",
     "clientSecret": "providedSecret",
-    
+
     "claimAud": "http://iam.bqws.io",
     "claimGrantType": "urn:ietf:params:oauth:grant-type:jwt-bearer",
     "claimScopes": "resources:bookland:read_catalog iam:user:create iam:user:delete iam:user:read evci:event:publish",
@@ -392,7 +392,7 @@ app.log.debug('moduleName.method.message' [, ...]);
 
 #### Niveles de Log
 Los errores ordenados de mayor a menor nivel son los siguientes:
-  * `SILENT`(`5`): Este nivel sirve para anular el log 
+  * `SILENT`(`5`): Este nivel sirve para anular el log
   * `ERROR`(`4`): Muestra por consola los errores de la aplicación
   * `WARN`(`3`): Muestra las alertas de la aplicación y mensajes de mayor nivel
   * `INFO`(`2`): Muestra las trazas de información y mensajes de mayor nivel
@@ -656,14 +656,14 @@ app.session.destroy();
  * Ask for user autorization
  * return boolean object
  */
-app.session.gatekeeper(); 
+app.session.gatekeeper();
 
 /**
  * Set an application status
  * @param {string} status - Name of the status
  * @param {boolean} active - true if active, false id disabled
  */
-app.session.setStatus('new-user', true); 
+app.session.setStatus('new-user', true);
 
 // Remove a specific status
 app.session.removeStatus('new-user');

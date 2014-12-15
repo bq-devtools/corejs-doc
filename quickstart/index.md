@@ -15,7 +15,7 @@ Poner a punto un proyecto coreJS para el desarrollo es realmente sencillo, simpl
 
   ```bash
   mkdir -p ~/code/corejs
-  git clone git@bitbucket.org:mundoreader/corejs-app-boilerplate.git
+  git clone ssh://git@stash.bq.com:7999/swplat/corejs-app-boilerplate.git
   cd corejs-app-boilerplate
   ```
 
