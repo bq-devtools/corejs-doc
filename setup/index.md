@@ -98,7 +98,7 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
 
     brew install node
 
-    curl https://www.npmjs.org/install.sh | sh
+    curl -L https://npmjs.com/install.sh | sh
     ```
 
 * Instalar [PhamtonJS](http://phantomjs.org/download.html)
@@ -195,9 +195,7 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
     sudo ln -s ~/.local/lib/node_modules /usr/local/lib/
 
     # npm
-    curl https://www.npmjs.org/install.sh | sh
-
-
+    curl -L https://npmjs.com/install.sh | sh
 
     ```
 
