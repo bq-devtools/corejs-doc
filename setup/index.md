@@ -274,5 +274,10 @@ Si al arrancar el proyecto sale muchas veces el error `Waiting…Fatal error: wa
 Si Bower tiene problemas para descargar los paquetes, es probable que sea debido a que trate de obtener los paquetes por protocolo GIT en lugar de HTTPS, para cambiarlo basta con ejecutar el siguiente comando:
 
 ```bash
-git config --global url."https://".insteadOf git://
+git config --global url."https://github".insteadOf git://github
 ```
+
+> **Más info**
+
+> * [Use https:// protocol instead of git:// when a proxy is set](https://github.com/bower/bower/issues/731)
+> * [Docs - git:// blocked workaround](https://github.com/bower/bower/issues/250)
