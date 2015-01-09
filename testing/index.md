@@ -175,7 +175,11 @@ Los test de Selenium se desarrollan en el siguiente proyecto:
 ```
 src/test/selenium
 ├── testSuite.js    // Declaración de todos los test a pasar
-└── spec            // Directorio donde se implementan los tests
+├── paths           // Directorio donde se especifican los caminos funcionales
+    └── *.js
+├── src             // Directorio donde se implementan los test
+    └── *.js
+└── spec            // Directorio donde se especifican los tests
     └── *.js
 ```
 
