@@ -61,14 +61,17 @@ layout: index
 <section class="row claims claims-slides">
 	<div class="container">
 		<h2>Showtime!</h2>
-		<div class="col-sm-4">
+		<div class="col-sm-3">
 			<a href="http://slides.com/antai/corejs"><img src="https://s3.amazonaws.com/media-p.slid.es/thumbnails/antai/1ed378/corejs.jpg" alt="coreJS slides" /></a>
 		</div>
-		<div class="col-sm-4">
+		<div class="col-sm-3">
 			<a href="http://slides.com/antai/corejs_early_preview"><img src="https://s3.amazonaws.com/media-p.slid.es/thumbnails/antai/25d18c/corejs_early_preview.jpg" alt="coreJS early preview slides" /></a>
 		</div>
-		<div class="col-sm-4">
+		<div class="col-sm-3">
 			<a href="https://slides.com/antai/corejs_functional_test"><img src="https://s3.amazonaws.com/media-p.slid.es/thumbnails/antai/944247/corejs_functional_test.jpg" alt="coreJS functional tests slides" /></a>	
+		</div>
+		<div class="col-sm-3">
+			<a href="https://slides.com/antai/corejs_one_year_of"><img src="https://s3.amazonaws.com/media-p.slid.es/thumbnails/antai/d8a238/corejs_one_year_of.jpg" alt="coreJS one year of" /></a>	
 		</div>
 	</div>
 </section>
