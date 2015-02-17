@@ -16,7 +16,7 @@ Esta apartado describe todas las tecnologías usadas para el desarrollo de aplic
   * **[Underscore](http://underscorejs.org/)** 1.5.2: Dependencia de Backbone. Librería de útiles para el manejo de estructuras de datos.
   * **[Handlebars](http://handlebarsjs.com/)** 1.3.0: Librería para la compilación y renderizado de plantillas.
   * **[Modernizr](http://modernizr.com/)** 2.6.2: Librería que ofrece soporte a la detección de funcionalidades del navegador del dispositivo.
-  * **[Sass](http://sass-lang.com/)** 3.4.8 (Selective Steve): Preprocesador CSS, un superset de CSS que permite desarrollar hojas de estilo más estructurados y reutilizables.
+  * **[Sass](http://sass-lang.com/)** 3.4.12 (Selective Steve): Preprocesador CSS, un superset de CSS que permite desarrollar hojas de estilo más estructurados y reutilizables.
 
 ## i18n
   * **[i18next](http://i18next.com/)** 1.7.3: Librería de internacionalización con soporte para textos, géneros y plurales.
@@ -43,7 +43,7 @@ Esta apartado describe todas las tecnologías usadas para el desarrollo de aplic
     * En producción lo usaremos como proxy para que la aplicación web sea indexable.
     * En pruebas lo utilizaremos para arrancar las pruebas unitarias con mocha+phamtomJS
   * **[npm](https://npmjs.org/)** 1.3.21: Gestor de paquetes de node
-  * **[compass](http://compass-style.org/)** 1.0.1 (Polaris): Framework para el desarrollo de hojas de estilos en **[SASS](http://sass-lang.com/)**. Lo usaremos principalmente para su compilación y generación de sprites.
+  * **[compass](http://compass-style.org/)** 1.0.3 (Polaris): Framework para el desarrollo de hojas de estilos en **[SASS](http://sass-lang.com/)**. Lo usaremos principalmente para su compilación y generación de sprites.
   * **[Java](http://www.oracle.com/technetwork/java/javase/downloads/index.html)** 1.8: Para trabajar con Selenium WebDriver en local.
 
 ## Entorno de desarrollo
