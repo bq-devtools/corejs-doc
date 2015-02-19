@@ -22,7 +22,7 @@ Poner a punto un proyecto coreJS para el desarrollo es realmente sencillo, simpl
 * Inicializar el entorno de desarrollo
 
   ```bash
-  ./init-env.sh su
+  npm install
   ```
 
 ## Probar la aplicación
