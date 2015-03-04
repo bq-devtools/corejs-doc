@@ -12,7 +12,7 @@ Para que un módulo pueda definir una funcionalidad completa se propone la sigui
 ## Estructura del proyecto ##
 
 ```
-src/main/webapp
+app
 ├── css                             // Hojas de estilo transversales
 ├── res
 │   └──config
@@ -64,7 +64,7 @@ src/main/webapp
             │       └── *.html
             └── views               // Vistas del módulo (ItemView/CollectionView)
                 └── *.js
-src/test
+app/test
 ├── define.js               // Definición de dependencias requirejs transversales
 ├── index.html              // Punto de partida de ejecución de tests
 └── spec
@@ -708,7 +708,7 @@ Para integrar una librería de terceros tenemos que evaluar antes varias cosas:
 
 Si es un paquete **Bower**, hay que dar de alta dicha dependencia con su versión en `bower.json`.
 
-Si es un módulo AMD, no es necesario hacer gran cosa, pero **si no está definido como AMD**, y dicho módulo exporta una variable, es necesario indicarlo en el documento `define.js`, tanto en `webapp/scripts/define.js`, como en `test/define.js` de la siguiente forma:
+Si es un módulo AMD, no es necesario hacer gran cosa, pero **si no está definido como AMD**, y dicho módulo exporta una variable, es necesario indicarlo en el documento `define.js`, tanto en `app/scripts/define.js`, como en `test/define.js` de la siguiente forma:
 
 ```javascript
 // define.js
@@ -748,11 +748,11 @@ define([
 Los módulos pueden tener un documento donde defina su configuración, comportamiento e incluso su contenido, a través del mecanismo de configuración de módulos.
 
 ### Módulos de aplicación ##
-Llamamos módulos de aplicación a aquellos módulos específicos de la webapp. Estos se pueden configurar a través de los archivos `src/main/webapp/scripts/modules/[moduleName]/res/config.json`, donde cada módulo puede tener definida su configuracion por defecto.
+Llamamos módulos de aplicación a aquellos módulos específicos de la webapp. Estos se pueden configurar a través de los archivos `app/scripts/modules/[moduleName]/res/config.json`, donde cada módulo puede tener definida su configuracion por defecto.
 
 
 ### Módulo externos ###
-Si queremos estableccer la configuración de un módulo ajeno a nuestro repositorio, por ejemplo, un módulo del core, es posible sobreescribir su configuración redefiniendo los archivos `src/main/webapp/res/config/[externalModuleName].json`. Esta configuración deberá definirse **con los mismos campos que la configuración original**.
+Si queremos estableccer la configuración de un módulo ajeno a nuestro repositorio, por ejemplo, un módulo del core, es posible sobreescribir su configuración redefiniendo los archivos `app/res/config/[externalModuleName].json`. Esta configuración deberá definirse **con los mismos campos que la configuración original**.
 
 
 **Cómo acceder**
