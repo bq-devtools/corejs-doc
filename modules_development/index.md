@@ -468,6 +468,98 @@ Sin perder los eventos a los que la habíamos ligado la vista(a través de liste
 **IMPORTANTE** Para evitar memory leaks, se ha proporcionado el método destroy, quedando así la vista inservible. Si se sabe que esa vista no se va a volver a usar, llamar manualmente al método destroy para que no se ensucie la memoria.
 
 
+### Behavior Validation
+
+El Behavior Validation posee una serie de variables de configuración con el objetivo de adaptarse de la mejor manera a las necesidades de cada proyecto.
+
+Nombre | Función | Tipo | Defecto
+------------ | ------------- | ------------- | -------------
+*hook* | Posición que va a ocupar el mensaje de error | String | "bottom"
+*blur* | Mostrar errores al hacer *on blur* | Boolean  | false
+*cleanOnFocusErrors* | Limpiar mensajes de error tras realizar *on focus* | String  | true
+*templateGeneric* | Template por defecto para los errores genéricos | String | "validation/validation"
+*templateInputs* | Template por defecto para los errores localizados en los inputs | String | "validation/validationInput"
+*mobile* | Uso de diferentes templates para dispositivos móviles | Boolean | false
+*wrapperClassInputError* | Wrapper para definir el css de los input con errores | String | "input-error"
+*submit* | Evento de envío de formulario | String | "login"
+
+Todas estos valores por defecto pueden sobrescribirse en el momento que se aplica el behavior en una vista determinada.
+
+```javascript
+var FormLoginView = Backbone.Marionette.ItemView.extend({
+     
+    ...
+    behaviors: {
+        validation: {
+            hook: 'top',    //default bottom
+            blur: true,     //default false
+            templateInputs: 'formLogin/formErrors'  // Override template for input errors
+        }
+    },
+    ...
+});
+```
+
+Como se ve en el siguiente ejemplo, el template de cada vista contendrá una serie de *data-validation="attribute_model"* en su formulario.
+
+```html
+<form data-action="login" data-oauth-service="silkroad" novalidate>
+    <fieldset>
+    <legend class="invisible" data-i18n="login-subtitle"></legend>
+     
+    <div class="alert-container" role="alert" data-element="form-validation"></div>
+     
+    <div class="form-control" data-validation="username">
+         <label for="username" class="invisible" data-i18n="login-email"></label>
+         <span class="input">
+             <input id="username" name="username" type="email" data-i18n="placeholderlogin-email" maxlength="50" autofocus>
+         </span>
+    </div>
+ 
+    <div class="form-control" data-validation="password">
+        <label for="password" class="invisible" data-i18n="login-password"></label>
+            <span class="input">
+                 <input id="password" name="password" type="password" data-i18n="placeholderlogin-password" data-element="login-password" autocomplete="off" maxlength="30">
+            </span>
+    </div>
+ 
+    ...
+</form>
+```
+
+Cada *data-validation* debe estar relacionado con un atributo del modelo datos que este validando, por ejemplo, un modelo de datos *User* que posee dos atributos: *username* y *password*.
+
+```javascript
+var User = Backbone.Model.extend({
+        defaults: {
+            username: undefined,
+            password: '',
+        },
+        validation: {
+            username: [
+                {
+                    required: true,
+                    msg: 'Es necesario su nombre de usuario'
+                }
+            ],
+            password: [
+                {
+                    required: true,
+                    msg: 'Es necesaria su constraseña'
+                }
+            ]
+
+        }
+});
+```
+
+
+
+> **Más info**
+
+> * [Marionette.Behavior](http://marionettejs.com/docs/marionette.behavior.html)
+> * [Marionette.Behaviors](http://marionettejs.com/docs/marionette.behaviors.html)
+
 ## Creación de módulos ##
 
 ### Inicialización de un módulo ###
