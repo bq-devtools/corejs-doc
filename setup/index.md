@@ -282,3 +282,380 @@ git config --global url."https://github".insteadOf git://github
 
 > * [Use https:// protocol instead of git:// when a proxy is set](https://github.com/bower/bower/issues/731)
 > * [Docs - git:// blocked workaround](https://github.com/bower/bower/issues/250)
+
+
+
+# npm privado
+
+* Instalar [node+npm](http://corejs.docs.bqws.io/setup/)
+
+* Instalar sinopia+forever `npm install -g sinopia forever`
+
+* Crear el script `/etc/init.d/sinopia` con el siguiente contenido:
+  
+  ```
+  #!/bin/bash
+  #
+  # Run sinopia using Forever as the process monitor.
+  #
+  ### BEGIN INIT INFO
+  # Provides:             sinopia
+  # Required-Start:       $syslog $remote_fs
+  # Required-Stop:        $syslog $remote_fs
+  # Should-Start:         $local_fs
+  # Should-Stop:          $local_fs
+  # Default-Start:        2 3 4 5
+  # Default-Stop:         0 1 6
+  # Short-Description:    Sinopia - private npm repository server
+  # Description:          Sinopia - private npm repository server
+  ### END INIT INFO
+  #
+  # Based on:
+  # https://gist.github.com/3748766
+  # https://github.com/hectorcorrea/hectorcorrea.com/blob/master/etc/forever-initd-hectorcorrea.sh
+  # https://www.exratione.com/2011/07/running-a-nodejs-server-as-a-service-using-forever/
+
+  # Source function library. Note that this isn't used here, but remains to be
+  # uncommented by those who want to edit this script to add more functionality.
+  # Note that this is Ubuntu-specific. The scripts and script location are different on
+  # RPM-based distributions.
+  # . /lib/lsb/init-functions
+
+  NAME="sinopia"
+  NODE_BIN_DIR=/home/anthanh/local/bin
+  NODE_PATH=/usr/lib/nodejs:/usr/lib/node_modules:/usr/share/javascript:/home/anthanh/local/lib/node_modules
+  CONFIG_PATH=/home/anthanh/.config/sinopia/config.yaml
+  APPLICATION_DIRECTORY=/home/anthanh/local/bin/
+  APPLICATION_START=sinopia
+  APPLICATION_OPTIONS="--config $CONFIG_PATH --listen localhost:4873"
+  PIDFILE=/var/run/sinopia.pid
+  LOGFILE=/var/log/sinopia.log
+
+  # Add node to the path for situations in which the environment is passed.
+  PATH=$NODE_BIN_DIR:$PATH
+  # Export all environment variables that must be visible for the Node.js
+  # application process forked by Forever. It will not see any of the other
+  # variables defined in this script.
+  export NODE_PATH=$NODE_PATH
+
+  start() {
+      echo "Starting $NAME"
+      # We're calling forever directly without using start-stop-daemon for the
+      # sake of simplicity when it comes to environment, and because this way
+      # the script will work whether it is executed directly or via the service
+      # utility.
+      #
+      # The minUptime and spinSleepTime settings stop Forever from thrashing if
+      # the application fails immediately on launch. This is generally necessary to
+      # avoid loading development servers to the point of failure every time
+      # someone makes an error in application initialization code, or bringing down
+      # production servers the same way if a database or other critical service
+      # suddenly becomes inaccessible.
+      #
+      # The pidfile contains the child process pid, not the forever process pid.
+      # We're only using it as a marker for whether or not the process is
+      # running.
+      forever --pidFile $PIDFILE --sourceDir $APPLICATION_DIRECTORY \
+          -a -l $LOGFILE --minUptime 5000 --spinSleepTime 2000 \
+          start $APPLICATION_START $APPLICATION_OPTIONS &
+      RETVAL=$?
+  }
+
+  stop() {
+      if [ -f $PIDFILE ]; then
+          echo "Shutting down $NAME"
+          # Tell Forever to stop the process. Note that doing it this way means
+          # that each application that runs as a service must have a different
+          # start file name, regardless of which directory it is in.
+          forever stop $APPLICATION_DIRECTORY$APPLICATION_START
+          # Get rid of the pidfile, since Forever won't do that.
+          rm -f $PIDFILE
+          RETVAL=$?
+      else
+          echo "$NAME is not running."
+          RETVAL=0
+      fi
+  }
+
+  restart() {
+      echo "Restarting $NAME"
+      stop
+      start
+  }
+
+  status() {
+      echo "Status for $NAME:"
+      # This is taking the lazy way out on status, as it will return a list of
+      # all running Forever processes. You get to figure out what you want to
+      # know from that information.
+      #
+      # On Ubuntu, this isn't even necessary. To find out whether the service is
+      # running, use "service my-application status" which bypasses this script
+      # entirely provided you used the service utility to start the process.
+      forever list
+      RETVAL=$?
+  }
+
+  case "$1" in
+      start)
+          start
+          ;;
+      stop)
+          stop
+          ;;
+      status)
+          status
+          ;;
+      restart)
+          restart
+          ;;
+      *)
+          echo "Usage: {start|stop|status|restart}"
+          exit 1
+          ;;
+  esac
+  exit $RETVAL
+
+  ```
+
+* Dar permisos de ejecución `sudo chmod +x /etc/init.d/sinopia`
+* Buscar todas las rutas que usa `sinopia` `sudo find / -name "sinopia" -type d`
+* Obtener `NODE_BIN_DIR` desde `which node`
+* Obtener `NODE_PATH` desde `~/.bashrc`
+* Obtener `CONFIG_PATH` desde `.config` sinopia path
+* Obtener `APPLICATION_DIRECTORY` desde `which sinopia`
+
+* Arrancar el servicio manualmente
+
+```
+sudo /etc/init.d/sinopia start
+```
+
+* Arrancar el servicio al iniciar el sistema (Ubuntu)
+
+```
+sudo update-rc.d sinopia defaults
+```
+* Quitar el arranque del servicio al iniciar el sistema (Ubuntu)
+
+```
+sudo update-rc.d -f sinopia remove
+```
+
+* Arrancar el servicio al iniciar el sistema(CentOS/RedHat/AmazonLinux)
+
+```
+sudo chkconfig --add sinopia
+sudo chkconfig sinopia on
+```
+
+* Log (server)
+
+```
+tail -f /var/log/sinopia.log
+```
+
+
+* Cambiar al registro npm privado
+
+```
+npm set registry http://yourPrivateBowerRepo:4873/
+```
+
+
+
+# bower privado
+
+* Instalar [node+npm](http://corejs.docs.bqws.io/setup/)
+
+* Instalar private-bower+forever `npm install -g private-bower forever`
+
+* Crear el script `/etc/init.d/private-bower` con el siguiente contenido:
+
+  ```
+  #!/bin/bash
+  #
+  # Run private-bower using Forever as the process monitor.
+  #
+  ### BEGIN INIT INFO
+  # Provides:             private-bower
+  # Required-Start:       $syslog $remote_fs
+  # Required-Stop:        $syslog $remote_fs
+  # Should-Start:         $local_fs
+  # Should-Stop:          $local_fs
+  # Default-Start:        2 3 4 5
+  # Default-Stop:         0 1 6
+  # Short-Description:    private bower repository server
+  # Description:          private bower repository server
+  ### END INIT INFO
+  #
+  # Based on:
+  # https://gist.github.com/3748766
+  # https://github.com/hectorcorrea/hectorcorrea.com/blob/master/etc/forever-initd-hectorcorrea.sh
+  # https://www.exratione.com/2011/07/running-a-nodejs-server-as-a-service-using-forever/
+
+  # Source function library. Note that this isn't used here, but remains to be
+  # uncommented by those who want to edit this script to add more functionality.
+  # Note that this is Ubuntu-specific. The scripts and script location are different on
+  # RPM-based distributions.
+  # . /lib/lsb/init-functions
+
+  NAME="private-bower"
+  NODE_BIN_DIR=/home/anthanh/local/bin
+  NODE_PATH=/usr/lib/nodejs:/usr/lib/node_modules:/usr/share/javascript:/home/anthanh/local/lib/node_modules
+  CONFIG_PATH=/home/anthanh/.config/private-bower/config.json
+  APPLICATION_DIRECTORY=/home/anthanh/local/bin/
+  APPLICATION_START=private-bower
+  # Run with options private-bower config
+  # APPLICATION_OPTIONS="--config $CONFIG_PATH"
+  PIDFILE=/var/run/private-bower.pid
+  LOGFILE=/var/log/private-bower.log
+
+  # Add node to the path for situations in which the environment is passed.
+  PATH=$NODE_BIN_DIR:$PATH
+  # Export all environment variables that must be visible for the Node.js
+  # application process forked by Forever. It will not see any of the other
+  # variables defined in this script.
+  export NODE_PATH=$NODE_PATH
+
+  start() {
+      echo "Starting $NAME"
+      # We're calling forever directly without using start-stop-daemon for the
+      # sake of simplicity when it comes to environment, and because this way
+      # the script will work whether it is executed directly or via the service
+      # utility.
+      #
+      # The minUptime and spinSleepTime settings stop Forever from thrashing if
+      # the application fails immediately on launch. This is generally necessary to
+      # avoid loading development servers to the point of failure every time
+      # someone makes an error in application initialization code, or bringing down
+      # production servers the same way if a database or other critical service
+      # suddenly becomes inaccessible.
+      #
+      # The pidfile contains the child process pid, not the forever process pid.
+      # We're only using it as a marker for whether or not the process is
+      # running.
+      forever --pidFile $PIDFILE --sourceDir $APPLICATION_DIRECTORY \
+          -a -l $LOGFILE --minUptime 5000 --spinSleepTime 2000 \
+          start $APPLICATION_START $APPLICATION_OPTIONS &
+      RETVAL=$?
+  }
+
+  stop() {
+      if [ -f $PIDFILE ]; then
+          echo "Shutting down $NAME"
+          # Tell Forever to stop the process. Note that doing it this way means
+          # that each application that runs as a service must have a different
+          # start file name, regardless of which directory it is in.
+          forever stop $APPLICATION_DIRECTORY$APPLICATION_START
+          # Get rid of the pidfile, since Forever won't do that.
+          rm -f $PIDFILE
+          RETVAL=$?
+      else
+          echo "$NAME is not running."
+          RETVAL=0
+      fi
+  }
+
+  restart() {
+      echo "Restarting $NAME"
+      stop
+      start
+  }
+
+  status() {
+      echo "Status for $NAME:"
+      # This is taking the lazy way out on status, as it will return a list of
+      # all running Forever processes. You get to figure out what you want to
+      # know from that information.
+      #
+      # On Ubuntu, this isn't even necessary. To find out whether the service is
+      # running, use "service my-application status" which bypasses this script
+      # entirely provided you used the service utility to start the process.
+      forever list
+      RETVAL=$?
+  }
+
+  case "$1" in
+      start)
+          start
+          ;;
+      stop)
+          stop
+          ;;
+      status)
+          status
+          ;;
+      restart)
+          restart
+          ;;
+      *)
+          echo "Usage: {start|stop|status|restart}"
+          exit 1
+          ;;
+  esac
+  exit $RETVAL
+
+  ```
+
+* Dar permisos de ejecución `sudo chmod +x /etc/init.d/private-bower`
+* Buscar todas las rutas que usa `private-bower` `sudo find / -name "private-bower" -type d`
+* Obtener `NODE_BIN_DIR` desde `which node`
+* Obtener `NODE_PATH` desde `~/.bashrc`
+* Obtener `CONFIG_PATH` desde `.config` private-bower path
+* Obtener `APPLICATION_DIRECTORY` desde `which private-bower`
+
+* Add +x permissions `sudo chmod +x /etc/init.d/private-bower`
+* show all private-bower paths with `sudo find / -name "private-bower" -type d`
+* `NODE_BIN_DIR` from `which node`
+* `NODE_PATH` from `~/.bashrc`
+* copy `private-bower-config.json` to `~/.config/private-bower/config.json`
+* `CONFIG_PATH` from `config.json` private-bower path
+* `APPLICATION_DIRECTORY` from `which private-bower`
+* `APPLICATION_START=private-bower`
+
+* Arrancar el servicio manualmente
+
+```
+sudo /etc/init.d/sinopia start
+```
+
+* Arrancar el servicio al iniciar el sistema (Ubuntu)
+
+```
+sudo update-rc.d sinopia defaults
+```
+* Quitar el arranque del servicio al iniciar el sistema (Ubuntu)
+
+```
+sudo update-rc.d -f sinopia remove
+```
+
+* Arrancar el servicio al iniciar el sistema(CentOS/RedHat/AmazonLinux)
+
+```
+sudo chkconfig --add sinopia
+sudo chkconfig sinopia on
+```
+
+* Log (server)
+
+```
+tail -f /var/log/sinopia.log
+```
+
+
+* Cambiar al registro bower privado
+  Para cada proyecto, añadir el siguiente atributo al fichero `.bowerrc`.
+
+  ```
+  { "registry": "http://yourPrivateBowerRepo:5678" }
+  ```
+
+
+## Más info
+
+* https://www.debian-administration.org/article/28/Making_scripts_run_at_boot_time_with_Debian
+* https://github.com/ramiel/sinopia-scripts
+* http://www.snip2code.com/Snippet/104241/init-d-config-for-sinopia
+* https://github.com/Hacklone/private-bower
