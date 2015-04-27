@@ -77,7 +77,7 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
 * Instalar [Homebrew](http://brew.sh/):
 
     ```bash
-    ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" 
     ```
 
 * Instalar [GIT](http://git-scm.com/)
@@ -156,6 +156,7 @@ Esta apartado describe los pasos necesarios para configurar el entorno de desarr
 
     ```bash
     sudo apt-get install libgdbm-dev libncurses5-dev automake libtool bison libffi-dev
+    curl -sSL https://rvm.io/mpapis.asc | gpg --import
     curl -L https://get.rvm.io | bash -s stable
     source ~/.rvm/scripts/rvm
     echo "source ~/.rvm/scripts/rvm" >> ~/.bashrc
